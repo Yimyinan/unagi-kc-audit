@@ -1,0 +1,37 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,booktabs,hyperref,caption}
+\usepackage{times}
+\newcommand{\Hmat}{\mathbf{H}}\newcommand{\trloss}{\operatorname{tr}}
+\begin{document}
+
+\section*{Supplementary Table S5: Cross-Tissue Vanilla Baseline Characteristics}
+\label{tab:s5_vanilla}
+
+All values from vanilla (prior-free) models under the unified protocol. $\trloss(\Hmat_V)$ is the denominator in the $\kappa$ definition. (The effective-dimensionality context columns from the earlier manuscript draft were removed during the audit because no surviving computation source reproduces them.)
+
+\vspace{0.5cm}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Tissue} & \textbf{Cells} & \textbf{Genes} & \textbf{$\trloss(\Hmat_V)$} \\
+\midrule
+Hematopoietic & 29,985 & 20,466 & 5,634.8 \\
+Neural crest  & 21,078 & 11,932 & 5,402.1 \\
+Lung fibrosis & 19,999 & 41,995 & 12,568.7 \\
+Human IPF     & 8,532  & 16,299 & 10,590$^{\dagger}$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5cm}
+$^{\dagger}$Human IPF Hessian trace from the full-transcriptome fp32 vanilla retrain (\texttt{results/ptvae\_human\_ipf\_ln\_v2/optionB\_summary.md}); it is the vanilla denominator for the Section~2.3 retrain and is computed under that protocol, not under the unified StandardScaler/Ridge protocol used for the other three tissues.
+
+\vspace{0.5cm}
+\textbf{Key observations:}
+\begin{enumerate}
+\item $\trloss(\Hmat_V)$ varies $2.3$-fold across tissues ($5{,}402.1$--$12{,}568.7$). This is why tissue-specific normalization is essential: a perturbation of fixed absolute magnitude would produce different $\kappa$ values in different tissues.
+\item The lung fibrosis model has the highest $\trloss(\Hmat_V)$ (12,568.7), reflecting the spectral complexity of a high-dimensional fibrosis program. The prior-injected R9 configuration approaches but does not reach the locking threshold ($C=48.2\%$; Table~S1).
+\item The neural crest model's $\trloss(\Hmat_V)$ (5,402.1) reflects the intrinsic spectral complexity of neural crest differentiation, which involves multiple concurrent lineage decisions (neural, mesenchymal, melanocytic).
+\item Human IPF: full-transcriptome fp32 retraining (BatchNorm and LayerNorm decoders) shows data-inherent deep global compression $C=95.3$--$96.7\%$ with a subcritical gap ratio $\kappa_{\mathrm{gap}}=0.010$--$0.025$ (Methods, Supplementary Note~4): the high $C$ reflects data-inherent concentration, not prior-driven locking.
+\end{enumerate}
+
+\end{document}

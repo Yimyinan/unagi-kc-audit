@@ -1,0 +1,163 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,caption,array}
+\usepackage{times}
+\newcommand{\Hmat}{\mathbf{H}}
+\begin{document}
+
+\section*{Supplementary Table S14: Consolidated register of withdrawn, corrected and re-scoped claims}
+\label{tab:withdrawals}
+
+This table collects every claim from the earlier versions of this work that has been withdrawn,
+replaced, corrected or re-scoped, together with the evidence that motivated the change. It exists
+because the retractions are otherwise distributed across the main text, seven Supplementary Notes
+and several tables, which makes it hard for a reader to see the full extent of the revision. No
+claim listed here is relied on anywhere in the present manuscript.
+
+\vspace{4pt}
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}p{0.185\textwidth} p{0.125\textwidth} p{0.33\textwidth} p{0.29\textwidth}@{}}
+\toprule
+\textbf{Original claim} & \textbf{Where it appeared} & \textbf{Why it was withdrawn} & \textbf{Current status / replacement} \\
+\midrule
+
+Directional locking in \textbf{21/21} seeds across three tissues, including 15/15 hematopoietic
+seeds with $C_{\text{head}}=77.6\%$ and all $64/64$ vanilla directions opposed in every seed.
+&
+Main text positive control; the opposition-budget result file
+&
+Recomputation from all 15 surviving paired checkpoints under the published Ridge-readout protocol
+gives \textbf{0/15} seeds with $C_{\text{head}}>50\%$ ($C_{\text{head}}$ range $-67\%$ to
+$+2.4\%$; opposed directions 4--10 of 64, never 64). The analysis JSON is not derivable from any
+surviving checkpoint or preprocessing variant, and its generator script is absent from the
+repository and from git history.
+&
+\textbf{Withdrawn.} Note~5. A fresh 3-seed reproduction locks in 1/3 seeds and only under
+early-epoch checkpoint selection; under the unified audit protocol none is below
+$\kappa<0.5$. Locking remains plausible but is not demonstrated. \\
+
+Latent effective-rank drop of \textbf{$\sim$30\%} for perturbation-conditioned scVI, read as
+evidence that conditioning compresses the latent manifold.
+&
+Supplementary Figure~S12 (top panel B)
+&
+The value is a single run. In the paired design---both arms refit at matched seeds---the ratio
+averages $1.02\pm0.15$ ($n=4$, $t=+0.2$ against unity), i.e.\ no rank drop.
+&
+\textbf{Withdrawn.} S12 states the earlier reading explicitly as withdrawn; the family-4 arm
+instead contracts slightly ($0.868\pm0.032$, $n=5$). \\
+
+The ``purity paradox'': pure-lineage priors expand the latent while mixed-lineage priors compress it,
+separated by $72$ percentage points in the trace form.
+&
+Main text results section; earlier figures
+&
+The $72$-pp separation is a matched-scale artefact of the trace protocol. The corrected
+predictability form places the pair at $+0.90\%$ against $+0.76\%$ --- a
+$0.14$-percentage-point contrast --- and the group-level lineage-purity contrast is
+non-significant (pure $n=8$ vs mixed $n=13$, Welch $p=0.74$).
+&
+\textbf{Withdrawn.} Supplementary Figure~S13; the matched-scale pair, the expansion attributed to
+mixed priors, and the reading that prior content tracks the spectral response are all withdrawn. \\
+
+Ridge readout reproduces the analytical Jacobian: dominant-mode agreement
+$\cos\theta=0.78\pm0.04$.
+&
+Methods (Ridge--Jacobian validation)
+&
+Recomputed from 4 surviving hematopoietic seeds (s9--s12): $\cos\theta=0.45\pm0.26$
+(range $0.10$--$0.65$). The originally reported value is not reproducible from the surviving
+checkpoints. Ridge- and Jacobian-based $C$ also disagree in sign.
+&
+\textbf{Replaced} by $\cos\theta=0.45\pm0.26$; the Ridge readout is now described as a proxy for
+the decoder's local response map, not the literal weights. Note~1. \\
+
+$\kappa$-based $C$ ranks agree with the Jacobian-based $C$: Spearman $\rho=0.94$.
+&
+Methods
+&
+Recomputed on the six G-VAE configurations with a computable analytical Jacobian:
+$\rho=-0.03$ ($p=0.96$, $n=6$). Ridge-based $C$ is systematically negative
+($-17\%$ to $-584\%$) while Jacobian-based $C$ is positive ($+28\%$ to $+67\%$).
+&
+\textbf{Withdrawn.} Note~1. Applications needing spectral fidelity are directed to the analytical
+Jacobian. \\
+
+GRQ specificity of $10.8$--$12.3\times$ and CTCP specificity of $18.8$--$19.6\times$ as
+independent positive evidence for the perturbation framework.
+&
+Supplementary Table~S6 (earlier version)
+&
+GRQ values were not reproducible from the surviving checkpoints. Under label-shuffling permutation
+tests \emph{with} test-set exclusion, real and shuffled CTCP specificity are statistically
+indistinguishable.
+&
+\textbf{GRQ replaced} by the re-audited per-seed values ($11.3$--$16.8\times$). \textbf{CTCP
+re-scoped}: the earlier significance reading was driven by sample-size rebalancing and does not
+survive the permutation test. Note~5, Table~S6. \\
+
+Encoder/decoder co-adaptation: encoder weight correlation $r=0.0143$ and decoder correlation
+$r=0.964$ reported as co-adaptation evidence.
+&
+Main text (earlier version)
+&
+The correlation pair as reported was not reproducible from the surviving checkpoints.
+&
+\textbf{Replaced} by real recomputed values; \texttt{AUDIT\_NOTES} records the replacement. The
+co-adaptation framing is retained only where it survives. \\
+
+The G-VAE encoder is a 3-layer network with widths $512/256/128$.
+&
+Methods (architecture description)
+&
+The trained checkpoints define a 2-layer encoder; the width triple did not match the artefacts.
+&
+\textbf{Corrected} to a 2-layer encoder in \texttt{star\_methods.tex}, verified against the
+checkpoint tensors. \\
+
+Decoder-direct perturbation (DDP) reaches $>1{,}000\times$ specificity, presented as a capability.
+&
+Main text (earlier version); Paper~2
+&
+The value is a pure mathematical extrapolation rather than a measured readout.
+&
+\textbf{Re-scoped} to the measured regime: $92$--$156\times$ at
+$\|\Delta\mathbf{z}\|=5$--$20$, with the non-physiological limit stated. \\
+
+Neural-crest ($C=56$--$69\%$) and lung-fibrosis ($C=96.7\pm0.3\%$) G-VAE compression figures.
+&
+Paper~2 figures
+&
+Produced with the $\kappa$-$C$ penalty term, which is non-differentiable as implemented, so the
+figures are not verifiable as spectral results.
+&
+\textbf{Unverified; withdrawn from use.} Note~5: they should be re-checked with a differentiable
+spectral objective before use. \\
+
+The $\kappa$-$C$ regulariser shapes the decoder during training.
+&
+Methods (earlier framing)
+&
+\texttt{kappa\_c\_reg()} returns a Python \texttt{float}, so it carries no gradient; a constant
+offset cannot move gradients either. Measured $|\Delta\text{grad}|=0$ across three optimisation
+steps with and without the term.
+&
+\textbf{Re-scoped} to a training-objective-agnostic \emph{readout}. The $0/33$ null therefore
+compares two differently-initialised models rather than measuring a constrained fit. Note~4,
+main text \emph{Scope of the audit}. \\
+
+\bottomrule
+\end{tabular}
+
+\vspace{6pt}
+\footnotesize\noindent
+\textbf{Net effect on the manuscript's claims.} Eleven earlier claims are withdrawn, replaced,
+corrected or re-scoped here. The claims the present manuscript rests on --- the band-independent
+$0/33$ decoder-gain null, the injection-path finding that prior content does not reach the loss in
+the audited implementation, and the diagnostic instrument itself --- are independent of every row
+above: none of them depends on a G-VAE positive control, on a Ridge--Jacobian agreement value, or
+on a $C$-based ranking.
+
+\end{document}

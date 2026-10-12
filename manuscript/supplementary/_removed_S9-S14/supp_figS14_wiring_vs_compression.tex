@@ -1,0 +1,27 @@
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figS14_wiring_vs_compression.pdf}
+\caption{\textbf{Supplementary Figure S13. Internalisation and compression are dissociable, not the same process.}
+Each panel compares, on the same 12 model--prior $\times$ seed runs (plus the seed-matched
+mismatch control R16), the prior-wiring effect size (per-edge cosine-coupling difference of the
+injected edges, model vs the same seed's empty-prior model) against the latent-spectrum
+compression ($\Delta\mathrm{PR}$, the participation ratio, $\Delta$ top-1\% concentration, $\Delta$ spectral
+entropy). \textbf{(A--C)} The raw bivariate Spearman correlation between wiring and compression is
+non-significant for $\Delta\mathrm{PR}$ ($\rho=-0.45$, $p=0.099$) and only nominally significant for
+$\Delta$ entropy ($\rho=-0.54$, $p=0.034$); in both cases the apparent association is a
+\emph{seed confound}: seed identity explains $72.7\%$ of the
+variance in wiring and $83.0\%$ of the variance in $\Delta\mathrm{PR}$, and the
+seed-controlled partial correlation (residualising each quantity by seed) collapses to zero
+(Spearman $\rho=-0.07$ for $\Delta\mathrm{PR}$, $p=0.83$; $\rho=+0.01$ for $\Delta$ entropy,
+$p=0.97$). The apparent
+association is driven by seed, not by a mechanistic link. \textbf{(D)} The decisive dissociation:
+the mismatched prior R16 compresses the marrow effective-rank spectrum almost as much as the true
+prior ($\Delta\mathrm{PR}=-2.89$ versus R13's $-3.44$, $\sim$84\%) while wiring
+\emph{neither} edge set ($\Delta$ cosine $-0.034$, $z=-1.43$, n.s.). Compression therefore occurs
+without targeted internalisation. \textbf{Conclusion:} latent-spectrum compression is a
+bulk-spectral consequence of injecting \emph{any} structured GRN prior, whereas internalisation of
+the prior's specific TF$\rightarrow$target edges is a separate, program-matching-gated event that
+requires the prior to match the trajectory's active drivers. The two should not be used
+interchangeably when interpreting prior-injected VAEs.}
+\label{fig:wiring_vs_compression}
+\end{figure}

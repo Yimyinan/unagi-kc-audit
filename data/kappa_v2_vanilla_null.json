@@ -1,0 +1,194 @@
+{
+  "K": 8,
+  "PC": 16,
+  "pseed": 7,
+  "vanilla_cross": {
+    "hema": {
+      "n": 3,
+      "dp_spread": [
+        3.712094572964806,
+        8.278043398776472,
+        7.8072948402202424
+      ],
+      "mean": 6.599,
+      "std": 2.05,
+      "per_pair": [
+        {
+          "pair": "R14_s42|R14_s123",
+          "dp_spread": 3.712,
+          "delta_p_k": [
+            4.69,
+            0.51,
+            -6.68,
+            -0.85,
+            -1.44,
+            -1.82,
+            -0.5,
+            6.09
+          ]
+        },
+        {
+          "pair": "R14_s42|R14_s456",
+          "dp_spread": 8.278,
+          "delta_p_k": [
+            -9.03,
+            -0.93,
+            -9.81,
+            13.27,
+            -7.51,
+            -1.37,
+            4.78,
+            10.6
+          ]
+        },
+        {
+          "pair": "R14_s123|R14_s456",
+          "dp_spread": 7.807,
+          "delta_p_k": [
+            -10.36,
+            -1.2,
+            -3.13,
+            13.86,
+            -5.6,
+            -0.79,
+            -4.09,
+            11.32
+          ]
+        }
+      ]
+    },
+    "neural": {
+      "n": 1,
+      "dp_spread": [
+        6.096507262327057
+      ],
+      "mean": 6.097,
+      "std": null,
+      "per_pair": [
+        {
+          "pair": "R0_s123|R0_s456",
+          "dp_spread": 6.097,
+          "delta_p_k": [
+            0.45,
+            4.31,
+            -3.13,
+            11.41,
+            -10.22,
+            1.26,
+            -5.51,
+            1.42
+          ]
+        }
+      ]
+    }
+  },
+  "prior_pair": {
+    "hema": {
+      "n": 14,
+      "dp_spread": [
+        5.558291321236415,
+        4.879306189715674,
+        7.606937683087074,
+        5.9141639943796145,
+        3.0112846254529018,
+        7.288271549018493,
+        4.472766733566523,
+        2.9923393008072856,
+        7.345551812056346,
+        3.3313588936907244,
+        4.824303933931207,
+        4.028177481762254,
+        4.003815452335617,
+        5.3312073455331825
+      ],
+      "mean": 5.042,
+      "std": 1.507,
+      "per_pair": [
+        {
+          "pair": "R13_s42|R14_s42",
+          "dp_spread": 5.558
+        },
+        {
+          "pair": "R13_s123|R14_s123",
+          "dp_spread": 4.879
+        },
+        {
+          "pair": "R13_s456|R14_s456",
+          "dp_spread": 7.607
+        },
+        {
+          "pair": "R11_s42|R14_s42",
+          "dp_spread": 5.914
+        },
+        {
+          "pair": "R11_s123|R14_s123",
+          "dp_spread": 3.011
+        },
+        {
+          "pair": "R11_s456|R14_s456",
+          "dp_spread": 7.288
+        },
+        {
+          "pair": "R12_s42|R14_s42",
+          "dp_spread": 4.473
+        },
+        {
+          "pair": "R12_s123|R14_s123",
+          "dp_spread": 2.992
+        },
+        {
+          "pair": "R12_s456|R14_s456",
+          "dp_spread": 7.346
+        },
+        {
+          "pair": "R84_s42|R14_s42",
+          "dp_spread": 3.331
+        },
+        {
+          "pair": "R107_s42|R14_s42",
+          "dp_spread": 4.824
+        },
+        {
+          "pair": "R111_s42|R14_s42",
+          "dp_spread": 4.028
+        },
+        {
+          "pair": "R111_s123|R14_s123",
+          "dp_spread": 4.004
+        },
+        {
+          "pair": "R165_s42|R14_s42",
+          "dp_spread": 5.331
+        }
+      ]
+    },
+    "neural": {
+      "n": 2,
+      "dp_spread": [
+        5.425449566341121,
+        6.062058897051337
+      ],
+      "mean": 5.744,
+      "std": 0.318,
+      "per_pair": [
+        {
+          "pair": "R1_s123|R0_s123",
+          "dp_spread": 5.425
+        },
+        {
+          "pair": "R1_s456|R0_s456",
+          "dp_spread": 6.062
+        }
+      ]
+    }
+  },
+  "self_null": {},
+  "verdict": {
+    "hema_vanilla_mean": 6.599,
+    "hema_prior_mean": 5.042,
+    "hema_ratio": 0.7640551598727079,
+    "neural_vanilla_mean": 6.097,
+    "neural_prior_mean": 5.744,
+    "note": "If vanilla_cross_mean is within ~2x of prior_mean, the kappa-C v2 'local reorganisation' is indistinguishable from seed noise and the honest conclusion is NO prior effect at any level."
+  }
+}

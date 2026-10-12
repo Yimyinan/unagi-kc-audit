@@ -1,0 +1,100 @@
+{
+  "R11_s42": {
+    "kappa_ratio": 1.52,
+    "C": -52.5,
+    "desc": "KLF1+TAL1 (2TF,21e)",
+    "tr": 8591.5,
+    "src": "unified_std"
+  },
+  "R12_s42": {
+    "kappa_ratio": 1.78,
+    "C": -77.6,
+    "desc": "GATA2+GFI1B+PAX5 (3TF,55e)",
+    "tr": 10005.2,
+    "src": "unified_std"
+  },
+  "R84_s42": {
+    "kappa_ratio": 1.25,
+    "C": -24.8,
+    "desc": "Erythroid (4TF,84e)",
+    "tr": 7031.7,
+    "src": "archive_clean"
+  },
+  "R111_s42": {
+    "kappa_ratio": 1.71,
+    "C": -71.4,
+    "desc": "Eryth+Temporal (5TF,111e)",
+    "tr": 9657.8,
+    "src": "archive_clean"
+  },
+  "R107_s42": {
+    "kappa_ratio": 0.99,
+    "C": 0.7,
+    "desc": "Eryth+Lymph (5TF,107e)",
+    "tr": 5596.1,
+    "src": "archive_clean"
+  },
+  "R165_s42": {
+    "kappa_ratio": 1.84,
+    "C": -84.4,
+    "desc": "Eryth+Myeloid (6TF,165e)",
+    "tr": 10391.8,
+    "src": "archive_clean"
+  },
+  "R15_s42": {
+    "kappa_ratio": 0.92,
+    "C": 8.4,
+    "desc": "Eryth+Myeloid full (37TF)",
+    "tr": 5160.9,
+    "src": "unified_std"
+  },
+  "R13_s42": {
+    "kappa_ratio": 1.79,
+    "C": -79.1,
+    "desc": "Full prior (11TF,325e)",
+    "tr": 10090.1,
+    "src": "unified_std"
+  },
+  "R13_s123": {
+    "kappa_ratio": 2.37,
+    "C": -136.8,
+    "desc": "Full prior s123",
+    "tr": 13341.4,
+    "src": "archive_clean"
+  },
+  "R13_s456": {
+    "kappa_ratio": 1.22,
+    "C": -21.8,
+    "desc": "Full prior s456",
+    "tr": 6863.8,
+    "src": "archive_clean"
+  },
+  "R111_s123": {
+    "kappa_ratio": 5.78,
+    "C": -477.9,
+    "desc": "Eryth s123",
+    "tr": 32564.6,
+    "src": "archive_clean"
+  },
+  "R111_s456": {
+    "kappa_ratio": 1.14,
+    "C": -13.8,
+    "desc": "Eryth s456",
+    "tr": 6410.7,
+    "src": "archive_clean"
+  },
+  "R15_s123": {
+    "kappa_ratio": 1.62,
+    "C": -61.7,
+    "desc": "Eryth+Mye full s123",
+    "tr": 9109.9,
+    "src": "unified_std"
+  },
+  "R15_s456": {
+    "kappa_ratio": 2.53,
+    "C": -153.3,
+    "desc": "Eryth+Mye full s456",
+    "tr": 14272.9,
+    "src": "unified_std"
+  }
+}

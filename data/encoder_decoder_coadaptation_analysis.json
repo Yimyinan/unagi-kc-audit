@@ -1,0 +1,27 @@
+{
+  "date": "2026-08-10",
+  "analysis": "Encoder-Decoder Co-Adaptation (s9 vs s11)",
+  "key_findings": {
+    "gene_sensitivity_correlation": 0.959,
+    "gene_sensitivity_s9_mean": 0.354,
+    "gene_sensitivity_s11_mean": 0.38,
+    "top50_overlap": "21/50",
+    "encoder_decoder_alignment_s9": 0.553,
+    "encoder_decoder_alignment_s11": 0.533,
+    "top_perturbation_cosine": -0.259,
+    "cross_model_penalty": "2.1x (both directions)",
+    "erythroid_specificity_s9_native": 1.646,
+    "erythroid_specificity_s11_native": 1.727,
+    "erythroid_specificity_s9dir_on_s11dec": 2.33,
+    "erythroid_specificity_s11dir_on_s9dec": 1.946,
+    "ery_in_top50_perturbation_s9": 1,
+    "ery_in_top50_perturbation_s11": 1
+  },
+  "interpretation": {
+    "decoder_similarity": "Near-identical gene-level sensitivity (r=0.96). The decoders are functionally very similar.",
+    "encoder_divergence": "Cross-model MSE is 2.1x worse ? encoders and decoders are co-adapted pairs.",
+    "perturbation_direction_divergence": "Top perturbation directions are nearly orthogonal (cos=-0.26). The encoder-decoder co-adaptation manifests in WHICH direction becomes the steepest descent.",
+    "erythroid_paradox": "Neither model's native top perturbation direction hits erythroid genes well (only 1/50). But s9's direction applied to s11's decoder INCREASES erythroid specificity to 2.33x.",
+    "core_insight": "For perturbation, finding the RIGHT direction matters more than having higher per-gene sensitivity. The encoder-decoder co-adaptation determines which latent direction the Jacobian amplifies."
+  }
+}

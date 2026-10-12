@@ -1,0 +1,23 @@
+{
+  "source_data": "Paul et al. 2015 (scanpy.datasets.paul15) mouse hematopoiesis scRNA-seq",
+  "architecture": "GRN-masked linear decoder (CellOracle optimizer-stage analogue), Ridge alpha=1",
+  "real_grn": "data-derived TF->target network (top-3 Ridge predictors per gene from the 10-TF hematopoietic set)",
+  "result": {
+    "test": "in_vivo_full_transcriptome_real_GRN",
+    "source_data": "Paul et al. 2015 (scanpy.datasets.paul15) mouse hematopoiesis scRNA-seq",
+    "n_cells": 2730,
+    "n_genes": 3451,
+    "n_regulators": 10,
+    "n_real_edges": 10353,
+    "kappa_C_W_real": 1.0275909536276477,
+    "kappa_C_W_real_boot_mean": 0.942303126836754,
+    "kappa_C_W_real_boot_lo": 0.9258073248448855,
+    "kappa_C_W_real_boot_hi": 0.9604285142363324,
+    "frac_below_1": 1.0,
+    "kappa_C_W_random": 0.7159717062107579,
+    "kappa_C_Z": 1.0,
+    "readout_PR_ratio_real": 1.020654532229115,
+    "readout_effrank_ratio_real": 1.0186862733443236
+  },
+  "dual_spectrum_isolation": "kappa-C(Z)=1 exactly (shared real latent); compression (if any) lives in the decoder readout only."
+}

@@ -1,0 +1,206 @@
+{
+ "description": "Sensitivity and correctness check of the structural upper bound.",
+ "target_kappa_gap": 2.0,
+ "ipf_values": {
+  "top_axis_share": 0.912,
+  "tr_HV": 10590.0,
+  "gap_V": 9663.0,
+  "C_quoted": 0.9
+ },
+ "empirical_top_axis": {
+  "n": 30,
+  "mean": 0.2958864194932157,
+  "sd": 0.04003606842514393,
+  "min": 0.23579202235290744,
+  "max": 0.369717913370005,
+  "ipf_z_score": 15.388963121060243,
+  "per_readout": [
+   {
+    "file": "R0_s123.npy",
+    "top_axis_share": 0.33426309970780516
+   },
+   {
+    "file": "R0_s456.npy",
+    "top_axis_share": 0.3157190022329786
+   },
+   {
+    "file": "R107_s42.npy",
+    "top_axis_share": 0.2845788417315454
+   },
+   {
+    "file": "R111_s123.npy",
+    "top_axis_share": 0.25958022633666766
+   },
+   {
+    "file": "R111_s42.npy",
+    "top_axis_share": 0.2862183434343512
+   },
+   {
+    "file": "R11_s123.npy",
+    "top_axis_share": 0.3279695462812468
+   },
+   {
+    "file": "R11_s42.npy",
+    "top_axis_share": 0.369717913370005
+   },
+   {
+    "file": "R11_s456.npy",
+    "top_axis_share": 0.3394277842291957
+   },
+   {
+    "file": "R12_s123.npy",
+    "top_axis_share": 0.2841117437550176
+   },
+   {
+    "file": "R12_s42.npy",
+    "top_axis_share": 0.29877151078472614
+   },
+   {
+    "file": "R12_s456.npy",
+    "top_axis_share": 0.2513742529283704
+   },
+   {
+    "file": "R13_KO_KLF1.npy",
+    "top_axis_share": 0.279971377837788
+   },
+   {
+    "file": "R13_OE_KLF1.npy",
+    "top_axis_share": 0.3020745689975238
+   },
+   {
+    "file": "R13_s123.npy",
+    "top_axis_share": 0.31049777552939334
+   },
+   {
+    "file": "R13_s42.npy",
+    "top_axis_share": 0.32855495716435085
+   },
+   {
+    "file": "R13_s456.npy",
+    "top_axis_share": 0.23579202235290744
+   },
+   {
+    "file": "R14_s123.npy",
+    "top_axis_share": 0.23753644375627508
+   },
+   {
+    "file": "R14_s42.npy",
+    "top_axis_share": 0.25280931419179514
+   },
+   {
+    "file": "R14_s456.npy",
+    "top_axis_share": 0.3221825101551291
+   },
+   {
+    "file": "R14_seed123.npy",
+    "top_axis_share": 0.23753644375627508
+   },
+   {
+    "file": "R14_seed42.npy",
+    "top_axis_share": 0.25280931419179514
+   },
+   {
+    "file": "R14_seed456.npy",
+    "top_axis_share": 0.3221825101551291
+   },
+   {
+    "file": "R15_s123.npy",
+    "top_axis_share": 0.23753644384487396
+   },
+   {
+    "file": "R15_s42.npy",
+    "top_axis_share": 0.25280931408362334
+   },
+   {
+    "file": "R15_s456.npy",
+    "top_axis_share": 0.32218251015271293
+   },
+   {
+    "file": "R165_s42.npy",
+    "top_axis_share": 0.33490720501284726
+   },
+   {
+    "file": "R1_s123.npy",
+    "top_axis_share": 0.33907579987639824
+   },
+   {
+    "file": "R1_s456.npy",
+    "top_axis_share": 0.2637138520199631
+   },
+   {
+    "file": "R84_s123.npy",
+    "top_axis_share": 0.3494633347328929
+   },
+   {
+    "file": "R84_s42.npy",
+    "top_axis_share": 0.3432246221928901
+   }
+  ]
+ },
+ "envelopes": {
+  "unconstrained_exact_at_ipf": 0.9994908413536169,
+  "preserving_direction_at_ipf_C90": 0.10959329400807201,
+  "ratio_unconstrained_over_preserving": 9.120000000000001
+ },
+ "scan_top_axis": [
+  {
+   "t_axis": 0.5,
+   "bound": 0.19989816827072335
+  },
+  {
+   "t_axis": 0.7,
+   "bound": 0.14278440590765953
+  },
+  {
+   "t_axis": 0.8,
+   "bound": 0.12493635516920208
+  },
+  {
+   "t_axis": 0.85,
+   "bound": 0.11758715780630785
+  },
+  {
+   "t_axis": 0.9,
+   "bound": 0.11105453792817964
+  },
+  {
+   "t_axis": 0.912,
+   "bound": 0.10959329400807201
+  },
+  {
+   "t_axis": 0.95,
+   "bound": 0.10520956224774913
+  },
+  {
+   "t_axis": 0.99,
+   "bound": 0.10095867084379967
+  }
+ ],
+ "scan_compression": [
+  {
+   "C": 0.5,
+   "bound": 0.5479664700403601
+  },
+  {
+   "C": 0.7,
+   "bound": 0.32877988202421615
+  },
+  {
+   "C": 0.8,
+   "bound": 0.21918658801614402
+  },
+  {
+   "C": 0.9,
+   "bound": 0.10959329400807201
+  },
+  {
+   "C": 0.95,
+   "bound": 0.05479664700403606
+  },
+  {
+   "C": 0.967,
+   "bound": 0.0361657870226638
+  }
+ ],
+ "verdict": "The quoted 0.11 is the preserving-direction envelope, conditional on the leading eigendirection surviving; the unconstrained envelope at the same inputs is 0.9995 (9.1x larger) and still below the target of 2. The bound scales as (1-C)/t_axis, so the sensitivity analysis does not change the conclusion."
+}

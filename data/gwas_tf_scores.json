@@ -1,0 +1,366 @@
+{
+  "source": "Open Targets Platform GraphQL v4, disease.associatedTargets",
+  "retrieved": "2026-09-15",
+  "axis_definition": "gene-level aggregation of GWAS credible-set evidence for the trait; measures population-genetic evidence for a gene-trait effect, NOT regulatory importance",
+  "page_size": 3000,
+  "traits": {
+    "EFO_0004305": {
+      "name": "erythrocyte count",
+      "cls": "erythroid",
+      "n_targets": 5134
+    },
+    "EFO_0004306": {
+      "name": "erythrocyte indices",
+      "cls": "erythroid",
+      "n_targets": 8133
+    },
+    "EFO_0009188": {
+      "name": "red cell distribution width",
+      "cls": "erythroid",
+      "n_targets": 4186
+    },
+    "EFO_0004527": {
+      "name": "mean corpuscular hemoglobin",
+      "cls": "erythroid",
+      "n_targets": 3082
+    },
+    "EFO_0004528": {
+      "name": "mean corpuscular hemoglobin concentration",
+      "cls": "erythroid",
+      "n_targets": 4948
+    },
+    "EFO_0007986": {
+      "name": "reticulocyte count",
+      "cls": "erythroid",
+      "n_targets": 3277
+    },
+    "EFO_0004348": {
+      "name": "hematocrit",
+      "cls": "erythroid",
+      "n_targets": 4602
+    },
+    "EFO_0004509": {
+      "name": "hemoglobin measurement",
+      "cls": "erythroid",
+      "n_targets": 10323
+    },
+    "EFO_0004309": {
+      "name": "platelet count",
+      "cls": "non_erythroid",
+      "n_targets": 6644
+    },
+    "EFO_0004833": {
+      "name": "neutrophil count",
+      "cls": "non_erythroid",
+      "n_targets": 4477
+    },
+    "EFO_0005091": {
+      "name": "monocyte count",
+      "cls": "non_erythroid",
+      "n_targets": 5662
+    },
+    "EFO_0004587": {
+      "name": "lymphocyte count",
+      "cls": "non_erythroid",
+      "n_targets": 7708
+    },
+    "EFO_0004842": {
+      "name": "eosinophil count",
+      "cls": "non_erythroid",
+      "n_targets": 4571
+    },
+    "EFO_0005090": {
+      "name": "basophil count",
+      "cls": "non_erythroid",
+      "n_targets": 893
+    }
+  },
+  "tf_scores": {
+    "GATA2": {
+      "ensembl": "ENSG00000179348",
+      "per_trait": {
+        "EFO_0004305": 0.0,
+        "EFO_0004306": 0.0,
+        "EFO_0009188": 0.0,
+        "EFO_0004527": 0.0589,
+        "EFO_0004528": 0.0924,
+        "EFO_0007986": 0.0,
+        "EFO_0004348": 0.0903,
+        "EFO_0004509": 0.3799,
+        "EFO_0004309": 0.4759,
+        "EFO_0004833": 0.4602,
+        "EFO_0005091": 0.4706,
+        "EFO_0004587": 0.4659,
+        "EFO_0004842": 0.4288,
+        "EFO_0005090": 0.4201
+      },
+      "ery_max": 0.3799,
+      "ery_mean": 0.0777,
+      "ery_n_traits_hit": 4,
+      "non_max": 0.4759,
+      "non_mean": 0.4536,
+      "non_n_traits_hit": 6,
+      "erythroid_specificity": -0.096
+    },
+    "GATA1": {
+      "ensembl": "ENSG00000102145",
+      "per_trait": {
+        "EFO_0004305": 0.0,
+        "EFO_0004306": 0.0,
+        "EFO_0009188": 0.0,
+        "EFO_0004527": 0.0,
+        "EFO_0004528": 0.0,
+        "EFO_0007986": 0.0,
+        "EFO_0004348": 0.0,
+        "EFO_0004509": 0.0,
+        "EFO_0004309": 0.0,
+        "EFO_0004833": 0.0,
+        "EFO_0005091": 0.0,
+        "EFO_0004587": 0.0,
+        "EFO_0004842": 0.1915,
+        "EFO_0005090": 0.0
+      },
+      "ery_max": 0.0,
+      "ery_mean": 0.0,
+      "ery_n_traits_hit": 0,
+      "non_max": 0.1915,
+      "non_mean": 0.0319,
+      "non_n_traits_hit": 1,
+      "erythroid_specificity": -0.1915
+    },
+    "KLF1": {
+      "ensembl": "ENSG00000105610",
+      "per_trait": {
+        "EFO_0004305": 0.5825,
+        "EFO_0004306": 0.72,
+        "EFO_0009188": 0.7041,
+        "EFO_0004527": 0.7067,
+        "EFO_0004528": 0.5755,
+        "EFO_0007986": 0.3064,
+        "EFO_0004348": 0.199,
+        "EFO_0004509": 0.7193,
+        "EFO_0004309": 0.0,
+        "EFO_0004833": 0.1541,
+        "EFO_0005091": 0.0,
+        "EFO_0004587": 0.0,
+        "EFO_0004842": 0.0,
+        "EFO_0005090": 0.0
+      },
+      "ery_max": 0.72,
+      "ery_mean": 0.5642,
+      "ery_n_traits_hit": 8,
+      "non_max": 0.1541,
+      "non_mean": 0.0257,
+      "non_n_traits_hit": 1,
+      "erythroid_specificity": 0.5659
+    },
+    "SPI1": {
+      "ensembl": "ENSG00000066336",
+      "per_trait": {
+        "EFO_0004305": 0.0,
+        "EFO_0004306": 0.0,
+        "EFO_0009188": 0.0,
+        "EFO_0004527": 0.0531,
+        "EFO_0004528": 0.1793,
+        "EFO_0007986": 0.0,
+        "EFO_0004348": 0.1594,
+        "EFO_0004509": 0.0,
+        "EFO_0004309": 0.0,
+        "EFO_0004833": 0.1571,
+        "EFO_0005091": 0.1899,
+        "EFO_0004587": 0.235,
+        "EFO_0004842": 0.3265,
+        "EFO_0005090": 0.0
+      },
+      "ery_max": 0.1793,
+      "ery_mean": 0.049,
+      "ery_n_traits_hit": 3,
+      "non_max": 0.3265,
+      "non_mean": 0.1514,
+      "non_n_traits_hit": 4,
+      "erythroid_specificity": -0.1472
+    },
+    "CEBPA": {
+      "ensembl": "ENSG00000245848",
+      "per_trait": {
+        "EFO_0004305": 0.5472,
+        "EFO_0004306": 0.5518,
+        "EFO_0009188": 0.0,
+        "EFO_0004527": 0.2962,
+        "EFO_0004528": 0.158,
+        "EFO_0007986": 0.4102,
+        "EFO_0004348": 0.4942,
+        "EFO_0004509": 0.4702,
+        "EFO_0004309": 0.0,
+        "EFO_0004833": 0.1774,
+        "EFO_0005091": 0.2006,
+        "EFO_0004587": 0.3192,
+        "EFO_0004842": 0.0,
+        "EFO_0005090": 0.1132
+      },
+      "ery_max": 0.5518,
+      "ery_mean": 0.366,
+      "ery_n_traits_hit": 7,
+      "non_max": 0.3192,
+      "non_mean": 0.1351,
+      "non_n_traits_hit": 4,
+      "erythroid_specificity": 0.2327
+    },
+    "PAX5": {
+      "ensembl": "ENSG00000196092",
+      "per_trait": {
+        "EFO_0004305": 0.0,
+        "EFO_0004306": 0.269,
+        "EFO_0009188": 0.0,
+        "EFO_0004527": 0.0,
+        "EFO_0004528": 0.269,
+        "EFO_0007986": 0.4432,
+        "EFO_0004348": 0.0,
+        "EFO_0004509": 0.0,
+        "EFO_0004309": 0.0,
+        "EFO_0004833": 0.0,
+        "EFO_0005091": 0.0,
+        "EFO_0004587": 0.0,
+        "EFO_0004842": 0.0,
+        "EFO_0005090": 0.0
+      },
+      "ery_max": 0.4432,
+      "ery_mean": 0.1227,
+      "ery_n_traits_hit": 3,
+      "non_max": 0.0,
+      "non_mean": 0.0,
+      "non_n_traits_hit": 0,
+      "erythroid_specificity": 0.4432
+    },
+    "RUNX1": {
+      "ensembl": "ENSG00000159216",
+      "per_trait": {
+        "EFO_0004305": 0.5132,
+        "EFO_0004306": 0.5381,
+        "EFO_0009188": 0.4877,
+        "EFO_0004527": 0.5151,
+        "EFO_0004528": 0.4857,
+        "EFO_0007986": 0.0,
+        "EFO_0004348": 0.4832,
+        "EFO_0004509": 0.5272,
+        "EFO_0004309": 0.6451,
+        "EFO_0004833": 0.398,
+        "EFO_0005091": 0.5402,
+        "EFO_0004587": 0.2388,
+        "EFO_0004842": 0.5454,
+        "EFO_0005090": 0.4985
+      },
+      "ery_max": 0.5381,
+      "ery_mean": 0.4438,
+      "ery_n_traits_hit": 7,
+      "non_max": 0.6451,
+      "non_mean": 0.4777,
+      "non_n_traits_hit": 6,
+      "erythroid_specificity": -0.107
+    },
+    "TAL1": {
+      "ensembl": "ENSG00000162367",
+      "per_trait": {
+        "EFO_0004305": 0.4681,
+        "EFO_0004306": 0.5228,
+        "EFO_0009188": 0.3332,
+        "EFO_0004527": 0.4165,
+        "EFO_0004528": 0.5007,
+        "EFO_0007986": 0.0,
+        "EFO_0004348": 0.0,
+        "EFO_0004509": 0.5096,
+        "EFO_0004309": 0.4386,
+        "EFO_0004833": 0.3139,
+        "EFO_0005091": 0.3876,
+        "EFO_0004587": 0.4122,
+        "EFO_0004842": 0.0,
+        "EFO_0005090": 0.0
+      },
+      "ery_max": 0.5228,
+      "ery_mean": 0.3439,
+      "ery_n_traits_hit": 6,
+      "non_max": 0.4386,
+      "non_mean": 0.2587,
+      "non_n_traits_hit": 4,
+      "erythroid_specificity": 0.0842
+    },
+    "LMO2": {
+      "ensembl": "ENSG00000135363",
+      "per_trait": {
+        "EFO_0004305": 0.5094,
+        "EFO_0004306": 0.5182,
+        "EFO_0009188": 0.0,
+        "EFO_0004527": 0.4897,
+        "EFO_0004528": 0.49,
+        "EFO_0007986": 0.0,
+        "EFO_0004348": 0.3208,
+        "EFO_0004509": 0.49,
+        "EFO_0004309": 0.427,
+        "EFO_0004833": 0.0,
+        "EFO_0005091": 0.3965,
+        "EFO_0004587": 0.0,
+        "EFO_0004842": 0.5113,
+        "EFO_0005090": 0.0
+      },
+      "ery_max": 0.5182,
+      "ery_mean": 0.3523,
+      "ery_n_traits_hit": 6,
+      "non_max": 0.5113,
+      "non_mean": 0.2225,
+      "non_n_traits_hit": 3,
+      "erythroid_specificity": 0.0069
+    },
+    "GFI1": {
+      "ensembl": "ENSG00000162676",
+      "per_trait": {
+        "EFO_0004305": 0.0,
+        "EFO_0004306": 0.3295,
+        "EFO_0009188": 0.3411,
+        "EFO_0004527": 0.104,
+        "EFO_0004528": 0.327,
+        "EFO_0007986": 0.097,
+        "EFO_0004348": 0.0,
+        "EFO_0004509": 0.3631,
+        "EFO_0004309": 0.2248,
+        "EFO_0004833": 0.1543,
+        "EFO_0005091": 0.5163,
+        "EFO_0004587": 0.3014,
+        "EFO_0004842": 0.2231,
+        "EFO_0005090": 0.0277
+      },
+      "ery_max": 0.3631,
+      "ery_mean": 0.1952,
+      "ery_n_traits_hit": 6,
+      "non_max": 0.5163,
+      "non_mean": 0.2413,
+      "non_n_traits_hit": 6,
+      "erythroid_specificity": -0.1533
+    },
+    "GFI1B": {
+      "ensembl": "ENSG00000165702",
+      "per_trait": {
+        "EFO_0004305": 0.286,
+        "EFO_0004306": 0.5327,
+        "EFO_0009188": 0.4376,
+        "EFO_0004527": 0.4534,
+        "EFO_0004528": 0.4712,
+        "EFO_0007986": 0.4938,
+        "EFO_0004348": 0.2773,
+        "EFO_0004509": 0.5814,
+        "EFO_0004309": 0.7052,
+        "EFO_0004833": 0.3685,
+        "EFO_0005091": 0.3877,
+        "EFO_0004587": 0.0,
+        "EFO_0004842": 0.5822,
+        "EFO_0005090": 0.3963
+      },
+      "ery_max": 0.5814,
+      "ery_mean": 0.4417,
+      "ery_n_traits_hit": 8,
+      "non_max": 0.7052,
+      "non_mean": 0.4066,
+      "non_n_traits_hit": 5,
+      "erythroid_specificity": -0.1238
+    }
+  }
+}

@@ -1,0 +1,398 @@
+{
+  "Hematopoietic_R15": {
+    "B": 0.675,
+    "lock_type": "BIOLOGICAL",
+    "components": {
+      "f_protein": 0.96,
+      "f_junk": 0.03,
+      "f_prior": 0.0,
+      "prior_enrichment": 0.0,
+      "p_prior": 1.0,
+      "n_protein": 96,
+      "n_pseudo": 3,
+      "n_lncrna": 1,
+      "n_antisense": 0,
+      "n_unchar": 0,
+      "n_prior_match": 0
+    },
+    "top_genes": [
+      [
+        "HBB",
+        "protein_coding"
+      ],
+      [
+        "HBA2",
+        "protein_coding"
+      ],
+      [
+        "HBA1",
+        "protein_coding"
+      ],
+      [
+        "MALAT1",
+        "lncrna"
+      ],
+      [
+        "MT-CO1",
+        "protein_coding"
+      ],
+      [
+        "MT-CO3",
+        "protein_coding"
+      ],
+      [
+        "HBG2",
+        "protein_coding"
+      ],
+      [
+        "MT-CO2",
+        "protein_coding"
+      ],
+      [
+        "MT-ATP6",
+        "protein_coding"
+      ],
+      [
+        "MT-ND4",
+        "protein_coding"
+      ],
+      [
+        "AHSP",
+        "pseudogene"
+      ],
+      [
+        "HBM",
+        "protein_coding"
+      ],
+      [
+        "MT-ND1",
+        "protein_coding"
+      ],
+      [
+        "MT-ND3",
+        "protein_coding"
+      ],
+      [
+        "MT-CYB",
+        "protein_coding"
+      ],
+      [
+        "UBB",
+        "protein_coding"
+      ],
+      [
+        "TPT1",
+        "protein_coding"
+      ],
+      [
+        "FTL",
+        "protein_coding"
+      ],
+      [
+        "HBG1",
+        "protein_coding"
+      ],
+      [
+        "RPS12",
+        "protein_coding"
+      ]
+    ]
+  },
+  "Mouse_BLM_Lung": {
+    "B": 0.8260640503808734,
+    "lock_type": "BIOLOGICAL",
+    "components": {
+      "f_protein": 0.95,
+      "f_junk": 0.04,
+      "f_prior": 0.08,
+      "prior_enrichment": 2.634400839681225,
+      "p_prior": 0.01123488902590759,
+      "n_protein": 95,
+      "n_pseudo": 4,
+      "n_lncrna": 1,
+      "n_antisense": 0,
+      "n_unchar": 0,
+      "n_prior_match": 8
+    },
+    "top_genes": [
+      [
+        "Scgb1a1",
+        "protein_coding"
+      ],
+      [
+        "Malat1",
+        "lncrna"
+      ],
+      [
+        "Sftpc",
+        "protein_coding"
+      ],
+      [
+        "Tmsb4x",
+        "protein_coding"
+      ],
+      [
+        "Lyz2",
+        "protein_coding"
+      ],
+      [
+        "Fth1",
+        "protein_coding"
+      ],
+      [
+        "mt-Atp6",
+        "protein_coding"
+      ],
+      [
+        "Ftl1",
+        "protein_coding"
+      ],
+      [
+        "mt-Co3",
+        "protein_coding"
+      ],
+      [
+        "mt-Co1",
+        "protein_coding"
+      ],
+      [
+        "Hbb-bs",
+        "protein_coding"
+      ],
+      [
+        "Rpl41",
+        "protein_coding"
+      ],
+      [
+        "Actb",
+        "protein_coding"
+      ],
+      [
+        "Rpl13",
+        "protein_coding"
+      ],
+      [
+        "Apoe",
+        "protein_coding"
+      ],
+      [
+        "Rps27",
+        "protein_coding"
+      ],
+      [
+        "Rpl37a",
+        "protein_coding"
+      ],
+      [
+        "Rps19",
+        "protein_coding"
+      ],
+      [
+        "Rps14",
+        "protein_coding"
+      ],
+      [
+        "Rpl18a",
+        "protein_coding"
+      ]
+    ]
+  },
+  "Human_IPF_Regressed": {
+    "B": 0.6758696680226826,
+    "lock_type": "BIOLOGICAL",
+    "components": {
+      "f_protein": 0.8,
+      "f_junk": 0.2,
+      "f_prior": 0.1,
+      "prior_enrichment": 1.931161133711375,
+      "p_prior": 0.03415053158532368,
+      "n_protein": 80,
+      "n_pseudo": 11,
+      "n_lncrna": 0,
+      "n_antisense": 2,
+      "n_unchar": 7,
+      "n_prior_match": 10
+    },
+    "top_genes": [
+      [
+        "TOMM40",
+        "protein_coding"
+      ],
+      [
+        "TNRC6C-AS1",
+        "antisense"
+      ],
+      [
+        "MT1G",
+        "protein_coding"
+      ],
+      [
+        "LINC01182",
+        "protein_coding"
+      ],
+      [
+        "SDC2",
+        "protein_coding"
+      ],
+      [
+        "ZBTB32",
+        "protein_coding"
+      ],
+      [
+        "SNAI2",
+        "protein_coding"
+      ],
+      [
+        "ACHE",
+        "protein_coding"
+      ],
+      [
+        "LYZL1",
+        "protein_coding"
+      ],
+      [
+        "ENSG00000268163",
+        "uncharacterized"
+      ],
+      [
+        "SEZ6L",
+        "protein_coding"
+      ],
+      [
+        "BPI",
+        "protein_coding"
+      ],
+      [
+        "C1QB",
+        "protein_coding"
+      ],
+      [
+        "SLC5A11",
+        "protein_coding"
+      ],
+      [
+        "ZNF79",
+        "protein_coding"
+      ],
+      [
+        "KIAA0895L",
+        "protein_coding"
+      ],
+      [
+        "KPNA6",
+        "protein_coding"
+      ],
+      [
+        "CLEC16A",
+        "protein_coding"
+      ],
+      [
+        "CRYGS",
+        "protein_coding"
+      ],
+      [
+        "ENSG00000281112",
+        "uncharacterized"
+      ]
+    ]
+  },
+  "Human_IPF_Unregressed": {
+    "B": 0.5966957344181459,
+    "lock_type": "BIOLOGICAL",
+    "components": {
+      "f_protein": 0.72,
+      "f_junk": 0.28,
+      "f_prior": 0.08,
+      "prior_enrichment": 1.5449289069691,
+      "p_prior": 0.14651616513331053,
+      "n_protein": 72,
+      "n_pseudo": 13,
+      "n_lncrna": 0,
+      "n_antisense": 3,
+      "n_unchar": 12,
+      "n_prior_match": 8
+    },
+    "top_genes": [
+      [
+        "HNRNPKP3",
+        "pseudogene"
+      ],
+      [
+        "LRIG2",
+        "protein_coding"
+      ],
+      [
+        "ACHE",
+        "protein_coding"
+      ],
+      [
+        "SSBP3-AS1",
+        "antisense"
+      ],
+      [
+        "CAPZA2",
+        "protein_coding"
+      ],
+      [
+        "ENSG00000205537",
+        "uncharacterized"
+      ],
+      [
+        "ENSG00000237961",
+        "uncharacterized"
+      ],
+      [
+        "ZCCHC18",
+        "protein_coding"
+      ],
+      [
+        "RNF208",
+        "protein_coding"
+      ],
+      [
+        "EGFL6",
+        "protein_coding"
+      ],
+      [
+        "COL6A4P2",
+        "pseudogene"
+      ],
+      [
+        "TEX45",
+        "protein_coding"
+      ],
+      [
+        "PARP6",
+        "pseudogene"
+      ],
+      [
+        "ZNF277",
+        "protein_coding"
+      ],
+      [
+        "BET1L",
+        "protein_coding"
+      ],
+      [
+        "SMC5",
+        "protein_coding"
+      ],
+      [
+        "CETN2",
+        "protein_coding"
+      ],
+      [
+        "EFCAB1",
+        "protein_coding"
+      ],
+      [
+        "CPE",
+        "protein_coding"
+      ],
+      [
+        "ANO3",
+        "protein_coding"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "source_grn": "Krumsiek et al. 2011 PLoS ONE (myeloid core network, 9 TFs / 27 edges)",
+  "architecture": "GRN-masked linear decoder (CellOracle-style structural prior)",
+  "n_rep": 40,
+  "d_latent": 16,
+  "n_cells": 4000,
+  "frob_target": 3.0,
+  "kappa_C_W_grn": {
+    "mean": 0.88365208999323,
+    "lo": 0.8110860258856153,
+    "hi": 0.9024448307925769,
+    "frac_below_1": 1.0
+  },
+  "kappa_C_Z_grn": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "frac_below_1": 0.0
+  },
+  "kappa_C_W_rand": {
+    "mean": 0.9715402191923619,
+    "lo": 0.8839795723111356,
+    "hi": 1.0112207375876727,
+    "frac_below_1": 0.775
+  },
+  "kappa_C_Z_rand": {
+    "mean": 1.0,
+    "lo": 1.0,
+    "hi": 1.0,
+    "frac_below_1": 0.0
+  },
+  "readout_PR_ratio_grn": {
+    "mean": 0.87005119044225,
+    "lo": 0.7101645663971851,
+    "hi": 1.065801999813427,
+    "frac_below_1": 0.9
+  },
+  "readout_effrank_ratio_grn": {
+    "mean": 0.8945928973714443,
+    "lo": 0.5730867466738266,
+    "hi": 1.257082390622039,
+    "frac_below_1": 0.725
+  },
+  "readout_PR_ratio_rand": {
+    "mean": 0.8930905322194255,
+    "lo": 0.676174946495,
+    "hi": 1.1000359570574736,
+    "frac_below_1": 0.85
+  },
+  "readout_effrank_ratio_rand": {
+    "mean": 0.8740857018695494,
+    "lo": 0.5314546702737837,
+    "hi": 1.2958533448666043,
+    "frac_below_1": 0.65
+  },
+  "verdict_counts_grn": {
+    "locked": 0,
+    "sub-vanilla": 0,
+    "vanilla-equivalent": 40,
+    "expanded": 0
+  }
+}

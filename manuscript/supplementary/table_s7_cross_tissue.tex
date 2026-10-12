@@ -1,0 +1,30 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,booktabs,hyperref,caption,multirow}
+\usepackage{times}
+\newcommand{\Hmat}{\mathbf{H}}\newcommand{\trloss}{\operatorname{tr}}
+\begin{document}
+
+\section*{Supplementary Table S7: Cross-Tissue Perturbation Readiness}
+\label{tab:s7_cross_tissue}
+
+The cross-tissue comparison is limited to $n=4$ model--tissue pairs and is suggestive only. $\kappa$ uses the unified ratio protocol ($\kappa=\mathrm{tr}(\mathbf{H}_P)/\mathrm{tr}(\mathbf{H}_V)$; $\kappa=1$ = vanilla-equivalent). Global $C$ is the trace-based compression metric ($C=(1-\kappa)\times100\%$). Directional $C$ is the collapse of the leading program. (The compression-percentage and Gini context columns from the earlier manuscript draft were removed during the audit because no surviving computation source reproduces them.)
+
+\begin{center}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+\textbf{Tissue} & \textbf{Model class} & \textbf{$\kappa$} & \textbf{Global $C$ (\%)} & \textbf{Directional $C$ (\%)} & \textbf{Status} \\
+\midrule
+Hematopoietic (s9)  & G-VAE & 1.0 & $\approx0$ & N/A$^*$ & \shortstack{Withdrawn:\\not reproducible} \\
+Hematopoietic (s11) & G-VAE & 1.0 & $\approx0$ & N/A$^*$ & \shortstack{Withdrawn:\\not reproducible} \\
+Lung fibrosis (R9)   & Prior-injection R9 & 0.52 & 48.2 & N/A & Subcritical \\
+Human IPF           & Qualitative & $\kappa_{\mathrm{gap}}$ 0.010--0.025 & 95.3--96.7$^{\dagger}$ & N/A & \shortstack{Data-inherent\\collapse} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+$^*$The 21/21 G-VAE positive control (including the hematopoietic 15/15 $C_{\text{head}}=77.6\%$, 64/64) is not reproducible from the surviving training artifacts (Supplementary Note~5); a fresh three-seed reproduction locks in only 1/3 seeds and only as an early transient. G-VAE rows have $\kappa\approx1$ and hence global $C\approx0$ by construction.
+
+$^{\dagger}$Human IPF: full-transcriptome fp32 retraining (BatchNorm/LayerNorm decoders) gives trace compression $C=95.3$--$96.7\%$ relative to the full-transcriptome vanilla reference ($\trloss(\Hmat_V)=10{,}590$) with a subcritical gap ratio $\kappa_{\mathrm{gap}}=0.010$--$0.025$ (Methods, Supplementary Note~4). This is data-inherent collapse, not prior-driven locking; the earlier phase-2 values ($\kappa=1.016$, directional $C=83.0\%$ qualitative, computed on the 8,000-gene subset) are superseded.
+
+\end{document}

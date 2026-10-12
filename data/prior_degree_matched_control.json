@@ -1,0 +1,23 @@
+{
+  "trrust_edges_total": 9369,
+  "n_tfs": 11,
+  "prior_edges_trrust_only": 267,
+  "prior_targets_trrust_only": 218,
+  "stat_jaccard": {
+    "observed": 0.018879229920733435,
+    "null_mean": 0.015890444187795384,
+    "null_sd": 0.001265095136974686,
+    "z": 2.362498792055554,
+    "p_empirical": 0.024875621890547265,
+    "n_null": 200
+  },
+  "stat_core_ge3": {
+    "observed": 7,
+    "null_mean": 7.0,
+    "null_sd": 0.0,
+    "z": NaN,
+    "p_empirical": 1.0,
+    "n_null": 200
+  },
+  "note": "保度重布线保留每个 TF 的出度与每个靶基因的入度；统计量只用 TRRUST 来源的非 TF→TF 边，故不与 curated CORE_HEMATO 自证。p 为经验值（含 +1 平滑）。"
+}

@@ -1,0 +1,86 @@
+{
+  "K": 8,
+  "PC": 16,
+  "partition_seeds": [
+    7,
+    11,
+    23,
+    42,
+    99
+  ],
+  "by_seed": {
+    "7": {
+      "n_hema": 14,
+      "n_neural": 2,
+      "n_null": 3,
+      "n_vanilla_cross": 4,
+      "hema_mean_dp_spread": 5.042,
+      "neural_mean_dp_spread": 5.744,
+      "null_mean_dp_spread": 0.0,
+      "vanilla_cross_mean_dp_spread": 6.473,
+      "hema_dp_spread_std": 1.507
+    },
+    "11": {
+      "n_hema": 14,
+      "n_neural": 2,
+      "n_null": 3,
+      "n_vanilla_cross": 4,
+      "hema_mean_dp_spread": 5.238,
+      "neural_mean_dp_spread": 4.489,
+      "null_mean_dp_spread": 0.0,
+      "vanilla_cross_mean_dp_spread": 5.382,
+      "hema_dp_spread_std": 1.441
+    },
+    "23": {
+      "n_hema": 14,
+      "n_neural": 2,
+      "n_null": 3,
+      "n_vanilla_cross": 4,
+      "hema_mean_dp_spread": 5.086,
+      "neural_mean_dp_spread": 5.778,
+      "null_mean_dp_spread": 0.0,
+      "vanilla_cross_mean_dp_spread": 5.978,
+      "hema_dp_spread_std": 1.502
+    },
+    "42": {
+      "n_hema": 14,
+      "n_neural": 2,
+      "n_null": 3,
+      "n_vanilla_cross": 4,
+      "hema_mean_dp_spread": 4.883,
+      "neural_mean_dp_spread": 4.785,
+      "null_mean_dp_spread": 0.0,
+      "vanilla_cross_mean_dp_spread": 6.657,
+      "hema_dp_spread_std": 1.694
+    },
+    "99": {
+      "n_hema": 14,
+      "n_neural": 2,
+      "n_null": 3,
+      "n_vanilla_cross": 4,
+      "hema_mean_dp_spread": 5.313,
+      "neural_mean_dp_spread": 4.672,
+      "null_mean_dp_spread": 0.0,
+      "vanilla_cross_mean_dp_spread": 6.296,
+      "hema_dp_spread_std": 1.691
+    }
+  },
+  "hema_dp_spread_across_seeds": [
+    5.042,
+    5.238,
+    5.086,
+    4.883,
+    5.313
+  ],
+  "vanilla_cross_dp_spread_across_seeds": [
+    6.473,
+    5.382,
+    5.978,
+    6.657,
+    6.296
+  ],
+  "hema_mean": 5.1124,
+  "hema_cv": 0.029573339421252613,
+  "vanilla_cross_mean": 6.1572,
+  "vanilla_cross_cv": 0.07269951738522763
+}

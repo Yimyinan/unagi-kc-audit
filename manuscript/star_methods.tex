@@ -1,0 +1,138 @@
+% ============================================================
+% STAR Methods (Cell Press convention). Kept as an \input so every
+% \label / \ref inside still resolves within the main document.
+% ============================================================
+
+\subsection*{Auditing an injected signal}
+
+Write the training objective of a conditioned model as
+\begin{equation}
+L(\theta) \;=\; L_{\text{data}}(\theta) \;+\; \lambda\,L_{\text{sig}}(\theta; S),
+\end{equation}
+where $S$ is an externally supplied structured signal and $\lambda$ its weight.
+Three questions must be answered before any observed change in the trained model
+can be attributed to the \emph{content} of $S$.
+
+\textbf{(1) Delivery.} Does $L_{\text{sig}}$ carry a non-zero gradient to the parameters the measurement targets, and does every stage meant to consume $S$ read it? If no gradient-bearing route exists, the injection is a no-op and every observed change is signal-agnostic.
+
+\textbf{(2) Agreement across readout levels.} Measure the effect at both an output-side and an internal-representation readout; if the two dissociate, neither alone attributes the change to $S$.
+
+\textbf{(3) Alternative explanations.} Compare against a null matched in the \emph{form} of $S$ but not its content, and against the structure already in the data; an effect inside either bound is not evidence for the content of $S$.
+
+\subsection*{Data preprocessing}
+
+Four datasets were used. Hematopoietic differentiation (GSE150774): human bone-marrow CD34$^+$ hematopoietic stem and progenitor cells, 29,985 cells $\times$ 20,466 genes after quality control. Lung fibrosis (GSE136831, human IPF): 19,999 cells $\times$ 41,995 genes (R9 prior-injection model, static single-timepoint), plus the 8,532 cells $\times$ 16,299 genes subset used for the IPF model, for which donor-level batch effects were regressed using Harmony~\cite{korsunsky2019} before training. Neural development (mouse cortex, GSE153162): 21,078 cells $\times$ 11,932 genes. Counts were library-size normalized to 10,000 per cell, log-transformed ($\log(1+x)$), and 4,000 highly variable genes selected using the Seurat v3 variance-stabilizing transformation.
+
+\subsection*{Model families}
+
+The study uses two VAE families. The G-VAE family---a fully-connected variational autoencoder with a piecewise-linear ReLU decoder---underlies the hematopoietic co-adaptation, opposition-budget, and perturbation-readout analyses (seeds 42/123/456 and 1--12) and supplies the vanilla null calibration. The UNAGI family~\cite{unagi}---a graph-regularized VAE whose encoder propagates expression along the GRN adjacency matrix when a prior is injected---underlies the 33-configuration prior-injection audit (22 hematopoietic, 10 neural crest, 1 lung); the 0/33 null is measured on this family.
+
+\subsection*{G-VAE architecture and training}
+
+The G-VAE encoder maps input gene expression $\mathbf{x} \in \mathbb{R}^G$ to latent mean $\boldsymbol{\mu} \in \mathbb{R}^D$ and log-variance $\log\boldsymbol{\sigma}^2 \in \mathbb{R}^D$ via a 2-layer MLP with hidden dimension 512 (Linear--BatchNorm--ReLU--Dropout blocks). The decoder is a symmetric 2-layer MLP with BatchNorm--ReLU blocks. Latent dimensionality was $D=64$ throughout. Training used the standard VAE objective $\mathcal{L} = \mathcal{L}_{\text{recon}} + \beta \cdot D_{\text{KL}}(q(\mathbf{z}|\mathbf{x}) \| p(\mathbf{z}))$ with $\beta=1.0$, MSE reconstruction loss, and Adam (learning rate $10^{-3}$, batch size 128), for 300 epochs on a single NVIDIA GPU ($\sim$2--4 hours per model). Vanilla models were trained identically without the prior-injection term. This family supplies the 15 hematopoietic vanilla seeds of the null calibration (seeds 1--12 and 42/123/456) and the spectral-shaping models (seeds 9--12) used for the GRQ/CTCP/DDP readouts.
+
+\subsection*{UNAGI architecture and prior injection}
+
+The audit's 33 configurations used the UNAGI family. The encoder maps $\mathbf{x}$ to latent mean and log-variance through hidden layers with softplus activations and BatchNorm; the first layer is a graph-convolutional layer that propagates $\mathbf{x}$ along a per-stage cell-neighbourhood graph ($k=30$ neighbours) before the dense layers. The decoder computes $\mathbf{h}_3=\mathrm{softplus}(\mathbf{W}_3\mathbf{z}+\mathbf{b}_3)$ and a count mean $\boldsymbol{\mu}=\mathbf{W}_4\mathbf{h}_3+\mathbf{b}_4$ with a dropout-logits head; the output function depends on the count distribution (zero-inflated negative-binomial, $\exp(\boldsymbol{\mu})$, for the hematopoietic and neural models; zero-inflated log-normal, $\mathrm{softplus}(\mathrm{clamp}(\boldsymbol{\mu},-1))$, for the lung model R9). Latent dimensionality was $D=64$.
+
+Prior injection followed the PG-UNAGI (Prior-Guided UNAGI) protocol~\cite{unagi}. For each prior configuration, a gene regulatory network (GRN) was defined as a binary mask $\mathbf{M} \in \{0,1\}^{G \times G}$ where $\mathbf{M}_{ij}=1$ indicates a regulatory edge from transcription factor $j$ to target gene $i$. GRN edges were sourced from TRRUST v2 (human)~\cite{han2018} for hematopoietic TFs and from curated pulmonary TF databases (including SMAD2/3/4, RELA, YAP1, GATA6, NKX2-1, derived from human annotations~\cite{li2023mmp}) for the lung fibrosis model. The IPF training data were the IPF Cell Atlas (GSE136831)~\cite{adams2020}, the haematopoietic data the human bone-marrow and cord-blood erythroid atlas (GSE150774)~\cite{huang2020}, and the neural-crest data the mouse cortical developmental atlas (GSE153162)~\cite{dibella2021}.
+
+Within that protocol each iteration proposes a gene-level weighting of the training data from a fold-change-refinement step (IDREM, executed as an external process) and writes a per-gene weight layer into that iteration's stagedata; models were trained for 5 iterations (300 initial epochs + 100 epochs per subsequent iteration).
+
+Prior configurations spanned three orders of magnitude in edge count, from 2-factor to pan-lineage priors (Supplementary Note~T).
+
+In the released source the prior's content has no functional route into the objective: the per-gene weight vector is assigned and never read, the objective branch that would consume it has no instantiation site, and the per-cell gene-weight layer is identically zero (Supplementary Note~T). This check is released as the fourth element of the prior-activity protocol (Supplementary Addendum, section~B).
+
+\subsection*{Cross-architecture validation with one-shot Ridge GRN priors}
+
+To test whether the decoder-side insensitivity is specific to curated-database priors, we audited eight single-transcription-factor priors constructed by one-shot Ridge regression of expression on TF activity, following the CellOracle inference protocol~\cite{kamimoto2023}, on the full gene space. For each prior we formed the Hessian proxy $\Hmat=\Wmat\Wmat^\top$ from the prior-induced loadings $\Wmat$ and its prior-free counterpart $\Wmat_V$, and computed the Davis--Kahan stability ratio $\kappa=\|\Hmat_P-\Hmat_V\|_2/(\lambda_1^V-\lambda_2^V)$, with $\lambda^V$ the eigenvalues of $\Hmat_V$; $\kappa<0.5$ is the subcritical regime in which the perturbation does not move the leading readout direction. Because the original audit's vanilla reference matrix was not retained, we could not reconstruct its eigenvalue gap from the archived loadings. The result is reported as a bound: the largest Hessian perturbation across the eight priors would require a reference eigenvalue gap of 18.1 to reach criticality, against a smallest measured gap of 449.6, a margin of 24.8$\times$ (Supplementary Note~U).
+
+\subsection*{Encoder-decoder co-adaptation analysis}
+
+Cross-seed weight correlations were computed as Pearson $r$ between corresponding encoder and decoder weight matrices, over $n=4$ independently trained seeds of the hematopoietic G-VAE.
+
+The Ridge readout $\mathbf{W}_{\text{Ridge}} \in \mathbb{R}^{G \times D}$ was obtained by fitting Ridge regression $(\mathbf{Z}^\top\mathbf{Z} + \alpha\mathbf{I})^{-1}\mathbf{Z}^\top\mathbf{X}$ with $\alpha=1.0$, where $\mathbf{Z} \in \mathbb{R}^{N \times D}$ is the latent representation and $\mathbf{X} \in \mathbb{R}^{N \times G}$ is the gene expression matrix. The Ridge readout was compared to the analytical decoder Jacobian $\mathbf{J} = \partial\mathcal{D}/\partial\mathbf{z}$ computed via automatic differentiation (verified against autograd, relative error $2\times10^{-8}$), yielding $\cos\theta = 0.45 \pm 0.26$ (range 0.10--0.65; $n=4$ seeds). The boundary configuration (lung R9) uses a zero-inflated log-normal decoder without BatchNorm and was re-audited separately under the same Jacobian protocol at $K=1{,}000$ latent points with per-gene row standardization (Supplementary Note~1).
+
+\subsection*{The $\kappa$-$C$ spectral diagnostic}
+
+\textbf{Unified computation protocol.} Given a trained model, we extract latent representations $\mathbf{Z} \in \mathbb{R}^{N \times D}$ and corresponding expression $\mathbf{X} \in \mathbb{R}^{N \times G}$ from the model's stagedata output. $\mathbf{Z}$ is standardized (zero mean, unit variance) and $\mathbf{X}$ is scaled (zero mean preserved, unit variance without mean centering) using scikit-learn's StandardScaler. The Ridge readout $\mathbf{W} \in \mathbb{R}^{G \times D}$ is computed with $\alpha=1.0$, yielding the Hessian proxy $\mathbf{H} = \mathbf{W}^\top\mathbf{W} \in \mathbb{R}^{D \times D}$ (equivalently, its trace equals $\operatorname{tr}(\mathbf{W}\mathbf{W}^\top)$).
+
+\textbf{Definitions.} The coupling coefficient is defined as the trace ratio:
+\begin{equation}
+\kappa = \frac{\mathrm{tr}(\mathbf{H}_P)}{\mathrm{tr}(\mathbf{H}_V)},
+\end{equation}
+where $\mathbf{H}_P$ is the Hessian proxy from the prior-injected model and $\mathbf{H}_V$ from the corresponding vanilla model (same seed, same dataset). By construction, $\kappa=1.0$ for the vanilla model. The global spectral compression metric is:
+\begin{equation}
+C = \frac{\mathrm{tr}(\mathbf{H}_V) - \mathrm{tr}(\mathbf{H}_P)}{\mathrm{tr}(\mathbf{H}_V)} \times 100\% = (1-\kappa)\times 100\%.
+\end{equation}
+$C>0$ indicates spectral compression (prior reduced the Hessian trace); $C<0$ indicates spectral expansion.\footnote{Three distinct quantities share the symbol $\kappa$ in this work. The trace ratio defined here, $\kappa_{\mathrm{tr}}$, is the tabulated statistic. The \emph{predictability ratio} $\kappa_{\mathrm{pr}}=\sum_g R^2_g(\text{pert})/\sum_g R^2_g(\text{van})$ is the corrected same-form statistic used for the summary table. A third, the \emph{stability ratio} $\kappa_{\mathrm{gap}}=\|\mathbf{H}_P-\mathbf{H}_V|_2/(\lambda_1^V-\lambda_2^V)$ (Davis--Kahan), appears only in the structural-bound analysis; the threshold $0.5$ applies to it alone there, whereas the $0/33$ verdict rests on $C>50\%$ ($\kappa_{\mathrm{tr}}<0.5$).}
+
+\textbf{Noise calibration.} The vanilla-equivalent region is defined as $\kappa \in [0.937, 1.064]$, corresponding to $\pm2\sigma$ of the null distribution obtained by comparing independently trained vanilla models on the same dataset. With the available G-VAE hematopoietic vanilla checkpoints (15 seeds), the null is $\kappa=1.001\pm0.032$ (mean $\pm$ SD; 210 ordered seed-pair comparisons), i.e.\ $C=-0.05\%\pm3.2$ percentage points. Applying the audit's corrected predictability statistic ($\sum_g R^2_g$, recomputed from each run's iter$_4$ stagedata under the Ridge protocol) to UNAGI's own seed-replicate readouts gives the family-matched \emph{corrected} null (Supplementary Note~U, Supplementary Table~S10), which is the band the Results classify against; the G-VAE cross-family band is retained as a conservative reference.
+
+\textbf{Grounding in Weyl's inequality.} Let $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_D$ be the eigenvalues of $\mathbf{H}\in\mathbb{R}^{D\times D}$. Weyl's inequality~\cite{weyl1912} bounds the perturbation of eigenvalues under additive perturbation, since $|\lambda_i(\mathbf{H}_P) - \lambda_i(\mathbf{H}_V)| \leq \|\mathbf{H}_P - \mathbf{H}_V\|_2$. The trace $\mathrm{tr}(\mathbf{H}) = \sum_i \lambda_i$ provides a cumulative measure of spectral restructuring across all dimensions. The Davis-Kahan theorem~\cite{davis1970} further bounds the rotation of individual eigenvectors, connecting trace-level changes to directional reorganization. Together with VAE latent non-identifiability~\cite{khemakhem2020}, this frames the audit as an identifiability statement up to a linear transform. Prior injection leaves latent$\to$expression predictability invariant.
+
+\subsection*{Latent-space spectrum computation}
+
+We computed the covariance spectrum of the encoder output $\mathbf{Z}$ directly from the stagedata produced by the PG-UNAGI training pipeline. For each run and IDREM iteration, we loaded $\mathbf{Z} \in \mathbb{R}^{N \times D}$ and the corresponding expression matrix $\mathbf{X} \in \mathbb{R}^{N \times G}$ from the stagedata \texttt{h5ad} files, pooling across all developmental stages. We centred $\mathbf{Z}$ and computed $\mathbf{C} = \mathbf{Z}^\top\mathbf{Z}/(N-1)$. Throughout the PG-UNAGI latent audit, the \emph{effective spectral rank} is the \emph{participation ratio}---the inverse squared participation of the normalised eigenvalues---of the covariance spectrum,
+\begin{equation}
+R_{\mathrm{eff}}^{(\mathrm{PR})}
+\;=\; \frac{\bigl(\sum_{i=1}^{D}\lambda_i\bigr)^2}{\sum_{i=1}^{D}\lambda_i^2}
+\;=\; \frac{1}{\sum_{i=1}^{D} p_i^2},
+\end{equation}
+where $p_i = \lambda_i / \sum_j \lambda_j$ and $\lambda_i$ are the eigenvalues of $\mathbf{C}$. These quantities were computed for 37 runs across five IDREM iterations (0--4), yielding 183 observations (all 37 are plotted in Fig.~\ref{fig:zspect}).
+
+For the specificity ladder (Fig.~\ref{fig:zspect}e), we restricted to hematopoietic seed 42 and compared vanilla (R14), empty-vector vehicle (R14\_hemato\_seed42), wrong-tissue neural prior (R14\_wrongprior\_seed42), and curated hematopoietic prior (R13\_hemato\_trueprior\_seed42). Statistical comparisons used exact binomial sign tests against the vanilla baseline and Mann--Whitney $U$ tests where multiple vanilla seeds were available.
+
+\subsection*{The $\kappa$-$C$-$Z$ latent-space ($Z$) diagnostic}
+
+The $\kappa$-$C$ diagnostic audits only the decoder readout $\Wmat$. To audit the latent encoder output $\Zmat$ on the same runs, we extend it to a $\kappa$-$C$-$Z$ companion diagnostic. For each run we use the covariance spectrum of $\Zmat$ computed above (effective rank = the participation ratio $R_{\mathrm{eff}}^{(\mathrm{PR})}$ from the eigenvalue distribution of $\mathbf{C}=\Zmat^\top\Zmat/(N-1)$; see the latent-space spectrum computation subsection) and define the reorganization statistic
+\begin{equation}
+\zeta_{\Zmat} = \frac{\mu_{\mathrm{ctrl}} - R_{\mathrm{eff}}^{(\mathrm{PR})}}{\sigma_{\mathrm{ctrl}}},
+\end{equation}
+where $\mu_{\mathrm{ctrl}}$ and $\sigma_{\mathrm{ctrl}}$ are the mean and standard deviation of the effective rank across the family-matched vanilla controls. The null is vanilla-only and family-matched. Neural crest uses three vanilla seeds (R0; $\sigma_{\mathrm{ctrl}}\approx0.77$), while hematopoietic (R14) and lung (R10) each supply a single vanilla on disk and therefore fall back to a directional sign test (prior participation ratio $R_{\mathrm{eff}}^{(\mathrm{PR})}$ below the single vanilla). A run is flagged $\Zmat$-reorganized at the effect-size threshold $\zeta_{\Zmat}\geq1.5$.
+
+\subsection*{Cross-architecture validation on scVI}
+\label{sec:methods_scvi}
+scVI~1.5.0~\cite{lopez2018} was trained on the pbmc3k dataset (2,700 cells $\times$ 2,000 highly variable genes after standard scanpy preprocessing; k-means, $k=8$, on the PCA manifold defined the cell-type clusters). Two models were trained for 200 epochs. A vanilla SCVI (no labels) and an SCVI with the cell-type clusters injected as a categorical covariate (the structural-prior analogue; scVI concatenates categorical covariates to the \emph{decoder} input and \texttt{encode\_covariates} is left at its default \texttt{False}, so this conditioning is decoder-side in both the pbmc3k and the Norman experiments below). \textbf{Note on the originally reported run.} The archived script registered the clusters with scVI's \texttt{labels\_key}, which does not condition SCVI---labels reach its generative model only through \texttt{dispersion=gene-label} and the default is \texttt{dispersion=gene}---so its two arms were the same model. Everything reported below and in Supplementary Table~S11 is re-derived with the clusters registered as a categorical covariate, over six paired seeds against a family-matched seed null of ten independently seeded vanilla fits (Supplementary Note~X). For each, the decoder readout $\Wmat$ was obtained as the Ridge regressor $\Zmat\to\Xmat$ ($\alpha=1$, StandardScaler on both sides), and $\kappa$-$C(W)=\mathrm{tr}(\Wmat_1^\top\Wmat_1)/\mathrm{tr}(\Wmat_0^\top\Wmat_0)$. The latent spectrum was the covariance of the latent representation $\Zmat$; $\kappa$-$C(Z)=\mathrm{tr}(\mathrm{cov}\,\Zmat_1)/\mathrm{tr}(\mathrm{cov}\,\Zmat_0)$ and the effective rank is the \emph{participation ratio} $R_{\mathrm{eff}}^{(\mathrm{PR})}=(\sum_i\lambda_i)^2/\sum_i\lambda_i^2=1/\sum_i p_i^2$ of the latent covariance spectrum, identical to the participation ratio used throughout the PG-UNAGI latent audit (the latent-space spectrum computation subsection); the two analyses are therefore directly comparable in absolute effective-rank terms. The phenotype benchmark trained a stratified five-fold logistic-regression classifier (StandardScaler + class-balanced logistic regression) to predict cell-type cluster from $\Zmat$ (vanilla and prior-injected) and from raw expression $\Xmat$; balanced accuracy is reported as mean $\pm$ s.d.\ across folds.
+
+\subsection*{Opposition budget analysis}
+
+For the G-VAE hematopoietic model, we quantified the opposition budget $B = \Delta\lambda / \mathrm{tr}(\mathbf{H})$, where $\Delta\lambda$ is the spectral gap between the leading eigenvalue and the second eigenvalue of the vanilla Hessian. The analysis was performed across 15 independently trained seeds (seeds 42/123/456 and 1--12), with each seed producing paired vanilla and G-VAE models.
+
+\subsection*{G-VAE training objective}
+
+G-VAE models are trained in the same codebase as the prior-injection models, with the reconstruction loss replaced by a gene-weighted reconstruction and supplemented by a differentiable spectral-shaping objective. The loss is
+\begin{equation}
+\mathcal{L}_{\mathrm{GVAE}} = \sum_i w_i (\hat{x}_i - x_i)^2 + \beta \, \mathcal{L}_{\mathrm{KL}} + \lambda_{\mathrm{JVP}} \cdot \frac{1}{\mathrm{tr}(\mathbf{H}_V)} \, \mathbb{E}_{\mathbf{v}} \left[ \left\| \frac{\mathcal{D}(\mathbf{z}+\varepsilon\mathbf{v}) - \mathcal{D}(\mathbf{z})}{\varepsilon} \right\|_2^2 \right],
+\end{equation}
+where $w_i$ are gene weights (program genes $5.0$, opposition genes $5.0\to1.0$ over the training curriculum, background $0.15$), $\mathbf{v}$ are unit random directions (Hutchinson estimator, three draws), $\varepsilon=2.0$, and $\lambda_{\mathrm{JVP}}$ increases from $8$ to $12$ across the three training phases (equilibrium, program bias, lock; 100 epochs each). This matches the released training scripts (\texttt{train\_hema\_v10.py}--\texttt{train\_hema\_v13.py}).
+
+\subsection*{Perturbation readouts (GRQ, CTCP, DDP)}
+
+GRQ, CTCP and DDP are illustrative downstream readouts of a perturbation-ready model rather than contributions of this work, and their full construction is given in Supplementary Note~R. The GRQ direction maximises target-gene response relative to total response,
+\begin{equation}
+\mathbf{v}^* = \argmax_{\mathbf{v}} \frac{\mathbf{v}^\top (\mathbf{J}_{\mathcal{T}}^\top \mathbf{J}_{\mathcal{T}}) \mathbf{v}}{\mathbf{v}^\top (\mathbf{J}^\top\mathbf{J} + \epsilon\mathbf{I}) \mathbf{v}},
+\end{equation}
+where $\epsilon=0.01$ and $\mathbf{J}$ is the decoder Jacobian at the cell's latent position, solved as the dominant generalized eigenvector; specificity is the ratio of mean absolute expression change in target genes to that in non-target genes,
+\begin{equation}
+\text{Specificity} = \frac{\frac{1}{|\mathcal{T}|}\sum_{i\in\mathcal{T}}|\Delta x_i|}{\frac{1}{G-|\mathcal{T}|}\sum_{i\notin\mathcal{T}}|\Delta x_i|},
+\end{equation}
+for the target-gene index set $\mathcal{T}$ and perturbation $\mathbf{z}' = \mathbf{z} + \alpha\mathbf{v}^*$. CTCP applies the same construction per cell type with James--Stein shrinkage $\lambda = n/(n+200)$; DDP decodes $\bar{\mathbf{z}} + \alpha\mathbf{v}^*$ directly at $\alpha \in \{5, 10, 20, 50, 100\}$ (Supplementary Fig.~S6; Supplementary Fig.~S7).
+
+\subsection*{BatchNorm repair}
+
+Human IPF models (GSE136831) exhibited corrupted BatchNorm running statistics post-training, likely due to distribution shift between training and evaluation splits. BatchNorm running means and variances were recomputed using the evaluation dataset (post-hoc repair). Repaired models were validated by inspecting UMAP embeddings of latent representations for cell-type separability.
+
+\subsection*{Noise floor estimation}
+
+The dataset-specific $\kappa$ noise floor is defined under the ratio protocol by the vanilla-equivalent region. The null is measured on the G-VAE hematopoietic family (Supplementary Note~U).
+For prior-injection configurations, $\kappa>1.064$ confirms prior-induced trace amplification beyond the noise level, while $\kappa<0.937$ indicates compression beyond the noise level. The baseline trace $\operatorname{tr}(\mathbf{H}_V)$ varies across datasets (hematopoietic $5.6\times10^3$, neural crest $5.4\times10^3$, lung $1.3\times10^4$), but the ratio is intrinsically normalized and the interval is a cross-family reference.
+Throughout, the global locking threshold is $C>50\%$ (equivalently $\kappa<0.5$). The band-independent $0/33$ verdict is unchanged by the corrected values; they change only the earlier statement that these configurations are indistinguishable from seed noise at the cross-family band (Supplementary Note~U). Even the strongest compression observed (R9, $C=48.2\%$) does not approach it.
+
+\subsection*{Prior activity, and what $C$ does and does not measure}
+
+The global compression coefficient $C$ measures trace collapse between the vanilla and prior-injected decoder Hessians; it does not by itself establish that the injected prior was used by the model. Prior activity is verified with three complementary checks (Supplementary Note~4): a gradient check, a prior-strength ($\lambda$) scan and the structural bound. The $\kappa$-$C$ term as implemented in the released scripts is computed from a no-grad Ridge readout and therefore carries zero gradient; human IPF provides the empirical disambiguation, where full-transcriptome fp32 retraining converges to deep global compression ($C=95.4$--$96.9\%$) with an inert $\kappa$-$C$ term and the $\lambda$ scan (0.1, 1, 10) is flat ($C$ varies by $<0.5$ percentage points), so high $C$ on IPF is data-inherent rather than evidence of prior activity.
+
+\subsection*{Statistical analysis}
+
+All $\kappa$-$C$ computations used the unified StandardScaler protocol. Unless otherwise noted, values are reported as mean $\pm$ standard deviation across replicates. No statistical method was used to predetermine sample size. The experiments were not randomized. Investigators were not blinded to allocation during experiments and outcome assessment. Directional latent-reorganization claims are reported as cross-seed concordance counts together with a cluster-robust inference range (Supplementary Note~W).

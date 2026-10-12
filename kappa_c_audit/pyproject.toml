@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kappa-c-audit"
+version = "0.1.3"
+description = "Dual-spectrum audit (kappa-C) for GRN-prior injection in single-cell VAEs, with the four-check prior-activity protocol (gradient, strength, structural bound, injection path)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Yan Yinan" }]
+keywords = ["single-cell", "VAE", "GRN prior", "perturbation", "spectral diagnostic"]
+dependencies = ["numpy>=1.23", "scipy>=1.9", "scikit-learn>=1.2"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+plot = ["matplotlib>=3.6"]
+
+[project.urls]
+Homepage = "https://github.com/Yimyinan/unagi-kc-audit"
+Repository = "https://github.com/Yimyinan/unagi-kc-audit"
+Issues = "https://github.com/Yimyinan/unagi-kc-audit/issues"
+
+# The repository went public on 2026-10-12; the URL above is the real one and is
+# baked into the wheel METADATA at build time.

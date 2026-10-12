@@ -1,0 +1,62 @@
+{
+ "s9": {
+  "cos_gene_space_alpha1": 0.09738112473901228,
+  "top_genes": [
+   "BST2",
+   "CSTB",
+   "MILR1",
+   "FAM26F",
+   "SETBP1",
+   "LST1",
+   "VAMP5",
+   "RP5-1024G6.7",
+   "WAS",
+   "LLGL1"
+  ]
+ },
+ "s10": {
+  "cos_gene_space_alpha1": 0.3145987750980745,
+  "top_genes": [
+   "GYPB",
+   "NAMPTL",
+   "HAT1",
+   "HNRNPAB",
+   "MCM7",
+   "CDC6",
+   "MSH6",
+   "CCNE1",
+   "GMPS",
+   "GMNN"
+  ]
+ },
+ "s11": {
+  "cos_gene_space_alpha1": 0.6411953645615405,
+  "top_genes": [
+   "ITM2C",
+   "MPO",
+   "RP11-650L12.1",
+   "FBL",
+   "PDCD6",
+   "NPM3",
+   "ITM2A",
+   "C1QTNF4",
+   "NLRP12",
+   "S100A9"
+  ]
+ },
+ "s12": {
+  "cos_gene_space_alpha1": 0.6804011187854291,
+  "top_genes": [
+   "KCNE1L",
+   "DLGAP1",
+   "RP11-452J21.2",
+   "FAM129C",
+   "FRRS1L",
+   "TRIB3",
+   "PRLR",
+   "SPIB",
+   "RBP5",
+   "CTSG"
+  ]
+ }
+}

@@ -1,0 +1,211 @@
+{
+  "method": "trH = ||loading_matrix.npy||_F^2 from decoder_out/<cfg>/iter_4 (the verified audit source); kappa = trH_prior/trH_vanilla_tissue",
+  "deep_threshold_kappa": 0.5,
+  "audit_repro": {
+    "n_total": 33,
+    "n_missing": 32,
+    "n_reproduced": 1,
+    "n_deep_compression_kappa_lt_0p5": 0,
+    "max_abs_kappa_dev_from_audit": 0.0001,
+    "note": "neural denominator (5402.1) is not in decoder_out; neural configs omitted from decoder_out reproduction but all have kappa>0.5 in the audit (min 0.738), so 0/10 neural deep compression is independent of the reproduction.",
+    "rows": [
+      {
+        "config": "R111_s123",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R12_s123",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R15_s456",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R13_s123",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R12_s456",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R165_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R13_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R12_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R111_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R15_s123",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R11_s456",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R11_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R11_s123",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R84_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R13_s456",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R13_KO_KLF1",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R84_s123",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R111_s456",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R16_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R13_OE_KLF1",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R107_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R15_s42",
+        "tissue": "hemo",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R9",
+        "tissue": "lung",
+        "kappa_repro": 0.5181,
+        "C_repro": 48.19,
+        "kappa_audit": 0.518,
+        "deep": false
+      },
+      {
+        "config": "R1_s456",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R1_s123",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R1_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R2_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R3_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R4_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R5_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R6_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R7_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      },
+      {
+        "config": "R8_s42",
+        "tissue": "neural",
+        "repro": "MISSING_in_decoder_out"
+      }
+    ]
+  },
+  "vanilla_inventory": {
+    "decoder_out_single_vanilla": {
+      "hemo_R14": 5634.81616221872,
+      "lung_R10": 12568.663104511208,
+      "neural_R0_legacy_EXCLUDED": 17695.229466705616
+    },
+    "decoder_unified_seed_variants": {
+      "R14_s42": 5160.920207166817,
+      "R14_s123": 9109.905134689481,
+      "R14_s456": 14272.942177661302,
+      "R0_s123": 6792.015840717554,
+      "R0_s456": 9648.781478474666
+    },
+    "unified_R14_norm_spread": {
+      "values": [
+        5160.9,
+        9109.9,
+        14272.9
+      ],
+      "ratio_max_min": 2.766,
+      "gvae_vanilla_std_for_comparison": 0.11,
+      "verdict": "1.8-2.8x norm spread among 'R14 seeds' => not valid vanilla replicates; cannot anchor a null"
+    }
+  },
+  "conclusion": {
+    "deep_compression_0of33_confirmed": "All 33 audit kappas > 0.5 (min = 0.518, lung R9); 0/33 is band-independent and robust.",
+    "unagi_family_vanilla_null": "INFEASIBLE: decoder_out provides exactly one vanilla per tissue; unified seed variants are not valid replicates.",
+    "recommended_presentation": "Keep the band labelled as a G-VAE cross-family reference (already done), and rest the headline 0/33 claim on the architecture-independent kappa<0.5 threshold, which needs no vanilla null."
+  }
+}

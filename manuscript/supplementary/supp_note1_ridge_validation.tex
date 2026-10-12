@@ -1,0 +1,58 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,caption}
+\usepackage{times}
+\newcommand{\Wmat}{\mathbf{W}}\newcommand{\Jmat}{\mathbf{J}}
+\newcommand{\Xmat}{\mathbf{X}}\newcommand{\Zmat}{\mathbf{Z}}
+\newcommand{\Rbb}{\mathbb{R}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\begin{document}
+
+\section*{Supplementary Note 1: Ridge--Jacobian Validation (re-audited)}
+\label{sup:ridge_validation}
+
+\subsection*{Motivation}
+
+The $\kappa$-$C$ diagnostic uses the Ridge regression readout $\Wmat$ as a linear approximation to the VAE decoder. This note re-audits that approximation against the analytical Jacobian under the exact protocol of the original manuscript and reports the values actually obtained from the surviving checkpoints.
+
+\subsection*{Methods}
+
+\textbf{Analytical Jacobian.} For a ReLU-activated decoder $\mathcal{D}(\mathbf{z}) = \Wmat_L \sigma(\Wmat_{L-1} \sigma(\cdots \sigma(\Wmat_1\mathbf{z})\cdots))$, the per-point Jacobian is \begin{equation}
+\Jmat(\mathbf{z}) = \nabla_{\mathbf{z}}\mathcal{D}(\mathbf{z}) = \Wmat_L \cdot \text{diag}(\sigma'_{L-1}) \cdot \Wmat_{L-1} \cdot \text{diag}(\sigma'_{L-2}) \cdots \Wmat_1
+\end{equation}
+where $\sigma'_l \in \{0,1\}^{h_l}$ is the ReLU activation pattern at layer $l$. For points in the same linear region, $\Jmat(\mathbf{z})$ is constant. The implementation was verified against automatic differentiation (relative error $2\times10^{-8}$).
+
+\textbf{Mean Jacobian.} We compute the expected Jacobian over the data distribution \begin{equation}
+\bar{\Jmat} = \mathbb{E}_{\mathbf{z} \sim q(\mathbf{z}|\mathbf{x}), \mathbf{x} \sim p_{\text{data}}}[\Jmat(\mathbf{z})] \approx \frac{1}{K}\sum_{k=1}^K \Jmat(\mathbf{z}_k)
+\end{equation}
+with $K=1{,}000$ latent points per seed, and use $(\bar{\Jmat})^\top\bar{\Jmat}$ as the Jacobian Hessian proxy.
+
+\textbf{Ridge readout.} $\Wmat = \argmin_{\mathbf{W}} \|\tilde{\Xmat} - \tilde{\Zmat}\Wmat^\top\|_F^2 + \alpha\|\Wmat\|_F^2$, $\alpha=1.0$, on the standardized latent and scaled expression matrices.
+
+\textbf{Comparison metric.} We compare the dominant spectral modes \begin{equation}
+\cos\theta = \frac{|\mathbf{u}_1(\Wmat^\top\Wmat)^\top \mathbf{u}_1(\bar{\Jmat}^\top\bar{\Jmat})|}{\|\mathbf{u}_1(\Wmat^\top\Wmat)\| \cdot \|\mathbf{u}_1(\bar{\Jmat}^\top\bar{\Jmat})\|}
+\end{equation}
+
+\subsection*{Results (recomputed from checkpoints)}
+
+Across 4 hematopoietic seeds (s9--s12), the dominant-mode agreement is $\cos\theta = 0.45 \pm 0.26$ (mean $\pm$ s.d., $n=4$; range 0.10--0.65; Supplementary Fig.~S1a). The originally reported value of $0.78\pm0.04$ is not reproducible from the surviving checkpoints.
+
+Rank agreement between Ridge- and Jacobian-based $C$ values was recomputed for the six G-VAE configurations for which the analytical Jacobian is computable (gvae\_v11 and gvae\_v13, seeds 42/123/456): Spearman $\rho = -0.03$ ($p=0.96$, $n=6$; Supplementary Fig.~S1b). Ridge-based $C$ values are systematically negative ($-17\%$ to $-584\%$) while Jacobian-based $C$ values are positive ($+28\%$ to $+67\%$) for the same configurations, so the two estimators do not agree in either rank or sign. The originally reported rank agreement ($\rho=0.94$) is not reproducible.
+
+\textbf{Implication.} The Ridge readout is a cheap but imperfect proxy for the decoder Jacobian. Its dominant-mode agreement is weak and seed-dependent, and it can disagree with the Jacobian in sign for the compression metric $C$. Applications that require spectral fidelity should compute $C$ from the analytical Jacobian directly; the $\kappa$-$C$ values reported in the main audit are Ridge-based estimates and should be interpreted as such.
+
+\subsection*{Boundary-configuration recomputation (lung R9)}
+
+The main-audit configuration closest to the $C=50\%$ boundary is lung R9 (Ridge $C=48.2\%$, $\kappa=0.518$). Because the Ridge and Jacobian estimators disagree in rank and sign (above), we recomputed R9 from its checkpoint with the analytical Jacobian. The R9 checkpoint uses a zero-inflated log-normal decoder with mean $\mathcal{D}(\mathbf{z})=\mathrm{softplus}(\mathrm{clamp}(\mathbf{W}_4\,\mathrm{softplus}(\mathbf{W}_3\mathbf{z}+\mathbf{b}_3)+\mathbf{b}_4,-1))$ (no BatchNorm in the decoder). Per-gene row standardization by $1/\mathrm{std}(X)$ (first 2{,}000 vanilla cells) and $K=1{,}000$ latent points were used, matching the protocol above; two variants were evaluated: the full mean chain (above) and a linear-head analog $\mathbf{W}_4\,\mathrm{softplus}(\mathbf{W}_3\mathbf{z}+\mathbf{b}_3)$ mirroring the G-VAE head. Across the full mean chain, the linear-head analog, and a third variant including the zero-inflation gate (full ziln mean $(1-\pi)\cdot\mathrm{softplus}(\mathrm{clamp}(\mu,-1))$, $\pi=\mathrm{sigmoid}(\mathbf{W}_5\,\mathrm{softplus}(\mathbf{W}_3\mathbf{z}+\mathbf{b}_3)+\mathbf{b}_5)$), the Jacobian trace ratio is $\kappa_{\mathrm{jac}}=\mathrm{tr}(\bar{\Jmat}_P^\top\bar{\Jmat}_P)/\mathrm{tr}(\bar{\Jmat}_V^\top\bar{\Jmat}_V)\approx21$--$52$ ($C_{\mathrm{jac}}\approx-5100\%$ to $-2000\%$): the R9 decoder Jacobian is larger than vanilla's, i.e., spectral expansion in the direction opposite to compression (the R9 decoder output weights are $\sim4.4\times$ larger than vanilla, contributing to the larger trace). R9 therefore does not cross the $C=50\%$ locking threshold under the Jacobian estimator either; its near-boundary status is specific to the Ridge estimator.
+
+\subsection*{Sensitivity Analysis}
+
+\textbf{Ridge $\alpha$.} Varying $\alpha \in [0.01, 100]$ changes $\cos\theta$ by up to 0.51 (seed s9: 0.08--0.59) and changes $\kappa$ by up to 35.6\% of its $\alpha=1$ value (seed R111\_s123); the median per-configuration maximum deviation is 5.7\% (Supplementary Fig.~S2a). The originally reported $<0.5\%$ sensitivity is not reproducible. Configurations with $\kappa\approx1$ are the most stable (e.g., R107\_s42: 0.02\%).
+
+\textbf{StandardScaler on $\Zmat$.} Omitting the StandardScaler changes $\kappa$ by a factor of 0.2--1.2$\times$ across the 22 hematopoietic configurations (maximum 1.2$\times$ at R15\_s42; R111\_s123 drops to 0.16$\times$; Supplementary Fig.~S2b). For the isolated Z-standardization contrast (raw $\Zmat$, scaled $\Xmat$), the ratio is 0.84--1.02$\times$. The originally reported inflation of ``up to $10\times$'' is not observed in any configuration.
+
+\vspace{10pt}
+\noindent\rule{\textwidth}{0.4pt}
+\footnotesize\textbf{Source identity.} This note was compiled from \texttt{supplementary/supp\_note1\_ridge\_validation.tex} in the paper1 repository. SHA256 of that source file with this paragraph removed: \texttt{eebb12c8dc57c0b98bc6235504a0ddc606ead6b2d1891fa50c5b049c6a80a9ae}. Readers can recompute the digest to confirm which revision produced this PDF; the source is distributed with the code release.
+
+\end{document}

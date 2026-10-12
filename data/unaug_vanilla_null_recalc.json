@@ -1,0 +1,375 @@
+{
+  "protocol": "trH = ||W||_F^2 of decoder_unified/loading .npy via run_registry; kappa = trH_i/trH_j (vanilla cross-seed) or trH_prior/trH_vanilla (audit)",
+  "vanilla_trH": {
+    "hemo": {
+      "R14_s42": 5160.92,
+      "R14_s123": 9109.905,
+      "R14_s456": 14272.942
+    },
+    "neural": {
+      "R0_s123": 6792.016,
+      "R0_s456": 9648.781
+    },
+    "lung": {
+      "R10": 12568.663
+    }
+  },
+  "vanilla_null": {
+    "hemo": {
+      "n_seeds": 3,
+      "n_pairs": 6,
+      "mean": 1.2773,
+      "std": 0.8455,
+      "lo2s": -0.4136,
+      "hi2s": 2.9683,
+      "p05": 0.4128,
+      "p95": 2.5155,
+      "min": 0.3616,
+      "max": 2.7656
+    },
+    "neural": {
+      "n_seeds": 2,
+      "n_pairs": 2,
+      "mean": 1.0623,
+      "std": 0.3584,
+      "lo2s": 0.3456,
+      "hi2s": 1.779,
+      "p05": 0.7397,
+      "p95": 1.3848,
+      "min": 0.7039,
+      "max": 1.4206
+    },
+    "lung": {
+      "n_seeds": 1,
+      "n_pairs": 0,
+      "note": "single seed -> no cross-seed null possible"
+    },
+    "UNAGI_combined_hema_neural": {
+      "n_pairs": 8,
+      "mean": 1.2236,
+      "std": 0.7595,
+      "lo2s": -0.2955,
+      "hi2s": 2.7426,
+      "p05": 0.4333,
+      "p95": 2.4154,
+      "min": 0.3616,
+      "max": 2.7656
+    }
+  },
+  "audit_repro": {
+    "n": 22,
+    "deep_compression_kappa_lt_0p5": 0,
+    "n_in_old_band_GVAE": 2,
+    "n_in_new_band_UNAGI": 19,
+    "rows": [
+      {
+        "config": "R111_s123",
+        "tissue": "hemo",
+        "kappa_repro": 6.3098,
+        "C_repro": -530.98,
+        "kappa_audit": 5.779,
+        "C_audit": -477.9,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": false
+      },
+      {
+        "config": "R12_s123",
+        "tissue": "hemo",
+        "kappa_repro": 3.735,
+        "C_repro": -273.5,
+        "kappa_audit": 3.421,
+        "C_audit": -242.1,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": false
+      },
+      {
+        "config": "R15_s456",
+        "tissue": "hemo",
+        "kappa_repro": 2.7656,
+        "C_repro": -176.56,
+        "kappa_audit": 2.533,
+        "C_audit": -153.3,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": false
+      },
+      {
+        "config": "R13_s123",
+        "tissue": "hemo",
+        "kappa_repro": 2.5851,
+        "C_repro": -158.51,
+        "kappa_audit": 2.368,
+        "C_audit": -136.8,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R12_s456",
+        "tissue": "hemo",
+        "kappa_repro": 2.2275,
+        "C_repro": -122.75,
+        "kappa_audit": 2.04,
+        "C_audit": -104.0,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R165_s42",
+        "tissue": "hemo",
+        "kappa_repro": 2.0136,
+        "C_repro": -101.36,
+        "kappa_audit": 1.844,
+        "C_audit": -84.4,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R13_s42",
+        "tissue": "hemo",
+        "kappa_repro": 1.9551,
+        "C_repro": -95.51,
+        "kappa_audit": 1.791,
+        "C_audit": -79.1,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R12_s42",
+        "tissue": "hemo",
+        "kappa_repro": 1.9386,
+        "C_repro": -93.86,
+        "kappa_audit": 1.776,
+        "C_audit": -77.6,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R111_s42",
+        "tissue": "hemo",
+        "kappa_repro": 1.8713,
+        "C_repro": -87.13,
+        "kappa_audit": 1.714,
+        "C_audit": -71.4,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R15_s123",
+        "tissue": "hemo",
+        "kappa_repro": 1.7652,
+        "C_repro": -76.52,
+        "kappa_audit": 1.617,
+        "C_audit": -61.7,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R11_s456",
+        "tissue": "hemo",
+        "kappa_repro": 1.7096,
+        "C_repro": -70.96,
+        "kappa_audit": 1.566,
+        "C_audit": -56.6,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R11_s42",
+        "tissue": "hemo",
+        "kappa_repro": 1.6647,
+        "C_repro": -66.47,
+        "kappa_audit": 1.525,
+        "C_audit": -52.5,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R11_s123",
+        "tissue": "hemo",
+        "kappa_repro": 1.6066,
+        "C_repro": -60.66,
+        "kappa_audit": 1.472,
+        "C_audit": -47.2,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R84_s42",
+        "tissue": "hemo",
+        "kappa_repro": 1.3625,
+        "C_repro": -36.25,
+        "kappa_audit": 1.248,
+        "C_audit": -24.8,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R13_s456",
+        "tissue": "hemo",
+        "kappa_repro": 1.3299,
+        "C_repro": -32.99,
+        "kappa_audit": 1.218,
+        "C_audit": -21.8,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R13_KO_KLF1",
+        "tissue": "hemo",
+        "kappa_repro": 1.3075,
+        "C_repro": -30.75,
+        "kappa_audit": 1.198,
+        "C_audit": -19.8,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R84_s123",
+        "tissue": "hemo",
+        "kappa_repro": 1.2677,
+        "C_repro": -26.77,
+        "kappa_audit": 1.161,
+        "C_audit": -16.1,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R111_s456",
+        "tissue": "hemo",
+        "err": "no loading matrix for R111_s456"
+      },
+      {
+        "config": "R16_s42",
+        "tissue": "hemo",
+        "err": "no loading matrix for R16_s42"
+      },
+      {
+        "config": "R13_OE_KLF1",
+        "tissue": "hemo",
+        "kappa_repro": 1.0938,
+        "C_repro": -9.38,
+        "kappa_audit": 1.002,
+        "C_audit": -0.2,
+        "deep": false,
+        "in_old_band": true,
+        "in_new_band": true
+      },
+      {
+        "config": "R107_s42",
+        "tissue": "hemo",
+        "kappa_repro": 1.0843,
+        "C_repro": -8.43,
+        "kappa_audit": 0.993,
+        "C_audit": 0.7,
+        "deep": false,
+        "in_old_band": true,
+        "in_new_band": true
+      },
+      {
+        "config": "R15_s42",
+        "tissue": "hemo",
+        "err": "R15_s42 is excluded: identical to R14_s42 (empty-prior duplicate)"
+      },
+      {
+        "config": "R9",
+        "tissue": "lung",
+        "kappa_repro": 0.5181,
+        "C_repro": 48.19,
+        "kappa_audit": 0.518,
+        "C_audit": 48.2,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R1_s456",
+        "tissue": "neural",
+        "kappa_repro": 0.6327,
+        "C_repro": 36.73,
+        "kappa_audit": 0.796,
+        "C_audit": 20.4,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R1_s123",
+        "tissue": "neural",
+        "kappa_repro": 0.5867,
+        "C_repro": 41.33,
+        "kappa_audit": 0.738,
+        "C_audit": 26.2,
+        "deep": false,
+        "in_old_band": false,
+        "in_new_band": true
+      },
+      {
+        "config": "R1_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R1_s42"
+      },
+      {
+        "config": "R2_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R2_s42"
+      },
+      {
+        "config": "R3_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R3_s42"
+      },
+      {
+        "config": "R4_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R4_s42"
+      },
+      {
+        "config": "R5_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R5_s42"
+      },
+      {
+        "config": "R6_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R6_s42"
+      },
+      {
+        "config": "R7_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R7_s42"
+      },
+      {
+        "config": "R8_s42",
+        "tissue": "neural",
+        "err": "no loading matrix for R8_s42"
+      }
+    ]
+  },
+  "comparison": {
+    "GVAE_band": [
+      0.78,
+      1.23
+    ],
+    "UNAGI_combined_band": [
+      -0.2955,
+      2.7426
+    ],
+    "note": "Deep-compression count (kappa<0.5) is band-independent and must be identical under both bands. The vanilla-equivalence region shifts to the UNAGI-calibrated values."
+  }
+}

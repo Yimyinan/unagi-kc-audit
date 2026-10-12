@@ -1,0 +1,23 @@
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figS12_dose_response_wiring.pdf}
+\caption{\textbf{Supplementary Figure S11. Dose--response of prior internalisation: prior size does not predict wiring strength.}
+Each point is one hematopoietic model--prior configuration paired against the \emph{same} seed's
+empty-prior (R14) model; the effect size is the per-edge cosine-coupling difference
+($\Delta$ cosine) of the injected prior edges, which is independent of edge count. Configurations
+span a 15-fold prior-size range: R11 (2 TFs, 19 edges) $\rightarrow$ R12 (49) $\rightarrow$ R84 (76)
+$\rightarrow$ R107 (98) $\rightarrow$ R13 (292 edges), each at seed 42 (and R11/R12/R13 also at
+seeds 123/456). \textbf{(A)} $\Delta$ cosine versus prior size: there is \emph{no} monotonic
+dose--response (Spearman $\rho=-0.20$, $p=0.51$). \textbf{(B)} Per-seed $\Delta$ cosine, coloured
+by seed: the dominant axis of variation is seed identity, not dose -- seed explains $89\%$ of the
+variance in effect size (20,000-permutation $p=0.0034$). \textbf{(C)} The size-matched
+null-corrected $z$ (standardised against 2,000 random edge sets of equal size, removing the
+$\sqrt{n_{\text{edges}}}$ advantage of larger priors) is significant only for R13 at seed~42
+($z=+3.06$, null-corr $z=+1.93$); all other runs are within noise. \textbf{Interpretation:} the
+magnitude of prior internalisation is set by which cells were sampled and how the weights
+initialised -- i.e.\ whether the prior TFs happen to be the variable drivers of the captured
+trajectory -- not by how much prior was injected. This is why internalisation is seed-fragile
+(Supplementary Fig.~S10) and why a larger, more biologically complete prior (R13) does not
+uniformly outperform a minimal one.}
+\label{fig:dose_response}
+\end{figure}

@@ -1,0 +1,107 @@
+{
+  "seed": 20260913,
+  "n_cells": 6000,
+  "n_genes": 800,
+  "d_latent": 16,
+  "n_edges_per_gene": 4,
+  "lambdas": [
+    0.1,
+    1.0,
+    10.0
+  ],
+  "n_rep": 12,
+  "protocol": "perturbation_benchmark.ridge_readout (unchanged)",
+  "metric_identity": "kappa-C(W) = sum_g R2_g(pert) / sum_g R2_g(vanilla)",
+  "ipf_reference": {
+    "top_axis_share": 0.912,
+    "lambda_slope": 0.0,
+    "prior_edge_gradient": 0.0,
+    "verdict": "not-prior-active"
+  },
+  "active": {
+    "rows": [
+      {
+        "lam": 0.09999999999999999,
+        "kCW": 0.9654002762958717,
+        "wiring_prior": 1.0103917771714135,
+        "wiring_shuffled": 0.9964184135833066,
+        "grad_prior_edges": 5.824663171694586,
+        "top_axis_share": 0.07758786509732914
+      },
+      {
+        "lam": 1.0,
+        "kCW": 0.7361422008095159,
+        "wiring_prior": 2.211711484526735,
+        "wiring_shuffled": 0.9928088906291105,
+        "grad_prior_edges": 28.547320552385624,
+        "top_axis_share": 0.07759987361448782
+      },
+      {
+        "lam": 10.0,
+        "kCW": 0.219957434930396,
+        "wiring_prior": 14.734909787724641,
+        "wiring_shuffled": 0.9831097287110425,
+        "grad_prior_edges": 314.50988594870256,
+        "top_axis_share": 0.07743480135076809
+      }
+    ],
+    "summary": {
+      "slope_kCW_vs_loglam": -0.1618708562896536,
+      "wiring_prior_mean": 5.985671016474264,
+      "wiring_shuffled_mean": 0.9907790109744865,
+      "grad_prior_edges_mean": 116.29395655759426,
+      "top_axis_share_mean": 0.07754084668752835,
+      "kCW_first": 0.9654002762958717,
+      "kCW_last": 0.219957434930396
+    },
+    "checks": {
+      "check1_gradient_wiring": true,
+      "check2_lambda_scan": true,
+      "check3_structural_bound": true
+    },
+    "verdict": "prior-active"
+  },
+  "inert": {
+    "rows": [
+      {
+        "lam": 0.09999999999999999,
+        "kCW": 1.071930069205256,
+        "wiring_prior": 1.020880153644588,
+        "wiring_shuffled": 1.0000296523233891,
+        "grad_prior_edges": 0.0,
+        "top_axis_share": 0.8323721548126993
+      },
+      {
+        "lam": 1.0,
+        "kCW": 1.072086098633984,
+        "wiring_prior": 1.0231852603721825,
+        "wiring_shuffled": 0.9986220964599202,
+        "grad_prior_edges": 0.0,
+        "top_axis_share": 0.8322731525104796
+      },
+      {
+        "lam": 10.0,
+        "kCW": 1.0718584252493246,
+        "wiring_prior": 1.020639210977685,
+        "wiring_shuffled": 1.0009217578253908,
+        "grad_prior_edges": 0.0,
+        "top_axis_share": 0.8310988104172178
+      }
+    ],
+    "summary": {
+      "slope_kCW_vs_loglam": -1.5557287361320903e-05,
+      "wiring_prior_mean": 1.021568208331485,
+      "wiring_shuffled_mean": 0.9998578355362334,
+      "grad_prior_edges_mean": 0.0,
+      "top_axis_share_mean": 0.8319147059134656,
+      "kCW_first": 1.071930069205256,
+      "kCW_last": 1.0718584252493246
+    },
+    "checks": {
+      "check1_gradient_wiring": true,
+      "check2_lambda_scan": true,
+      "check3_structural_bound": true
+    },
+    "verdict": "not-prior-active"
+  }
+}

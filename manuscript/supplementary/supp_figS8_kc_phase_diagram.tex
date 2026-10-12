@@ -1,0 +1,21 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,caption}
+\usepackage{times}
+\newcommand{\Hmat}{\mathbf{H}}
+\begin{document}
+
+\section*{Supplementary Figure 8: Decoder-centric $\kappa$-$C$ audit of 33 configurations}
+\label{sup:kc_phase_diagram}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{../figures/fig2_kc_phase_diagram.pdf}
+\caption{\textbf{The $\kappa$-$C$ diagnostic: 0/33 prior-injection configurations achieve deep global compression under the decoder readout.}
+(A) Global $C$ for 33 prior$\times$seed configurations across three tissues (22 hematopoietic, 10 neural crest, 1 lung fibrosis). No configuration reaches the deep-compression threshold ($C>50\%$, equivalently $\kappa<0.5$); lung R9 is closest at $C=48.2\%$.
+(B) $\kappa$ distribution by tissue relative to the vanilla-equivalent region ($\kappa\in[0.937,1.064]$; $\pm2\sigma$ of the G-VAE hematopoietic null in the corrected statistic, 15 retained seeds / 210 ordered seed-pair comparisons) and the deep-compression boundary ($\kappa<0.5$).
+(C) Directional collapse $C_{\text{head}}$ recomputed from the surviving hematopoietic checkpoints ($n=15$; mean $-41.7\%$; 0/15 reach $C_{\text{head}}>50\%$). Neural-crest ($56$--$69\%$) and lung-fibrosis ($96.7\pm0.3\%$) values are as originally reported, were produced with a non-differentiable $\kappa$-$C$ term, and remain unverified.}
+\label{fig:kc_phase}
+\end{figure}
+
+\end{document}

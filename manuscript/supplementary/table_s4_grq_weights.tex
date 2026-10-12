@@ -1,0 +1,51 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,booktabs,hyperref,caption}
+\usepackage{times}
+\begin{document}
+
+\section*{Supplementary Table S4: Top-5 Latent Dimensions in the GRQ Direction $\mathbf{v}^*$ per Seed}
+\label{tab:s4_grq_weights}
+
+$\mathbf{v}^*$ is the generalized-Rayleigh-quotient direction computed from the decoder readout (per-gene standard-deviation units), normalized to unit norm. Dimensions are indexed 1--64 (matching the axes of Supplementary Fig.~S4) and ranked by absolute weight $|v^*_d|$.
+
+\vspace{0.5cm}
+\begin{tabular}{cccccc}
+\toprule
+\textbf{Rank} & \textbf{s9} & \textbf{s10} & \textbf{s11} & \textbf{s12} \\
+ & Dim ($|v^*|$) & Dim ($|v^*|$) & Dim ($|v^*|$) & Dim ($|v^*|$) \\
+\midrule
+1 & d35 (0.41) & d48 (0.27) & d52 (0.41) & d21 (0.29) \\
+2 & d24 (0.31) & d14 (0.27) & d46 (0.37) & d17 (0.28) \\
+3 & d6 (0.29)  & d51 (0.26) & d31 (0.28) & d19 (0.26) \\
+4 & d28 (0.25) & d45 (0.26) & d32 (0.26) & d54 (0.25) \\
+5 & d30 (0.24) & d29 (0.24) & d6 (0.24)  & d29 (0.25) \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5cm}
+\textbf{Pairwise absolute cosine similarity between $\mathbf{v}^*$ vectors:}
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+Pair & $|\cos(\mathbf{v}^*_i, \mathbf{v}^*_j)|$ \\
+\midrule
+s9--s10 & 0.04 \\
+s9--s11 & 0.26 \\
+s9--s12 & 0.11 \\
+s10--s11 & 0.08 \\
+s10--s12 & 0.09 \\
+s11--s12 & 0.12 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\textbf{Key observations:}
+\begin{enumerate}
+\item No latent dimension appears in the top-5 across all four seeds, and the $\mathbf{v}^*$ vectors are near-orthogonal (maximum pairwise $|\cos| = 0.26$, s9 vs.\ s11)---the GRQ solution is seed-specific, reflecting encoder divergence.
+\item The gene-level loading of the optimal direction is not dominated by any single transcription factor: GATA1 ranks 345, 940, 381, and 738 out of $\sim$20{,}466 genes by absolute response $|\Delta x|$ in seeds s9--s12, respectively (Supplementary Fig.~S4).
+\item Despite near-orthogonal directions, the linear-readout GRQ concentration is similar across seeds (6.8--16.1$\times$, mean 10.6$\pm$3.9$\times$; decoder traversal along the direction reaches 11.3--16.8$\times$ in the main text), indicating functional equivalence through the non-linear decoder despite parametric divergence.
+\end{enumerate}
+
+\end{document}

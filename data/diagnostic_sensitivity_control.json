@@ -1,0 +1,41 @@
+{
+ "protocol": "shared R14 iter_4 stagedata; vanilla_s9 encoder z; z_k = z with all but top-k latent dims (by Ridge column norm) zeroed; kappa_k = trH(z_k)/trH(z_full)",
+ "trH_full": 3900.3,
+ "k": {
+  "1": {
+   "trH": 599.8,
+   "kappa": 0.1538,
+   "C_pct": 84.62
+  },
+  "2": {
+   "trH": 897.3,
+   "kappa": 0.2301,
+   "C_pct": 76.99
+  },
+  "3": {
+   "trH": 1198.6,
+   "kappa": 0.3073,
+   "C_pct": 69.27
+  },
+  "5": {
+   "trH": 1298.5,
+   "kappa": 0.3329,
+   "C_pct": 66.71
+  },
+  "8": {
+   "trH": 1383.6,
+   "kappa": 0.3547,
+   "C_pct": 64.53
+  },
+  "16": {
+   "trH": 1733.6,
+   "kappa": 0.4445,
+   "C_pct": 55.55
+  },
+  "32": {
+   "trH": 2553.3,
+   "kappa": 0.6546,
+   "C_pct": 34.54
+  }
+ }
+}

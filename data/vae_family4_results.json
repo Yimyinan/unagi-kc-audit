@@ -1,0 +1,83 @@
+{
+  "architecture": "self-contained PyTorch VAE (plain MLP, Gaussian MSE likelihood)",
+  "conditioning": "perturbation-identity embedding concatenated to DECODER INPUT ONLY (encoder condition-blind) -- distinct from scVI's categorical covariate",
+  "why_not_scgen": "scGen 2.1.0 imports scvi._compat (removed in scvi-tools 1.4.3); trVAE pins tensorflow==1.15.2 (Python 3.13 incompatible)",
+  "dataset": "Norman 2019 GEARS",
+  "n_cells": 40964,
+  "n_genes": 2000,
+  "n_latent": 30,
+  "epochs": 150,
+  "n_conditions": 105,
+  "per_gene_standardized": true,
+  "health_gate": "latent usable iff eff_rank>3 for BOTH models AND Ridge R^2>0.008 for both AND conditioned z_std < 10x vanilla z_std. The R^2 floor is calibrated on the scVI reference, not chosen freely.",
+  "scvi_reference": {
+    "ridge_r2_vanilla": 0.0333,
+    "ridge_r2_conditioned": 0.0302,
+    "eff_rank_vanilla": 8.8,
+    "eff_rank_conditioned": 6.15,
+    "note": "scVI on the same cells and genes; the plain VAE must be judged against these values, because an absolute R^2>0.05 threshold would reject scVI itself"
+  },
+  "n_betas_tested": 2,
+  "n_betas_usable": 1,
+  "runs": [
+    {
+      "kappa_C_W": 0.890925943851471,
+      "C_percent": 10.907405614852905,
+      "kappa_C_Z": 1.480538433361384,
+      "eff_rank_vanilla": 4.019999953868778,
+      "eff_rank_conditioned": 2.2262316274614893,
+      "eff_rank_change_percent": -44.621103158993755,
+      "ridge_r2_vanilla": 0.030922550708055496,
+      "ridge_r2_conditioned": 0.017555370926856995,
+      "z_std_vanilla": 0.11726169288158417,
+      "z_std_conditioned": 0.14315593242645264,
+      "latent_usable": false,
+      "beta": 1.0
+    },
+    {
+      "kappa_C_W": 0.9473690390586853,
+      "C_percent": 5.26309609413147,
+      "kappa_C_Z": 0.8902077374844006,
+      "eff_rank_vanilla": 21.655498280838927,
+      "eff_rank_conditioned": 21.04238213427831,
+      "eff_rank_change_percent": -2.83122622536518,
+      "ridge_r2_vanilla": 0.034183304756879807,
+      "ridge_r2_conditioned": 0.032196398824453354,
+      "z_std_vanilla": 0.5835595726966858,
+      "z_std_conditioned": 0.5504949688911438,
+      "latent_usable": true,
+      "beta": 0.1
+    }
+  ],
+  "usable_runs": [
+    {
+      "kappa_C_W": 0.9473690390586853,
+      "C_percent": 5.26309609413147,
+      "kappa_C_Z": 0.8902077374844006,
+      "eff_rank_vanilla": 21.655498280838927,
+      "eff_rank_conditioned": 21.04238213427831,
+      "eff_rank_change_percent": -2.83122622536518,
+      "ridge_r2_vanilla": 0.034183304756879807,
+      "ridge_r2_conditioned": 0.032196398824453354,
+      "z_std_vanilla": 0.5835595726966858,
+      "z_std_conditioned": 0.5504949688911438,
+      "latent_usable": true,
+      "beta": 0.1
+    }
+  ],
+  "elapsed_sec": 533.0278573036194,
+  "selected": {
+    "kappa_C_W": 0.9473690390586853,
+    "C_percent": 5.26309609413147,
+    "kappa_C_Z": 0.8902077374844006,
+    "eff_rank_vanilla": 21.655498280838927,
+    "eff_rank_conditioned": 21.04238213427831,
+    "eff_rank_change_percent": -2.83122622536518,
+    "ridge_r2_vanilla": 0.034183304756879807,
+    "ridge_r2_conditioned": 0.032196398824453354,
+    "z_std_vanilla": 0.5835595726966858,
+    "z_std_conditioned": 0.5504949688911438,
+    "latent_usable": true,
+    "beta": 0.1
+  }
+}

@@ -1,0 +1,404 @@
+{
+ "protocol": "identical to next_phase/recompute_unagi_jacobian.py; first2000 scale; NK=1000; variants A and B; extended to all 33 configurations",
+ "tissues": {
+  "hemo": {
+   "vanilla": {
+    "A": 178771910.2979407,
+    "B": 187719300.15163276
+   },
+   "configs": {
+    "R11_s42": {
+     "trJ_prior_A": 139476987.65389007,
+     "trJ_prior_B": 147631695.1323284,
+     "kappa_jac_A": 0.7801952075213503,
+     "kappa_jac_B": 0.7864492090748098,
+     "C_jac_pct_A": 21.98047924786497,
+     "C_jac_pct_B": 21.355079092519023,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R11_s123": {
+     "trJ_prior_A": 170302820.87144402,
+     "trJ_prior_B": 184490337.3657081,
+     "kappa_jac_A": 0.9526262855703554,
+     "kappa_jac_B": 0.9827989834645856,
+     "C_jac_pct_A": 4.737371442964456,
+     "C_jac_pct_B": 1.7201016535414393,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R12_s42": {
+     "trJ_prior_A": 191933002.8895969,
+     "trJ_prior_B": 207650549.22881302,
+     "kappa_jac_A": 1.0736194661103189,
+     "kappa_jac_B": 1.1061758117629916,
+     "C_jac_pct_A": -7.361946611031889,
+     "C_jac_pct_B": -10.617581176299161,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R13_s42": {
+     "trJ_prior_A": 187576105.6117113,
+     "trJ_prior_B": 200828152.45398355,
+     "kappa_jac_A": 1.049248202914527,
+     "kappa_jac_B": 1.069832203144599,
+     "C_jac_pct_A": -4.924820291452692,
+     "C_jac_pct_B": -6.983220314459904,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R15_s42": {
+     "trJ_prior_A": 162632923.50411475,
+     "trJ_prior_B": 172882422.57751033,
+     "kappa_jac_A": 0.9097230277008912,
+     "kappa_jac_B": 0.9209624286786828,
+     "C_jac_pct_A": 9.027697229910881,
+     "C_jac_pct_B": 7.903757132131717,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R107_s42": {
+     "trJ_prior_A": 156997336.4246776,
+     "trJ_prior_B": 168007099.43277976,
+     "kappa_jac_A": 0.8781991318604044,
+     "kappa_jac_B": 0.8949910813489599,
+     "C_jac_pct_A": 12.180086813959557,
+     "C_jac_pct_B": 10.500891865104013,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R111_s42": {
+     "trJ_prior_A": 146590652.1775304,
+     "trJ_prior_B": 157520876.02776152,
+     "kappa_jac_A": 0.8199870546397523,
+     "kappa_jac_B": 0.8391298918146506,
+     "C_jac_pct_A": 18.00129453602477,
+     "C_jac_pct_B": 16.087010818534942,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R84_s42": {
+     "trJ_prior_A": 143587726.77315995,
+     "trJ_prior_B": 154626552.66818973,
+     "kappa_jac_A": 0.8031895309159985,
+     "kappa_jac_B": 0.8237115338875016,
+     "C_jac_pct_A": 19.681046908400145,
+     "C_jac_pct_B": 17.628846611249838,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R165_s42": {
+     "trJ_prior_A": 132868689.22182956,
+     "trJ_prior_B": 142705238.5841177,
+     "kappa_jac_A": 0.7432302367882685,
+     "kappa_jac_B": 0.760205468850809,
+     "C_jac_pct_A": 25.67697632117315,
+     "C_jac_pct_B": 23.979453114919103,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R16_s42": {
+     "trJ_prior_A": 180591237.46975324,
+     "trJ_prior_B": 198843253.28821492,
+     "kappa_jac_A": 1.0101768066850125,
+     "kappa_jac_B": 1.0592584413408566,
+     "C_jac_pct_A": -1.017680668501253,
+     "C_jac_pct_B": -5.925844134085656,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R11_s456": {
+     "trJ_prior_A": 167631564.55041257,
+     "trJ_prior_B": 175982527.62210953,
+     "kappa_jac_A": 0.9376840258127708,
+     "kappa_jac_B": 0.9374770067859688,
+     "C_jac_pct_A": 6.231597418722923,
+     "C_jac_pct_B": 6.252299321403121,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R12_s123": {
+     "trJ_prior_A": 187908921.69305104,
+     "trJ_prior_B": 207433776.74808788,
+     "kappa_jac_A": 1.0511098828662881,
+     "kappa_jac_B": 1.1050210424848723,
+     "C_jac_pct_A": -5.110988286628815,
+     "C_jac_pct_B": -10.502104248487232,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R12_s456": {
+     "trJ_prior_A": 164008564.95493647,
+     "trJ_prior_B": 173253482.07648885,
+     "kappa_jac_A": 0.9174179807196797,
+     "kappa_jac_B": 0.9229391007559747,
+     "C_jac_pct_A": 8.258201928032028,
+     "C_jac_pct_B": 7.7060899244025265,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R13_s123": {
+     "trJ_prior_A": 177532715.64101136,
+     "trJ_prior_B": 187206012.39521712,
+     "kappa_jac_A": 0.9930682921334559,
+     "kappa_jac_B": 0.997265663381437,
+     "C_jac_pct_A": 0.6931707866544068,
+     "C_jac_pct_B": 0.2734336618563038,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R13_s456": {
+     "trJ_prior_A": 147844113.59885702,
+     "trJ_prior_B": 159827338.7432497,
+     "kappa_jac_A": 0.8269985667908369,
+     "kappa_jac_B": 0.8514166556882913,
+     "C_jac_pct_A": 17.300143320916305,
+     "C_jac_pct_B": 14.858334431170872,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R13_KO_KLF1": {
+     "trJ_prior_A": 146398750.19582108,
+     "trJ_prior_B": 156336465.58997127,
+     "kappa_jac_A": 0.8189136086974368,
+     "kappa_jac_B": 0.8328204157147849,
+     "C_jac_pct_A": 18.10863913025632,
+     "C_jac_pct_B": 16.717958428521506,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R13_OE_KLF1": {
+     "trJ_prior_A": 129453943.28177017,
+     "trJ_prior_B": 134333198.40275234,
+     "kappa_jac_A": 0.7241291043208222,
+     "kappa_jac_B": 0.7156067505804833,
+     "C_jac_pct_A": 27.58708956791778,
+     "C_jac_pct_B": 28.43932494195167,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R15_s123": {
+     "trJ_prior_A": 174435924.75576487,
+     "trJ_prior_B": 186638769.4874176,
+     "kappa_jac_A": 0.9757457111973045,
+     "kappa_jac_B": 0.9942439021275792,
+     "C_jac_pct_A": 2.4254288802695534,
+     "C_jac_pct_B": 0.5756097872420818,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R15_s456": {
+     "trJ_prior_A": 194126681.08046463,
+     "trJ_prior_B": 207546970.2283167,
+     "kappa_jac_A": 1.0858902875565501,
+     "kappa_jac_B": 1.1056240357846416,
+     "C_jac_pct_A": -8.589028755655015,
+     "C_jac_pct_B": -10.562403578464163,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R84_s123": {
+     "trJ_prior_A": 173780125.2615772,
+     "trJ_prior_B": 182763561.5375312,
+     "kappa_jac_A": 0.972077352487624,
+     "kappa_jac_B": 0.9736002712022765,
+     "C_jac_pct_A": 2.7922647512376053,
+     "C_jac_pct_B": 2.6399728797723454,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R111_s123": {
+     "trJ_prior_A": 155465635.04981256,
+     "trJ_prior_B": 167357072.8130813,
+     "kappa_jac_A": 0.8696312233320884,
+     "kappa_jac_B": 0.891528322755819,
+     "C_jac_pct_A": 13.036877666791158,
+     "C_jac_pct_B": 10.847167724418105,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R111_s456": {
+     "trJ_prior_A": 173180135.92251888,
+     "trJ_prior_B": 186561431.0418444,
+     "kappa_jac_A": 0.9687211801557494,
+     "kappa_jac_B": 0.9938319122815125,
+     "C_jac_pct_A": 3.1278819844250627,
+     "C_jac_pct_B": 0.6168087718487536,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    }
+   }
+  },
+  "neural": {
+   "vanilla": {
+    "A": 37068.53262579534,
+    "B": 119739836.13175532
+   },
+   "configs": {
+    "R1_s42": {
+     "trJ_prior_A": 25346.198600371565,
+     "trJ_prior_B": 390949170.3214853,
+     "kappa_jac_A": 0.6837659007503736,
+     "kappa_jac_B": 3.2649883526757604,
+     "C_jac_pct_A": 31.623409924962644,
+     "C_jac_pct_B": -226.49883526757603,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R1_s123": {
+     "trJ_prior_A": 39243.42349975971,
+     "trJ_prior_B": 69180286.96180029,
+     "kappa_jac_A": 1.0586721599130928,
+     "kappa_jac_B": 0.5777549827751393,
+     "C_jac_pct_A": -5.8672159913092825,
+     "C_jac_pct_B": 42.224501722486075,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R1_s456": {
+     "trJ_prior_A": 30701.558431780424,
+     "trJ_prior_B": 172888235.4898947,
+     "kappa_jac_A": 0.8282377600891531,
+     "kappa_jac_B": 1.4438656430067076,
+     "C_jac_pct_A": 17.176223991084694,
+     "C_jac_pct_B": -44.38656430067076,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R8_s42": {
+     "trJ_prior_A": 50951.04391889557,
+     "trJ_prior_B": 195502700.8091067,
+     "kappa_jac_A": 1.3745093293344888,
+     "kappa_jac_B": 1.6327289824748548,
+     "C_jac_pct_A": -37.450932933448875,
+     "C_jac_pct_B": -63.27289824748548,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    },
+    "R2_s42": {
+     "trJ_prior_A": 64637.83727782512,
+     "trJ_prior_B": 684800514.0487174,
+     "kappa_jac_A": 1.7437387643676185,
+     "kappa_jac_B": 5.719070078692938,
+     "C_jac_pct_A": -74.37387643676186,
+     "C_jac_pct_B": -471.9070078692938,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R3_s42": {
+     "trJ_prior_A": 154460.55906862725,
+     "trJ_prior_B": 262583617.69714248,
+     "kappa_jac_A": 4.166891649796271,
+     "kappa_jac_B": 2.192951203041647,
+     "C_jac_pct_A": -316.6891649796271,
+     "C_jac_pct_B": -119.2951203041647,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R4_s42": {
+     "trJ_prior_A": 172627.51487293022,
+     "trJ_prior_B": 523420286.0709235,
+     "kappa_jac_A": 4.656982692452243,
+     "kappa_jac_B": 4.37131286445874,
+     "C_jac_pct_A": -365.6982692452243,
+     "C_jac_pct_B": -337.13128644587397,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R5_s42": {
+     "trJ_prior_A": 41986.13342212304,
+     "trJ_prior_B": 493253526.8413661,
+     "kappa_jac_A": 1.1326624079234695,
+     "kappa_jac_B": 4.11937699913516,
+     "C_jac_pct_A": -13.26624079234695,
+     "C_jac_pct_B": -311.93769991351604,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R6_s42": {
+     "trJ_prior_A": 41987.965588109655,
+     "trJ_prior_B": 293988794.44751304,
+     "kappa_jac_A": 1.132711834373799,
+     "kappa_jac_B": 2.455229637395056,
+     "C_jac_pct_A": -13.271183437379896,
+     "C_jac_pct_B": -145.5229637395056,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    },
+    "R7_s42": {
+     "trJ_prior_A": 31211.413662872357,
+     "trJ_prior_B": 74399670.54253909,
+     "kappa_jac_A": 0.8419921548540845,
+     "kappa_jac_B": 0.6213443490992727,
+     "C_jac_pct_A": 15.800784514591548,
+     "C_jac_pct_B": 37.86556509007273,
+     "previously_treated": false,
+     "n_latent_rows": 1000
+    }
+   }
+  },
+  "lung": {
+   "vanilla": {
+    "A": 1896331.0934503025,
+    "B": 40215653.364054844
+   },
+   "configs": {
+    "R9": {
+     "trJ_prior_A": 97865987.7323921,
+     "trJ_prior_B": 1252236813.6255052,
+     "kappa_jac_A": 51.6080699569866,
+     "kappa_jac_B": 31.138044738190604,
+     "C_jac_pct_A": -5060.80699569866,
+     "C_jac_pct_B": -3013.8044738190606,
+     "previously_treated": true,
+     "n_latent_rows": 1000
+    }
+   }
+  }
+ },
+ "regression": {
+  "n": 15,
+  "max_abs_deviation": 4.820291452700687e-05
+ },
+ "verdict": {
+  "n_configs": 33,
+  "n_locked": 0,
+  "kappa_A_min": 0.6837659007503736,
+  "kappa_A_max": 51.6080699569866
+ },
+ "_provenance": {
+  "schema": "paper1-artefact-provenance/1",
+  "generated_utc": "2026-10-09T14:18:55.065228+00:00",
+  "script": {
+   "path": "F:\\UNAGI_Project\\paper1/paper1_kc_diagnostic/code/jacobian_reaudit_33.py",
+   "sha256": "08ffc5040995e01c04b7818cbda0434c866678b939ae5a13fce9290f2cec5123",
+   "bytes": 11713,
+   "mtime_utc": "2026-10-08T05:26:32.472966+00:00"
+  },
+  "git": {
+   "repo": "F:\\UNAGI_Project",
+   "head": "b1a6817f7efbbb56763a272f177d1a2c232903cd",
+   "head_date": "2026-10-09 22:04:59 +0800",
+   "describe": "paper1-audit-v1-1-gb1a6817-dirty",
+   "dirty": true,
+   "dirty_files": 266
+  },
+  "inputs": [
+   {
+    "path": "F:\\UNAGI_Project\\outputs\\positive_result\\s1f_0of33_recheck.json",
+    "sha256": "986bf50b8438f2c44eaa9b2d800b6d7d0277d47c1fd40e2c70ef9f362f82b453",
+    "bytes": 12098
+   }
+  ],
+  "runtime": {
+   "python": "3.12.14",
+   "platform": "Windows-11-10.0.26200-SP0",
+   "executable": "C:\\Users\\12901\\.dsh\\dsh-runtimes\\dsh-primary-runtime\\dependencies\\python\\python.exe"
+  },
+  "note": "Generated by code/provenance.py. This block lets a reader check which script produced the artefact and from which inputs, without relying on file modification times.",
+  "extra": {
+   "attached_retroactively": true,
+   "note": "This block was ADDED AFTER the fact by _infra/tmp/annotate_artefacts.py. It records the script that produces this artefact and the hashes of its inputs, but it is NOT evidence that the recorded script run produced these numbers."
+  }
+ }
+}

@@ -1,0 +1,27 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,booktabs,hyperref,caption,multirow}
+\usepackage{times}
+\begin{document}
+
+\section*{Supplementary Table S6: GRQ and CTCP Specificity by Seed (G-VAE, Hematopoietic)}
+\label{tab:s6_seed_kappa}
+
+Specificity is the ratio of mean absolute expression change in the 31 erythroid target genes to mean absolute change in non-target genes. GRQ = generalized Rayleigh quotient readout (decoder traversal at $\alpha=1.0$, re-audited from checkpoints; \texttt{results/optionA\_grq\_decoder\_traversal.json}); CTCP = cell-type-conditional perturbation (per-seed cluster means; \texttt{results/ctcp\_pure\_validation.json}). Audit $\kappa$ is the unified-protocol trace ratio of each spectral-shaping model to its same-seed vanilla baseline (\texttt{results/grq\_seeds\_s9s12\_kappa.json}); all four seeds fall within the vanilla-equivalent region $[0.937,1.064]$ (the G-VAE hematopoietic null, corrected statistic), so these runs demonstrate the readout on models with regular decoders, not on prior-injection models (0/33 in the main audit).
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Seed} & \textbf{GRQ ($\times$)} & \textbf{CTCP ($\times$)} & \textbf{Audit $\kappa$} \\
+\midrule
+s9  & 11.45 & 19.2 & 0.88 \\
+s10 & 13.83 & 19.4 & 1.18 \\
+s11 & 16.80 & 18.8 & 1.01 \\
+s12 & 11.32 & 19.6 & 1.00 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The GRQ values shown here were re-audited from the checkpoints; earlier reported values (10.8--12.3$\times$) were not reproducible from the surviving artifacts and are replaced (see \texttt{results/multiseed\_perturbation\_validation\_FABRICATED.md}). Under label-shuffling permutation tests with test-set exclusion, real and shuffled CTCP specificity are statistically indistinguishable (real 19.2$\times$ vs.\ shuffled 19.4$\times$; paired $t$-test $p=0.52$, $n=48$ cluster--seed observations; Supplementary Figure S8), so CTCP gains reflect sample-size rebalancing rather than cell-type-specific geometry.
+
+\end{document}

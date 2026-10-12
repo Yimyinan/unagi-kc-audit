@@ -1,0 +1,118 @@
+{
+  "source": "..\\positive_result\\z_spectrum_all.csv",
+  "method": "Linear mixed model (statsmodels MixedLM, REML) with training seed as random intercept; H0: fixed intercept beta0 = 0 (no directional preference). Secondary cross-check to the cluster-robust binomial (primary).",
+  "results": {
+    "17_18": {
+      "claim": "17/18 hema iter0->iter4",
+      "n": 18,
+      "beta0": 2.444,
+      "se": 0.3224,
+      "ci95": [
+        1.812,
+        3.0759
+      ],
+      "p_two_sided": 0.0,
+      "tau2": 0.0,
+      "sigma2": 1.48916,
+      "icc": 0.0,
+      "converged": true,
+      "clusters": {
+        "123.0": 5,
+        "42.0": 9,
+        "456.0": 4
+      },
+      "mean_signed": 2.444,
+      "prop_positive": 0.9444
+    },
+    "kc_z_hemo": {
+      "claim": "kappa-C-Z hematopoietic",
+      "n": 19,
+      "beta0": 0.7965,
+      "se": 0.1537,
+      "ci95": [
+        0.4952,
+        1.0978
+      ],
+      "p_two_sided": 0.0,
+      "tau2": 0.00367,
+      "sigma2": 0.61073,
+      "icc": 0.006,
+      "converged": false,
+      "clusters": {
+        "123.0": 6,
+        "42.0": 9,
+        "456.0": 4
+      },
+      "mean_signed": 0.7946,
+      "prop_positive": 0.8421
+    },
+    "kc_z_neural": {
+      "claim": "kappa-C-Z neural crest",
+      "n": 9,
+      "beta0": 0.0902,
+      "se": 0.2513,
+      "ci95": [
+        -0.4025,
+        0.5828
+      ],
+      "p_two_sided": 0.7198,
+      "tau2": 0.00431,
+      "sigma2": 0.54807,
+      "icc": 0.0078,
+      "converged": false,
+      "clusters": {
+        "": 7,
+        "123.0": 1,
+        "456.0": 1
+      },
+      "mean_signed": 0.0905,
+      "prop_positive": 0.5556
+    },
+    "kc_z_lung": {
+      "claim": "kappa-C-Z lung fibrosis",
+      "n": 1,
+      "beta0": 3.1634,
+      "se": NaN,
+      "ci95": [
+        NaN,
+        NaN
+      ],
+      "p_two_sided": 1.0,
+      "tau2": NaN,
+      "sigma2": NaN,
+      "icc": NaN,
+      "converged": false,
+      "clusters": {
+        "": 1
+      },
+      "mean_signed": 3.1634,
+      "prop_positive": 1.0
+    },
+    "kc_z_pooled": {
+      "claim": "kappa-C-Z pooled 22/29",
+      "n": 29,
+      "beta0": 0.7298,
+      "se": 0.275,
+      "ci95": [
+        0.1907,
+        1.2689
+      ],
+      "p_two_sided": 0.008,
+      "tau2": 0.19887,
+      "sigma2": 0.76728,
+      "icc": 0.2058,
+      "converged": true,
+      "clusters": {
+        "hemo:123.0": 6,
+        "hemo:42.0": 9,
+        "hemo:456.0": 4,
+        "lung:": 1,
+        "neural:": 7,
+        "neural:123.0": 1,
+        "neural:456.0": 1
+      },
+      "mean_signed": 0.6578,
+      "prop_positive": 0.7586
+    }
+  }
+}

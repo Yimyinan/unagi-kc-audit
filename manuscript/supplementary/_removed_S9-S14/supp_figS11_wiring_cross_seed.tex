@@ -1,0 +1,24 @@
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figS11_wiring_cross_seed.pdf}
+\caption{\textbf{Supplementary Figure S10. Cross-seed reproducibility of the prior-wiring effect.}
+\textbf{(A)} Hematopoietic (true hema prior R13; matched same-seed vanilla control): per-edge
+Mann--Whitney $z$ of prior-edge coupling versus vanilla, across three seeds.
+Per-seed values: $z_{42}=+2.85$ ($p=0.0044$), $z_{123}=+2.02$ ($p=0.043$),
+$z_{456}=-2.45$ ($p=0.014$). Stouffer's combined $z=+1.40$, $p=0.16$; signs
+$[+,+,-]$ -- the effect is positive in 2 of 3 seeds but, because one seed flips negative, the
+combined test is \emph{not} significant at the 5\% level. \textbf{(B)} Neural (cortex prior R1;
+matched same-seed vanilla control): per-edge Mann--Whitney $z$ of TRRUST-derived cortex-edge
+coupling. Per-seed values: $z_{42}=+0.19$ ($p=0.85$), $z_{123}=+0.09$ (n.s.),
+$z_{456}=+0.19$ ($p=0.85$). Stouffer's combined $z=+0.27$, $p=0.79$; all three seeds are
+non-significant -- the cortex prior is \emph{not} internalised on the captured neural
+trajectory. \textbf{Honest reading:} the prior-wiring signal is real in marrow but
+\emph{fragile and seed-dependent}, and absent in neural. This is consistent with the proposed
+mechanism -- the prior only wires the edges whose TFs both drive the trajectory's active program
+\emph{and} are expressed / variable in the captured data, so the effect follows the stochastic
+variability of cell sampling and weight initialisation (seed identity explains 89\% of the
+variance in effect size; Supplementary Fig.~S11). The control (R16, cortex TFs injected into
+marrow) shows $z=-1.72$ (n.s.) on the hema edges, confirming that the mismatched prior does
+not wire.}
+\label{fig:wiring_cross_seed}
+\end{figure}

@@ -1,0 +1,95 @@
+{
+  "protocol": "kappa = trH(loading_matrix.npy)_i / trH_j; band = mean +/- 2*sigma of vanilla-vs-vanilla ratios",
+  "vanilla_trH": {
+    "hemo": {
+      "R14": 5634.82,
+      "R14_seed42": 4333.06,
+      "R14_seed123": 4156.59,
+      "R14_seed456": 5272.91
+    },
+    "neural": {
+      "R0_seed42": 5402.1,
+      "R0_seed123": 6792.02,
+      "R0_seed456": 9648.78
+    }
+  },
+  "null": {
+    "hemo": {
+      "n_seeds": 4,
+      "n_pairs": 12,
+      "mean": 1.022,
+      "std": 0.2124,
+      "lo2s": 0.5973,
+      "hi2s": 1.4468,
+      "p05": 0.7549,
+      "p95": 1.3253,
+      "min": 0.7377,
+      "max": 1.3556
+    },
+    "neural": {
+      "n_seeds": 3,
+      "n_pairs": 6,
+      "mean": 1.0872,
+      "std": 0.4356,
+      "lo2s": 0.2159,
+      "hi2s": 1.9585,
+      "p05": 0.5959,
+      "p95": 1.6947,
+      "min": 0.5599,
+      "max": 1.7861
+    },
+    "UNAGI_combined": {
+      "n_pairs": 18,
+      "mean": 1.0438,
+      "std": 0.307,
+      "lo2s": 0.4297,
+      "hi2s": 1.6578,
+      "p05": 0.6823,
+      "p95": 1.4754
+    }
+  },
+  "audit_recheck": {
+    "n": 33,
+    "n_outside_new_band": 9,
+    "outside_configs": [
+      "R111_s123",
+      "R12_s123",
+      "R15_s456",
+      "R13_s123",
+      "R12_s456",
+      "R165_s42",
+      "R13_s42",
+      "R12_s42",
+      "R111_s42"
+    ],
+    "n_deep_compression_k_lt_0p5": 0,
+    "new_band": [
+      0.4297,
+      1.6578
+    ],
+    "GVAE_band": [
+      0.78,
+      1.23
+    ],
+    "note": "deep compression (C>50%) is an absolute kappa<0.5 threshold, independent of the band; band only changes the 'vanilla-equivalent' labelling.",
+    "bare_R0_excluded_as_outlier": true
+  },
+  "comparison": {
+    "GVAE_band": [
+      0.78,
+      1.23
+    ],
+    "UNAGI_hemo_band": [
+      0.5973,
+      1.4468
+    ],
+    "UNAGI_neural_band": [
+      0.2159,
+      1.9585
+    ],
+    "UNAGI_combined_band": [
+      0.4297,
+      1.6578
+    ]
+  }
+}

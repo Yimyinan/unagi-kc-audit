@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this code or audit toolkit, please cite the paper and this archive."
+title: "unagi-kc-audit: dual-spectrum audit code for GRN-prior injection in single-cell VAEs"
+type: software
+authors:
+  - family-names: "Yan"
+    given-names: "Yinan"
+  - family-names: "Wang"
+    given-names: "Lan"
+repository-code: "https://github.com/Yimyinan/unagi-kc-audit"
+license: MIT
+abstract: >-
+  Analysis and audit code supporting "Gene-regulatory priors do not reach the loss: a
+  dual-spectrum audit of single-cell variational autoencoders". Contains the released
+  kappa_c_audit toolkit (four checks: gradient, prior-strength scan, structural bound and
+  injection-path), the figure generators, the derived result files, and the audit records
+  documenting the provenance of every reported number.
+keywords:
+  - single-cell
+  - variational autoencoder
+  - gene regulatory network
+  - prior injection
+  - reproducibility

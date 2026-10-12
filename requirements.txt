@@ -1,0 +1,17 @@
+# Core analysis stack for code/ and figures/ (Python 3.13).
+numpy>=1.26
+pandas>=2.0
+matplotlib>=3.8
+scipy>=1.11
+h5py>=3.10
+anndata>=0.10
+scanpy>=1.10
+scikit-learn>=1.4
+
+# The released toolkit kappa_c_audit/ needs only these:
+#   numpy, h5py   (h5py is used by the injection-path check)
+#
+# Not needed to reproduce the figures or the checks; required only by a few
+# model-side scripts that are documented in code/README.md:
+# torch>=2.0
+# scvi-tools>=1.1

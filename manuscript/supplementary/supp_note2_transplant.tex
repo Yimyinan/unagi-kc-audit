@@ -1,0 +1,53 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,caption}
+\usepackage{times}
+\newcommand{\Zmat}{\mathbf{Z}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\begin{document}
+
+\section*{Supplementary Note 2: Cross-Model Latent Transplant Decomposition (recomputed)}
+\label{sup:transplant}
+
+\subsection*{Motivation}
+
+Cross-model latent transplantation---encoding with model $A$ and decoding with model $B$---incurs a reconstruction penalty relative to the native encoder--decoder pair. Here we decompose this penalty into encoder-mismatch and decoder-mismatch components, recomputed from the surviving hematopoietic checkpoints (seeds s9--s12, 500 held-out cells per seed pair).
+
+\subsection*{Decomposition}
+
+Let $\mathcal{E}_A, \mathcal{D}_A$ and $\mathcal{E}_B, \mathcal{D}_B$ be the encoder-decoder pairs for seeds $A$ and $B$. The cross-model reconstruction is \begin{equation}
+\hat{\mathbf{x}}_{A \to B} = \mathcal{D}_B(\mathcal{E}_A(\mathbf{x}))
+\end{equation}
+
+The MSE decomposes as \begin{equation}
+\begin{aligned}
+\mathbb{E}\|\hat{\mathbf{x}}_{A\to B} - \mathbf{x}\|^2 &= \underbrace{\mathbb{E}\|\mathcal{D}_B(\mathcal{E}_A(\mathbf{x})) - \mathcal{D}_B(\mathcal{E}_B(\mathbf{x}))\|^2}_{\text{encoder mismatch}} \\
+&\quad + \underbrace{\mathbb{E}\|\mathcal{D}_B(\mathcal{E}_B(\mathbf{x})) - \mathcal{D}_A(\mathcal{E}_A(\mathbf{x}))\|^2}_{\text{decoder mismatch}} \\
+&\quad + \underbrace{\mathbb{E}\langle\mathcal{D}_B(\mathcal{E}_A(\mathbf{x})) - \mathcal{D}_B(\mathcal{E}_B(\mathbf{x})), \mathcal{D}_B(\mathcal{E}_B(\mathbf{x})) - \mathbf{x}\rangle}_{\text{cross-term}}
+\end{aligned}
+\end{equation}
+
+\subsection*{Results (recomputed)}
+
+Across the 6 seed pairs (s9--s12), transplanting incurs a $2.09 \pm 0.14\times$ reconstruction penalty (range 1.92--2.46$\times$), consistent with the originally reported $2.1\times$. The decomposition of the cross-model error is:
+\begin{itemize}
+\item Encoder mismatch: $51.7\% \pm 2.6\%$ of total cross-model MSE
+\item Decoder mismatch: $0.85\% \pm 0.10\%$
+\item Cross-term: $47.4\% \pm 2.5\%$
+\end{itemize}
+
+The originally reported decomposition ($58.3\%$/ $31.7\%$/ $10.0\%$) is not reproducible; the recomputed values show that the penalty is dominated by encoder mismatch, with a negligible decoder mismatch. This is consistent with the encoder--decoder co-adaptation picture: encoder weights are seed-specific ($r<0.02$) while decoder sensitivity maps converge ($r=0.96$), so swapping encoders (but not decoders) across seeds is what destroys reconstruction fidelity. The large positive cross-term indicates that the encoder- and decoder-mismatch vectors are not orthogonal in this decomposition.
+
+\subsection*{Procrustes Alignment Details}
+
+The orthogonal Procrustes problem $\mathbf{R}^* = \argmin_{\mathbf{R}\in O(D)} \|\Zmat_A\mathbf{R} - \Zmat_B\|_F^2$ has closed-form solution via SVD \begin{equation}
+\Zmat_A^\top\Zmat_B = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^\top, \quad \mathbf{R}^* = \mathbf{U}\mathbf{V}^\top
+\end{equation}
+
+The transport $R^2 = 0.69$ indicates 69\% of latent variance is shared across seeds under orthogonal rotation. The residual 31\% is the seed-specific signal. Reprocessing: \texttt{next\_phase/results/transplant\_decomposition\_real.json}.
+
+\vspace{10pt}
+\noindent\rule{\textwidth}{0.4pt}
+\footnotesize\textbf{Source identity.} This note was compiled from \texttt{supplementary/supp\_note2\_transplant.tex} in the paper1 repository. SHA256 of that source file with this paragraph removed: \texttt{75d5b348d35a409b371b990d09f8dde6ea61dca5b94db79887737dfd0f970469}. Readers can recompute the digest to confirm which revision produced this PDF; the source is distributed with the code release.
+
+\end{document}

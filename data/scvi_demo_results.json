@@ -1,0 +1,21 @@
+{
+  "architecture": "scVI 1.5.0",
+  "dataset": "pbmc3k (scanpy)",
+  "kappa_C_W": 0.872875208973927,
+  "kappa_C_Z": 1.0778976280359904,
+  "eff_rank_vanilla": 12.567126033416036,
+  "eff_rank_labeled": 15.660359435356279,
+  "eff_rank_delta_pct": 24.613689667115004,
+  "C_W_pct": 12.712479102607299,
+  "C_Z_pct": -7.789762803599043,
+  "benchmark": {
+    "phenotype": "real louvain cell-type labels (pbmc3k)",
+    "acc_from_Z_vanilla": 0.895180179070892,
+    "sd_Z_vanilla": 0.025624488115058075,
+    "acc_from_Z_labeled": 0.901030074232701,
+    "sd_Z_labeled": 0.03165141432227082,
+    "acc_from_X_raw": 0.9268170347626252,
+    "sd_X_raw": 0.008144509598727404
+  },
+  "perturbation_extension": "unavailable (HTTPError: HTTP Error 404: Not Found); pbmc3k phenotype benchmark used"
+}

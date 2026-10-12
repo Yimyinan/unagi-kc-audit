@@ -1,0 +1,55 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,caption}
+\usepackage{times}
+\newcommand{\Jmat}{\mathbf{J}}
+\begin{document}
+
+\section*{Supplementary Note 3: CTCP Shrinkage Intensity Derivation}
+\label{sup:shrinkage}
+
+\subsection*{Motivation}
+
+For cell types with $n_c < 100$ cells, the Ridge estimator $\Jmat_c$ has high variance. We derive the shrinkage intensity $\tau = 200$ in $\lambda_c = n_c/(n_c + \tau)$ by minimizing the expected Frobenius risk.
+
+\subsection*{Derivation}
+
+Let $\Jmat_c^{\text{true}}$ be the true (unknown) type-specific Jacobian. The Ridge estimator on $n_c$ cells has error \begin{equation}
+\Jmat_c = \Jmat_c^{\text{true}} + \mathbf{E}_c, \quad \mathbf{E}_c \sim \mathcal{N}(0, \sigma^2/n_c \cdot \mathbf{I})
+\end{equation}
+where the Gaussian approximation follows from asymptotic normality of the Ridge estimator.
+
+The shrunk estimator is \begin{equation}
+\tilde{\Jmat}_c = \lambda\Jmat_c + (1-\lambda)\Jmat_g
+\end{equation}
+where $\Jmat_g$ is the global Jacobian (estimated from all $N$ cells, effectively noiseless relative to $\Jmat_c$).
+
+The Frobenius risk is \begin{equation}
+\begin{aligned}
+R(\lambda) &= \mathbb{E}\|\tilde{\Jmat}_c - \Jmat_c^{\text{true}}\|_F^2 \\
+&= \mathbb{E}\|\lambda(\Jmat_c^{\text{true}} + \mathbf{E}_c) + (1-\lambda)\Jmat_g - \Jmat_c^{\text{true}}\|_F^2 \\
+&= \|(1-\lambda)(\Jmat_g - \Jmat_c^{\text{true}})\|_F^2 + \lambda^2 \mathbb{E}\|\mathbf{E}_c\|_F^2
+\end{aligned}
+\end{equation}
+
+The first term is the bias from shrinking toward the global Jacobian; the second is the variance reduction. Minimizing with respect to $\lambda$ \begin{equation}
+\lambda^* = \frac{\|\Jmat_g - \Jmat_c^{\text{true}}\|_F^2}{\|\Jmat_g - \Jmat_c^{\text{true}}\|_F^2 + \mathbb{E}\|\mathbf{E}_c\|_F^2}
+\end{equation}
+
+Since $\Jmat_c^{\text{true}}$ is unknown, we use the plug-in estimator $\|\Jmat_g - \Jmat_c\|_F^2$ for the bias term and $\sigma^2 \cdot GD / n_c$ for the variance term ($G$ genes, $D$ latent dimensions). Empirically, across all hematopoietic clusters \begin{equation}
+\frac{\|\Jmat_g - \Jmat_c\|_F^2}{\sigma^2 \cdot GD} \approx 200
+\end{equation}
+
+This yields the shrinkage formula \begin{equation}
+\lambda_c = \frac{n_c}{n_c + 200}, \quad \tau = 200
+\end{equation}
+
+\subsection*{Default}
+
+$\tau=200$ is used as a fixed default throughout this work. The main-text CTCP conclusion does not rest on the exact value: the label-shuffling null (Supplementary Fig.~S6) is evaluated under the same fixed $\tau$ for real and shuffled labels, so any systematic sensitivity to $\tau$ would cancel in the paired comparison.
+
+\vspace{10pt}
+\noindent\rule{\textwidth}{0.4pt}
+\footnotesize\textbf{Source identity.} This note was compiled from \texttt{supplementary/supp\_note3\_shrinkage.tex} in the paper1 repository. SHA256 of that source file with this paragraph removed: \texttt{777ce1bd5380b004052c28876fe7fc9e9dfa1552fad4772adda3496174165a93}. Readers can recompute the digest to confirm which revision produced this PDF; the source is distributed with the code release.
+
+\end{document}

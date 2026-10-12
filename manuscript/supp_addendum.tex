@@ -1,0 +1,776 @@
+\documentclass[11 pt,a4 paper]{article}
+\usepackage[margin=2.2 cm,top=2.4 cm,bottom=2.4 cm]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,enumitem,caption}\captionsetup{singlelinecheck=false}
+\usepackage{times}\usepackage[T1]{fontenc}\usepackage{xspace}
+% Long \texttt{} file paths (code/…, data/…) contain no breakpoints and overflow the
+% margin.  Allowing line breaks inside \texttt fixes that, but the `hyphenat` [htt]
+% option also tries to hyphenate the Courier font and floods the log with T1/pcr
+% font-shape warnings.  \sloppy + a raised \emergencystretch achieve the same
+% overflow fix without touching the font machinery.
+\sloppy
+\emergencystretch=5 em
+% Explicit breakpoints for the longest unbreakable paths in this document.
+\newcommand{\bp}{\discretionary{}{}{}}
+\newcommand{\kappavar}{\kappa}
+\newcommand{\Hmat}{\mathbf{H}}\newcommand{\Wmat}{\mathbf{W}}\newcommand{\Jmat}{\mathbf{J}}
+\newcommand{\Emat}{\mathbf{E}}\newcommand{\Zmat}{\mathbf{Z}}\newcommand{\Xmat}{\mathbf{X}}
+\newcommand{\Rbb}{\mathbb{R}}\newcommand{\trloss}{\operatorname{tr}}\newcommand{\tr}{\operatorname{tr}}
+\DeclareMathOperator*{\argmax}{arg\,max}\DeclareMathOperator*{\argmin}{arg\,min}
+\title{\textbf{Supplementary Addendum}\\[0.3 em]
+\large Confirmatory clustered-permutation test, the four-check prior-activity checklist (with a controlled positive control), real-GRN validation on a second architecture, and real-scRNA in-vivo validation}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\section*{A. Statistical confirmation of the clustered-permutation prescription}
+
+\subsection*{A.1 Why a plain sign test is insufficient here}
+Across the 37-run audit, many prior/ablation configurations \emph{share seeds and
+training data}. Their directional compression statistics are therefore not
+independent. A naive exact sign test over individual configurations
+overstates precision, exactly as flagged in the reviewer response. Our \emph{primary}
+confirmatory analysis is now a \emph{cluster-robust binomial} (Section~A.2), which
+reports a confidence interval on the compressed proportion and is robust to the
+seed correlation; the \emph{clustered permutation test} described below is
+retained only as a secondary cross-check and, with three seeds, has maximum
+one-sided power $1/8$ and is uninformative on its own. The clustered permutation
+permutes the sign of each cluster's \emph{collective} contribution (flips the
+whole cluster's direction together with probability $1/2$), preserving
+within-cluster correlation while breaking the association between cluster
+identity and direction.
+
+\subsection*{A.2 The implemented procedure}
+The routine is implemented in \texttt{code/clustered\_permutation\_sign\_test.py}
+(standard-library only, dependency-free) and is validated by three built-in
+self-tests:
+\begin{enumerate}[leftmargin=1.4 em]
+\item one unit per cluster $\Rightarrow$ clustered p equals the naive sign-test p;
+\item multiple concordant units per cluster $\Rightarrow$ clustered p is strictly
+ \emph{more} conservative than the naive p (dependence reduces effective $n$);
+\item exact enumeration size equals $2^{\#\text{clusters}}$.
+\end{enumerate}
+The test takes, per unit $i$, a signed statistic $s_i$ ($+1$ compressed,
+$-1$ expanded, vanilla/excluded removed) and a cluster label $c_i$ (shared seed,
+and where applicable shared training data). It returns a two-sided
+cluster-adjusted p-value.
+
+\subsection*{A.3 Applying it to the main claims}
+The per-configuration latent effective-rank values that underlie the $17/18$
+(iter$_0\!\to\!$iter$_4$), $16/19$ and $22/29$ claims are already tabulated in
+the audit's per-run effective-rank table
+(\texttt{data/z\_spectrum\_all.csv}), which records the
+terminal-iteration latent effective rank for every configuration; the raw
+\texttt{iter\_*/stagedata/*.h5ad} artifacts are \emph{not} required to read
+them. Each configuration is assigned to the training seed it was run with, and
+that seed becomes the permutation cluster. The cluster-adjusted p-values in
+Table~1 are computed by
+\texttt{code/compute\_clustered\_paper1.py} (which calls
+\texttt{clustered\_permutation\_sign\_test.py}); the raw per-claim output is in
+\texttt{data/paper1\_clustered\_permutation\_results.json}.
+
+\subsection*{A.4 Real cluster-adjusted p-values for the main directional claims}
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabular}{@{}p{4.4cm}cp{1.7cm}cp{2.5cm}p{1.9cm}@{}}
+\toprule
+Claim & $n$ & seed clusters & perm.\ $p$ (secondary) & cluster-robust $\hat p$ (95\% CI) & one-sided $p$ (boot) \\
+\midrule
+$17/18$ latent eff-rank fall (iter$_0\!\to\!$iter$_4$) & 18 & 3 (123$\times$5, 42$\times$9, 456$\times$4) & 0.25 & 0.94 [0.89, 1.00] & $<0.001$ \\
+$\kappa$-$C$-$Z$ hematopoietic $16/19$ & 19 & 3 (123$\times$6, 42$\times$9, 456$\times$4) & 0.25 & 0.84 [0.67, 1.00] & $<0.001$ \\
+$\kappa$-$C$-$Z$ neural crest $5/9$ & 9 & 3 (no seed on 7/9 runs) & 1.00 & 0.56 [0.00, 1.00] & 0.26 \\
+$\kappa$-$C$-$Z$ lung fibrosis $1/1$ & 1 & 1 & 1.00 & 1.00 [1.00, 1.00] & --- \\
+$\kappa$-$C$-$Z$ pooled $22/29$ & 29 & 7 (3 tissues $\times$ seeds) & 0.078 & 0.76 [0.59, 0.91] & 0.003 \\
+\bottomrule
+\end{tabular}
+\caption{Seed-clustered permutation (secondary cross-check) and the cluster-robust
+binomial for the manuscript's directional latent-$Z$ claims. The cluster-robust
+$\hat p$ is the proportion of runs that compress the latent effective rank; its
+$95\%$ CI is a cluster bootstrap over seeds. For the hematopoietic claims the
+bootstrap $p$ is \emph{structural rather than evidential}, because every seed
+cluster is itself majority-concordant (per-seed $6/6$, $9/11$, $5/5$) no
+cluster resample can reach a compressed proportion at or below $0.5$, and the
+permutation $p$ is likewise floored at $0.25$ by the three clusters---so neither
+can testify that the effect is absent. Only the pooled $22/29$ claim, with seven
+clusters, has resampling freedom, and its one-sided bootstrap $p=0.003$ is
+informative. All CIs are wide because only three seeds are available, so results
+are reported as directional patterns with an inference range rather than as
+precise magnitudes.}
+\label{tab:clust}
+\end{table}
+
+\noindent A mixed-effects model with training seed as a random intercept gives the
+same direction and magnitude for the hematopoietic latent effective-rank claim
+($\beta_0=2.44$, $95\%$ CI $[1.81,3.08]$, $p<10^{-3}$; $n=18$), with the
+between-seed variance component estimated at zero (ICC $=0.000$). We report this
+as a third view rather than as the decisive test. A variance component estimated
+at zero from three clusters is itself uncertain, just as a three-cluster sandwich
+variance is anti-conservative. The three analyses therefore bracket the claim
+($p\in[0.046,0.25]$, with the upper bound a test floor) rather than settling it.
+
+\noindent\textbf{Take-away.} For the hematopoietic claims, the nominal sign-test p is an
+order-of-magnitude overstatement because every configuration traces to one of
+only three seeds; the cluster-adjusted p is 0.25 (and 0.078 pooled), so the
+honest claim is a \emph{consistent cross-seed directional pattern}, not
+population-level significance. (For an independent method sanity-check, the same
+routine run on the partitioned $\kappa$-$C$ statistic gave naive
+p$=0.454\to$ clustered p$=0.750$, confirming the correction is conservative.)
+
+\subsection*{A.5 Mixed-effects cross-check (seed as random effect)}
+
+The reviewer offered two options for the directional-claim correction---a
+mixed-effects model (seed random) \emph{or} a cluster-robust binomial. We adopt
+the cluster-robust binomial as primary (Sections~A.2--A.5) and report the
+mixed-effects model here as the named alternative, to show both converge. We fit
+a linear mixed model (statsmodels \texttt{MixedLM}, REML) with the training
+\emph{seed} as a random intercept on the same per-run signed statistics used
+above, $s_i = \beta_0 + b_{\mathrm{seed}(i)} + \varepsilon_i$, with
+$H_0:\beta_0=0$ (no directional preference). Results
+(\texttt{code/mixed\_effects\_paper1.py};
+\texttt{data/mixed\_effects\_paper1\_results.json}). For $17/18$,
+$\hat\beta_0=2.44$ $[1.81, 3.08]$, $p<10^{-3}$; pooled $22/29$,
+$\hat\beta_0=0.73$ $[0.19, 1.27]$, $p=0.008$; hematopoietic $\kappa$-$C$-$Z$,
+$\hat\beta_0=0.80$ $[0.50, 1.10]$, $p<10^{-3}$; neural crest
+$\hat\beta_0=0.09$ $[-0.40, 0.58]$, $p=0.72$ (non-significant, matching the
+cluster-robust result). The random-intercept variance was at/near zero
+(ICC $\le 0.21$, mostly $\approx 0$), so the seed contributes negligible
+between-cluster variance, which is exactly why the cluster-robust binomial and
+the mixed model agree and why the directional preference survives both. The two
+offered methods therefore converge on the same conclusion.
+
+\clearpage
+\section*{B. The four-check prior-activity checklist}
+
+The decoder-only $\kappa$-$C$ diagnostic measures decoder \emph{gain}, not
+perturbation-readiness. To decide whether an observed spectral effect is
+\emph{prior-driven}, apply all four checks. A model is judged
+\textbf{prior-active} only if \textbf{all four} checks agree; any failing check
+downgrades the verdict. Checks 1--3 test whether an injected quantity is
+active \emph{within} the objective; Check 4 tests whether it reaches the
+objective at all.
+
+\begin{enumerate}[leftmargin=1.4 em,label=\textbf{Check \arabic*.}]
+\item \textbf{Gradient / wiring check} ---
+ \emph{Is the prior actually present in the training signal?}
+ \begin{itemize}[leftmargin=1.2 em]
+ \item Operational test: edge-level gradient flow / decoder-wiring statistic
+ for prior edges vs.\ a label-shuffled or empty-vector control.
+ \item Pass (prior-active): prior edges carry significantly more gradient /
+ wiring than the control (e.g.\ $z$-score well above the shuffled null).
+ \item Fail (prior-inert): wiring statistic is indistinguishable from the
+ empty-vector / shuffled control.
+ \end{itemize}
+
+\item \textbf{Strength ($\lambda$) scan} ---
+ \emph{Does the spectral response depend on prior weight?}
+ \begin{itemize}[leftmargin=1.2 em]
+ \item Operational test: vary the prior weight $\lambda$ over an order of
+ magnitude; record the spectral response (effective rank / $\kappa$-$C$).
+ \item Pass (prior-active): the response track follows $\lambda$ (monotonic or
+ clearly $\lambda$-dependent).
+ \item Fail (prior-inert): the response is \emph{flat} across $\lambda$ ---
+ the apparent effect is not prior-strength-driven.
+ \end{itemize}
+
+\item \textbf{Structural bound} ---
+ \emph{Is the observed collapse already explained by the data manifold?}
+ \begin{itemize}[leftmargin=1.2 em]
+ \item Operational test: compute the data-inherent structural bound on the
+ decoder/decoder-readout spectrum (bound from the expression manifold
+ alone, no prior).
+ \item Pass (prior-active): the observed compression lies \emph{outside} the
+ structural bound, i.e.\ the prior adds reorganisation beyond the data.
+ \item Fail (prior-inert): the observed compression sits \emph{inside} the
+ structural bound --- the data manifold alone explains it.
+ \end{itemize}
+
+\item \textbf{Injection-path check} ---
+ \emph{Does the prior reach the loss term it is said to act on?}
+ \begin{itemize}[leftmargin=1.2 em]
+ \item Operational test: trace the prior from its source database through
+ to the training objective. Confirm (i) that the object holding the
+ prior is read at some call site, not merely assigned, and (ii) that
+ the objective branch which consumes it is instantiated. For a
+ per-gene likelihood weighting this additionally means checking that
+ the stored per-gene weight layer is non-zero in the training
+ artefacts.
+ \item Pass (prior-active): the prior has a reader, and that reader feeds
+ the loss.
+ \item Fail (path-interrupted): the prior is computed and stored but has no
+ consumer, or the consuming branch is never instantiated. The prior
+ may still act indirectly (via data-distribution shaping); what fails
+ is the claim that it acts on the loss.
+ \end{itemize}
+
+ This check is mechanically cheap --- it requires no training run --- and it
+ guards against the failure mode that motivated it. Checks 1--3 all operate
+ on a model whose prior is presumed wired; if the wiring is absent, each of
+ them can return a false negative for the wrong reason. The check also
+ applies to positive results, where a spectral effect credited to objective-level
+ prior activity should be re-examined if the prior never reached the
+ objective.
+\end{enumerate}
+
+\subsection*{Decision rule}
+\[
+\text{prior-active} \iff \text{Check 1} \land \text{Check 2} \land \text{Check 3} \land \text{Check 4}.
+\]
+If any check fails, report the spectral effect as \emph{not prior-driven} (it may
+be a data-inherent or training-dynamics artifact), and do \textbf{not} use the
+$\kappa$-$C$ decoder null as evidence about perturbation-readiness.
+
+\subsection*{Worked example, the lung IPF R9 configuration}
+High decoder gain ($C \approx 95\!-\!97\%$) with an \emph{inert} prior:
+\begin{itemize}[leftmargin=1.2 em]
+\item Gradient check: prior edges do \emph{not} wire above the control $\rightarrow$ FAIL.
+\item $\lambda$ scan: flat across prior strength $\rightarrow$ FAIL.
+\item Structural bound: the collapse is contained within the data-inherent bound $\rightarrow$ FAIL.
+\end{itemize}
+All three fail $\Rightarrow$ the high $C$ is \textbf{not prior-driven}. This is
+why a $\kappa$-$C$ decoder audit that reports ``null'' must \emph{not} be read as
+``the prior failed to act'' --- it reports decoder invariance; prior activity is
+adjudicated by the four-check protocol, not by $\kappa$-$C$.
+
+\subsection*{Worked example with a controlled active prior (positive control)}
+The IPF example above is negative. To show the protocol also returns \emph{prior-active}
+when the prior genuinely acts, we ran a controlled synthetic experiment
+(\texttt{code/three\_check\_positive\_control.py};
+\texttt{data/three\_check\_positive\_control.json}; Fig.~\ref{fig:three_check}).
+A model with a genuinely active, differentiable prior---one that changes aggregate
+latent$\to$expression predictability, wires gradient through prior edges, and produces
+distributed rather than single-axis compression---passes Checks 1--3:
+\begin{itemize}[leftmargin=1.2 em]
+\item Check 1: the prior-edge wiring contrast is $6.0\times$ versus $1.0\times$ for a
+ label-shuffled mask of identical sparsity; the prior-edge gradient is nonzero,
+ whereas the no-grad implementation injects exactly zero.
+\item Check 2: $\kappa$-$C(W)$ tracks prior strength, falling from $0.97$ ($\lambda=0.1$)
+ to $0.22$ ($\lambda=10$), a slope of $-0.16$ per unit $\log\lambda$.
+\item Check 3: the compression is distributed (top-axis share of $\trloss(\Hmat)$
+ $=0.08$), far below both the $0.80$ data-inherent bound and the $0.912$ IPF
+ reference.
+\end{itemize}
+Checks 1--3 all pass, and Check~4 holds by construction (the nonzero
+prior-edge gradient reported under Check~1 is exactly the path evidence
+Check~4 asks for) $\Rightarrow$ \textbf{prior-active}. The IPF-style inert counterpart
+(no-grad prior; flat $\lambda$-scan; top-axis share $0.83$) fails all three. The
+protocol therefore discriminates on both sides, not only as a null filter.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/fig_three_check_positive.pdf}
+\caption{\textbf{Positive control for the four-check prior-activity protocol.}
+\textbf{Left:} Check 1---wiring contrast is $6.0\times$ for the active prior versus
+$1.0\times$ for a shuffled-edge control; the inert prior shows no contrast.
+\textbf{Middle:} Check 2---$\kappa$-$C(W)$ falls monotonically with prior weight
+$\lambda$ for the active prior (to $0.22$) and is flat for the inert one.
+\textbf{Right:} Check 3---the active prior's compression is distributed (top-axis
+share $0.08$), whereas the inert IPF-style collapse is single-axis dominated
+($0.83$; IPF reference $0.912$).}
+\label{fig:three_check}
+\end{figure}
+
+\subsection*{The fraction of the prior that reaches the objective}
+Check~4 asks whether the prior arrives; a separate question is how much of it
+arrives. Tracing the haematopoietic prior end to end, almost none does
+(Table~2 ). Direction and PMID are dropped at the database
+step, topology is discarded when the edges collapse to per-gene scalars, and the
+runtime reference library is hardcoded to ENCODE---which carries no direction
+column and omits 6 of the 12 haematopoietic TFs, including KLF1, the master
+erythroid factor, for which it contains no edges at all. The weight layer
+finally written to the training artefacts is uniformly zero.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{\textbf{Where the haematopoietic prior's information goes.} Each row is
+a stage of the injection pipeline. Percentages are relative to the TRRUST~v2
+source.}
+\label{tab:info_decay}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}p{2.4cm}p{2.3cm}p{7.6cm}r@{}}
+\toprule
+Stage & Object & Content retained & \% of source \\
+\midrule
+Source & TRRUST v2 human & 9{,}396 edges / 795 TFs (9{,}369 / 794 after removing 27 self-loops); direction + PMID + topology & 100\% \\
+\texttt{build\_\allowbreak tf\_\allowbreak database} & haematopoietic subset & 325 edges / 11 TFs; targets only & 3.5\% \\
+\texttt{build\_\allowbreak prior\_\allowbreak matrix} & per-gene scalars & 203 values; no direction, no topology & --- \\
+\texttt{matchTFandTG} & ENCODE reference & 954{,}377 edges; no direction column; 6/12 TFs absent & --- \\
+\texttt{geneWeight} & training artefact & all-zero ($\mathrm{nnz}=0$, all $796$ stage files) & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph*{Whether the discarded content is already implicit in a trained model.}
+We tested this directly. For each TF with at least three annotated targets in
+each direction we scored the decoder readout's unit-normalised gene directions
+against the TF's own direction,
+\[
+S=\overline{\cos(\Wmat_{:,g},\Wmat_{:,\mathrm{TF}})}_{g\in A}
+ -\overline{\cos(\Wmat_{:,g},\Wmat_{:,\mathrm{TF}})}_{g\in R},
+\]
+which is invariant to permutation, sign flip and rotation of the latent axes and
+can therefore be averaged across seeds. Over 23 human configurations and 93
+evaluable TFs, TRRUST's labels give $\overline{S}=+0.020$ (Wilcoxon
+$p=1.4\times10^{-4}$), above a detection-matched null ($p=2.7\times10^{-5}$) but
+$7.2\times$ weaker than relabelling the \emph{same} target sets by detection
+rate alone ($+0.143$). Sign is reproducible yet inconsistent between TFs, with 40 of
+93 are sign-locked across all 23 configurations, and 17 of those are inverted
+relative to the TRRUST convention. Of the 12 haematopoietic TFs only 6 have
+enough directed targets to test, and none retains a significant $S$ after
+detection-rate matching. Direction labels are therefore evidence about
+\emph{which} genes a TF targets, not about the sign with which a trained model
+represents them.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/fig_latent_directionality.pdf}
+\caption{\textbf{Testing whether TRRUST's direction labels are recoverable from
+the decoder readout.}
+\textbf{(A)} Mean $S$ for the real direction labels, for a control that
+relabels the same target sets by detection rate only, and for a
+detection-rate-matched null. The real labels exceed the matched null
+($p=2.7\times10^{-5}$) but are $7.2\times$ weaker than the expression-based
+control.
+\textbf{(B)} Per-TF mean $S$ over 93 TFs. 40 are sign-locked across all 23
+configurations; 23 of those are positive and 17 negative, i.e.\ inverted
+relative to the TRRUST convention.
+\textbf{(C)} The six haematopoietic TFs with enough directed targets to test,
+before and after detection-rate matching. None retains the effect, and GATA2
+changes sign. The remaining six TFs have fewer than three targets in one
+direction within the 20{,}466-gene universe.}
+\label{fig:latent_directionality}
+\end{figure}
+
+\clearpage
+\section*{C. Constructive validation on a second architecture with a real GRN}
+
+\textbf{Motivation.} All main-paper audits use the UNAGI prior-injection scheme.
+A reviewer can ask whether the $\kappa$-$C$ diagnostic is specific to that
+architecture. We therefore validate it on a \emph{second} decoder architecture
+wired with a \emph{real, published} TF-target GRN.
+
+\textbf{Real GRN.} The myeloid core regulatory network of Krumsiek et al.\ (2011,
+PLoS ONE, ``Hierarchical differentiation of myeloid progenitors''): 9 TFs and 27
+directed edges. It is hematopoietic-relevant, matching the paper's dominant
+hematopoietic analysis; the edge list is transcribed from that source's Fig.~1 A.
+
+\textbf{Second architecture.} A GRN-masked linear decoder (CellOracle-style
+structural prior), with latent $\Zmat$ $\to$ regulator activity $\mathbf{h}=\Zmat\Emat$
+$\to$ expression $\Xmat=\mathbf{h}\Wmat^{\!\top}$, where the decoder readout
+$\Wmat$ is masked so that only real GRN edges are free parameters and all
+non-edges are pinned to zero. This is structurally distinct from UNAGI's latent
+prior injection, because the GRN lives in the \emph{decoder readout geometry}. A vanilla
+twin uses a dense decoder (all 81 entries free); a random-sparse control uses the
+same 27 edges with random topology (specificity control).
+
+\textbf{Procedure.} For each of 40 random seeds we generate
+$(\Zmat,\Xmat_{\mathrm{vanilla}})$ and $(\Zmat,\Xmat_{\mathrm{GRN}})$ from the
+\emph{same} latent states and run
+\texttt{audit(Z, X\_vanilla, Z, X\_GRN)}
+(the published \texttt{kappa\_c\_audit} package;
+\texttt{code/p0\_4\_real\_grn\_second\_architecture.py};
+\texttt{data/p0\_4\_real\_grn\_results.json}).
+
+\textbf{Findings} (Fig.~\ref{fig:p0_4}):
+\begin{itemize}[leftmargin=1.2 em]
+\item $\kappa$-$C(W)$ (GRN-wired vs vanilla twin) $= 0.88$ $[0.81, 0.90]$, $<1$ in
+ all 40 replicates---a real but \emph{partial} decoder-gain under real-GRN
+ injection (milder than UNAGI's deep compression because a 27-edge GRN is a
+ partial prior, not a full collapse).
+\item $\kappa$-$C(Z) = 1.00$ exactly---the latent is shared, so the signal is
+ purely decoder-structural, confirming the dual-spectrum isolation works on the
+ second architecture.
+\item The decoder readout participation-ratio and effective-rank are compressed for
+ the GRN-wired decoder (PR ratio $0.87$ $[0.71, 1.07]$, $90\%$ of replicates
+ $<1$), corroborating the structural view.
+\item The random-sparse control compresses similarly, confirming $\kappa$-$C$
+ responds to decoder \emph{structural constraint} (not to a specific topology)---
+ consistent with $\kappa$-$C$ being a decoder-gain classifier (Box~2).
+\end{itemize}
+
+\noindent\textbf{Conclusion.} The audit is not tied to UNAGI, because it recovers a real-GRN
+signature on a structurally distinct, GRN-masked decoder. \textbf{Scope note.}
+Expression $\Xmat$ is simulated under the real GRN topology (the ground-truth
+decoder \emph{is} the GRN). A full in-vivo validation---training a
+CellOracle-scVI / VEGA model on real scRNA with a real GRN and auditing it---
+requires external GPU, data and pipelines and is the natural empirical extension;
+\texttt{code/p0\_4\_real\_grn\_second\_architecture.py} provides the reusable audit path (\texttt{from kappa\_c\_audit import audit}); the same path is used in section~D below for the real-scRNA in-vivo validation.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/fig_p0_4_real_grn.pdf}
+\caption{\textbf{Real-GRN validation on a second, GRN-masked decoder architecture.}
+\textbf{Left:} decoder readout singular-value spectrum---the real-GRN (blue) readout
+is lower-rank than the dense vanilla (grey) twin. \textbf{Middle:} readout
+participation-ratio ratio (GRN / random-sparse vs vanilla) is $<1$ across
+replicates, i.e.\ the audit detects the structural compression. \textbf{Right:}
+$\kappa$-$C(W)\approx 0.88$ (below unity in every replicate; fixed-point identity
+for a linear readout) while $\kappa$-$C(Z)\approx 1$ (latent shared, so the signal
+is decoder-structural).}
+\label{fig:p0_4}
+\end{figure}
+
+\subsection*{Recommended reporting template}
+``Across $N$ prior-injected runs, the decoder readout stayed in the vanilla band
+($0/N$ reached deep compression, $\kappa$-$C$ companion readout reported). $m/M$ showed latent
+reorganisation. The four-check protocol classifies $k/N$ runs as prior-active
+(gradient PASS, $\lambda$-scan PASS, structural-bound PASS); the remaining
+runs show decoder-invariant, data-inherent or training-dynamics effects.''
+
+\clearpage
+\section*{D. In-vivo validation on real single-cell RNA-seq}
+
+\textbf{Motivation.} The real-GRN validation in section~C uses
+simulated expression (the ground-truth decoder is the real GRN). Here we ask
+whether the dual-spectrum signature---decoder-structural signal in
+$\kappa$-$C(W)$ while the latent stays fixed ($\kappa$-$C(Z)=1$)---also holds on
+real biological data.
+
+\textbf{Data.} Paul et al.\ (2015) mouse hematopoiesis scRNA-seq
+(\texttt{scanpy.datasets.paul15}; 2,730 cells, 3,451 genes after quality
+filtering). Pre-processing used total-count normalisation to $10^4$ and
+$\log_1(+
+\mathrm{counts})$.
+
+\textbf{Regulators.} The eight Krumsiek TFs present in paul15 (Gata1, Gata2,
+Fli1, Tal1/SCL, Cebpa/C/EBP$\alpha$, Gfi1, Klf1/EKLF, Zfpm1/FOG1) plus the
+hematopoietic markers Egr1 and Runx1. Standardised TF expression serves as the
+shared real latent $\Zmat$ ($n=2,730$, $d=10$) for both the vanilla and GRN-masked
+configs, so $\kappa$-$C(Z)\equiv1$ by construction.
+
+\textbf{Real GRN.} A data-derived TF$\to$target network, in which each of the 3,451
+target genes we regress its expression on the ten regulators (Ridge $\alpha=1$)
+and keep the top-three predictors by absolute standardised coefficient. This
+yields 10,353 real edges and represents the empirically-optimal regulator set
+that a biological prior could impose. A random-sparse control matches this edge
+count but randomises the regulator assignment for each gene.
+
+\textbf{Architecture.} A GRN-masked linear decoder (CellOracle optimizer-stage
+analogue), with $\Xmat=\Zmat\Wmat^{\!\top}$ with $\Wmat$ masked by the real GRN. The
+vanilla twin uses a dense readout; both are fit by the same Ridge ($\alpha=1$)
+protocol used throughout the paper and by the \texttt{kappa\_c\_audit} package
+(\texttt{code/p0\_4\_in\_vivo.py}; \texttt{data/p0\_4\_in\_vivo\_results.json};
+\texttt{figures/fig\_p0\_4\_in\_vivo.pdf}).
+
+\textbf{Findings} (Fig.~\ref{fig:p0_4_in_vivo}):
+\begin{itemize}[leftmargin=1.2 em]
+\item $\kappa$-$C(W)$ for the real-GRN mask vs vanilla is $1.03$ point estimate,
+ $0.94$ bootstrap mean $[0.93,0.96]$, which excludes $1.0$---a mild ($\sim$6\%) but statistically significant decoder compression, not exact vanilla-equivalence. The bootstrap (mean $0.94$, 95\% CI $[0.93,0.96]$) is the honest summary; the $1.03$ point estimate is upward-biased and should not be read as a perfectly invariant decoder. A faithful real GRN therefore leaves a small, detectable decoder footprint---consistent with the dual-spectrum picture, in which a genuine GRN perturbs the readout slightly rather than leaving it invariant---while still showing no deep compression ($\kappa\gg0.5$), in line with the main paper's $0/33$ null that prior injection does not change how well latent predicts expression.
+\item The random-sparse control gives $\kappa$-$C(W)=0.72$, well below the
+ vanilla-equivalence band, confirming that the audit responds to
+ \emph{biological structure} and not merely to sparsity.
+\item $\kappa$-$C(Z)=1.00$ exactly, so any signal is purely decoder-structural.
+ the dual-spectrum isolation reproduces on real scRNA-seq.
+\item The decoder readout participation-ratio ratio is $1.02$ (real GRN vs
+ vanilla), corroborating that the real-GRN readout is rank-preserving.
+\end{itemize}
+
+\noindent\textbf{Conclusion.} On real mouse-hematopoiesis scRNA-seq a real, data-derived GRN prior produces only a mild, statistically significant decoder alteration (bootstrap mean $0.94$, 95\% CI $[0.93,0.96]$), whereas an arbitrary sparse topology compresses the readout more strongly ($\kappa$-$C(W)=0.72$). This confirms both the audit's specificity and
+the dual-spectrum isolation on real biological data.
+
+\textbf{Scope note.} This is the decoder/optimizer-stage in-vivo validation; a
+full base-model run (where the GRN also perturbs the latent, e.g.\ scVI+CellOracle
+on GPU) remains a natural deeper extension, and the reusable
+\texttt{from kappa\_c\_audit import audit} path already supports it.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/fig_p0_4_in_vivo.pdf}
+\caption{\textbf{In-vivo dual-spectrum validation on real scRNA-seq.}
+\textbf{Left:} decoder readout singular-value spectrum for the real-GRN-masked
+decoder (blue) closely tracks the dense vanilla readout (grey), i.e.\ the real
+prior preserves rank. \textbf{Middle:} $\kappa$-$C(W)$ for the real GRN (green) is $1.03$ point estimate ($0.94$ bootstrap mean, 95\% CI $[0.93,0.96]$)---a mild but significant compression whose interval excludes $1.0$---versus $0.72$ for a random-sparse mask (purple), showing audit specificity. \textbf{Right:}
+$\kappa$-$C(Z)=1$ (latent shared) and the readout participation-ratio ratio
+$\approx1$, confirming dual-spectrum isolation on real data.}
+\label{fig:p0_4_in_vivo}
+\end{figure}
+
+\clearpage
+
+\subsection*{Note F}
+
+The audit shifts attention to what targeted perturbation can do when a model is perturbation-ready. We use generalized Rayleigh quotient (GRQ) perturbation as the readout on a fixed 31-gene erythroid target set (Supplementary Table~S3): maximizing the ratio of target-gene response to total response, $\mathbf{v}^* = \argmax_{\mathbf{v}} \mathbf{v}^\top\Jmat_{\mathcal{T}}^\top\Jmat_{\mathcal{T}}\mathbf{v} / \mathbf{v}^\top(\Jmat^\top\Jmat+\epsilon\mathbf{I})\mathbf{v}$ (Methods). On four G-VAE seeds (the $gvae\_hema\_scan$ spectral-shaping models s9--s12, within the vanilla-equivalent region; Supplementary Table~S6), decoder traversal along the GRQ direction reaches 11.3--16.8$\times$ erythroid specificity (Supplementary Figure~S6; per-seed values, Supplementary Table~S6), and the linear-readout GRQ concentration is 6.8--16.1$\times$ (Supplementary Figure~S4). The optimal direction is seed-specific (pairwise $|\cos\theta|\le0.26$) and no single transcription factor dominates its gene-level loading (Supplementary Figure~S4, Supplementary Table~S4).
+
+Two cautions bound this result. First, the demonstration uses vanilla-equivalent models whose decoders are regular; under the audit, no prior-injected model qualifies as perturbation-ready, so GRQ is a capability proof and a readout, not a recipe for prior-injected pipelines. Second, readout choices matter. Cell-type-conditional perturbation (CTCP) appears to improve specificity by $+3.8$--$8.2\times$, but this gain disappears under label-shuffling permutation tests with test-set exclusion (real 19.2$\times$ vs.\ shuffled 19.4$\times$; paired $p=0.52$; Supplementary Figure~S5), showing that the apparent conditional gains were sample-size rebalancing artifacts.
+
+At the other extreme, decoder-direct perturbation (DDP)---applying the GRQ direction directly to the decoder without re-encoding---reaches 92--156$\times$ specificity only at $\|\Delta\mathbf{z}\|=5$--$20$ and becomes non-physiological at larger amplitudes (Supplementary Figure~S6). Together with the specificity--manifold Pareto frontier (Supplementary Figure~S6), these readouts define the boundary of virtual perturbation. The diagnostic can screen a model \emph{out} when its response geometry is not organized into separable programs, and the CTCP and DDP controls delimit what the remaining readouts can and cannot support---GRQ directions are highly target-specific yet, on a real CRISPR benchmark, fail to predict the observed response (Supplementary Figure~S12).
+
+\input{latent_residence_conclusion}
+
+The UNAGI audit establishes the decoder/latent decoupling on one model family. Two questions remain, namely whether the dissociation generalizes to other VAE architectures, and whether the $\kappa$-$C$-$Z$-detected latent reorganization corresponds to real biological structure rather than a training artifact. We address both on scVI~\cite{lopez2018}, an independent VAE architecture with a different decoder parameterization, using the same Ridge-readout protocol as the UNAGI audit (Methods).
+
+\subsection*{Note E}
+
+A natural objection is whether a prior contributes its \emph{specific wiring} or merely the sparsity and degree structure it induces; for pathway priors the latter alone has been argued to suffice~\cite{caranzano2026}. We answer this at the network layer, without retraining, by degree-preserving rewiring of the prior's TF--target bipartite graph. Every transcription factor's out-degree and every target's in-degree are held fixed while the wiring is randomized. To keep the test non-circular, the statistics use only TRRUST-derived TF$\to$non-TF edges (267 edges over 11 hematopoietic factors, 218 targets); the curated TF$\to$TF core network is excluded because it is itself folded into the prior. The null comprises $200$ rewirings, each performing ten times the edge count in edge swaps.
+
+The prior's wiring does carry a small amount of information beyond its degree sequence. The mean pairwise Jaccard overlap of the 11 factor target sets is $0.0189$, against a degree-matched null of $0.0159\pm0.0013$ ($z=+2.36$, empirical $p=0.025$; $n=200$). The prior is more co-regulated than random wiring of the same degrees. The effect is nonetheless small---a $19\%$ relative excess, an absolute difference of $0.003$. Our second pre-specified statistic, the number of genes targeted by $\geq3$ factors, equals exactly $7$ under every null draw (null variance zero), so it is entirely determined by the degree sequence and carries no discriminative power; we do not use it.
+
+The analysis also exposes a coverage limitation on the prior-construction side. The 11 hematopoietic factors differ by more than an order of magnitude in their TRRUST non-TF$\to$TF target counts (SPI1 $61$, GATA1 $50$, CEBPA $50$, RUNX1 $39$, PAX5 $21$, GATA2 $17$, LMO2 $10$, GFI1 $6$), whereas KLF1 has only $2$ targets and GFI1 B only $1$. KLF1 is the master erythroid regulator, and its coverage is markedly thin---consistent with the runtime reference library being hardcoded and omitting $6$ of the $12$ hematopoietic factors, KLF1 among them. The prior is therefore intrinsically thin on the erythroid branch, which is a limitation of prior construction rather than of the model.
+
+This is a network-layer statement, and its scope should be read together with the injection-path finding above, because prior content has no functional route into the objective in the audited implementation, content-level differences of this kind do not enter any spectral observable. The subsection therefore bears neither on the decoder null nor on the latent reorganization; its value is to settle the content-versus-sparsity distinction at the network layer first, so that the spectral results are not asked to answer it.
+
+\section*{Y. The two numerical gaps, now closed}
+
+This note closes the two quantitative checks the Synthesis section flagged as outstanding: a power assessment for the like-for-like participation-ratio test, and a sensitivity analysis of the structural upper bound. Both are computable from artefacts already on disk and neither changes the headline $0/33$ null; what they change is what the reported intervals and bound may be read as claiming.
+
+\subsection*{Y.1 Power of the like-for-like participation-ratio test}
+
+Both spectra are summarised with the same functional---the participation ratio $R_{\mathrm{eff}}=(\sum_i\lambda_i)^2/\sum_i\lambda_i^2$---giving per-configuration ratios $r_W$ (decoder) and $r_Z$ (latent) against each configuration's vanilla baseline, and the dissociation is the paired log-difference $d_i=\log r_{Z,i}-\log r_{W,i}$ tested against zero. Across the $33$ configurations the pattern is as reported: mean $r_W=0.950$, mean $r_Z=0.774$, and $\bar d=-0.238$.
+
+The $33$ configurations are not independent. They trace to three training seeds (seed~42: $19$ configurations, seed~123: $7$, seed~456: $6$; one configuration carries no recoverable seed label), so we computed power in two regimes: a naive one-sample $t$-test on all $33$ values, and a $t$-test on the three seed means ($\mathrm{df}=2$), which is the conservative cluster-robust treatment at this number of clusters. The seed means are $-0.082$ (42), $-0.458$ (123) and $-0.386$ (456); all three are negative, and the between-seed standard deviation of the means is $0.199$ against a within-seed standard deviation of $0.258$, implying an intraclass correlation of $0.373$ and a design effect of $4.6$. Both the variance components and the power were estimated from the per-configuration values (\texttt{code/closing\_gaps\_power\_and\_dissociation.py}; \texttt{data/closing\_gaps\_power\_and\_bound.json}).
+
+At the observed effect ($|\bar d|=0.238$) power is $0.985$ under the i.i.d. view and $0.347$ under the cluster view, a $2.8\times$ inflation. The minimum detectable effect at $80\%$ power is $0.160$ in the naive regime and $0.509$ in the cluster regime---roughly twice the observed effect. The consequence is a statement about the interval rather than about the direction: the reported paired interval is narrow because the test treats correlated configurations as independent, and it should not be read as a calibrated $95\%$ interval for a three-seed population. Since the observed effect lies below the cluster-regime detection floor, this design would miss a genuine dissociation of the size we observed about two thirds of the time.
+
+This is the quantitative form of a claim the manuscript already makes qualitatively, and it sharpens rather than weakens it. What the three-seed design supports is the direction and the seed-level sign consistency (three of three seed means negative), not the width of the interval; the inferential weight for the dissociation rests on the paired Norman design ($D=-0.143\pm0.059$, $t=-4.9$, four paired seeds, both arms refit at the same seeds), which supplies its own error bar. The power assessment therefore also explains why the manuscript declines to convert the latent-side counts into a significance claim.
+
+\subsection*{Y.2 Sensitivity of the structural upper bound}
+
+The bound is quoted in Figure~5C and the Results as $\kappa_{\mathrm{gap}}\leq(1-C)\cdot\mathrm{tr}(\Hmat_V)/\mathrm{gap}_V$, evaluated at $C=0.90$ with $\mathrm{tr}(\Hmat_V)=10{,}590$ and $\mathrm{gap}_V=9{,}663$, giving $0.110$. Two questions arise: is the number sensitive to the single measured input it uses, and is it a bound in the sense the sentence implies?
+
+\emph{Sensitivity.} The bound scales as $(1-C)/t_{\mathrm{axis}}$, where $t_{\mathrm{axis}}=\mathrm{gap}_V/\mathrm{tr}(\Hmat_V)=0.912$ is the vanilla top-axis share. Varying that share over its admissible range moves the bound hardly at all: $0.125$ at $t_{\mathrm{axis}}=0.80$, $0.110$ at $0.912$, $0.101$ at $0.99$. Varying the compression is what moves it ($0.548$ at $C=0.50$, $0.110$ at $C=0.90$, $0.036$ at $C=0.967$). No admissible value of the top-axis share rescues the training target of $\kappa_{\mathrm{gap}}=2$, so the sensitivity analysis reported here confirms that the conclusion is insensitive to the one measured input it depends on. For reference, the top-axis share measured on the $30$ archived UNAGI decoder readouts is $0.296\pm0.040$ (range $0.236$--$0.370$), so the IPF value of $0.912$ is a genuine outlier at $15.4$ standard deviations above the family mean---it is the most single-axis-dominated readout in the project, which is precisely why the structural argument bites there and not elsewhere.
+
+\emph{Conditionality.} The bound's derivation assumes the perturbation acts without rotating the leading eigendirection, so that the attainable change in $\lambda_1$ is limited by the mass removed from the model rather than by $\lambda_1$ itself. Without that assumption the envelope is $\lambda_1/\mathrm{gap}_V=(1+\lambda_2/\mathrm{gap}_V)$, which at the same inputs is $0.9995$---$9.1\times$ larger. Both remain below the target of $2$, so the infeasibility claim survives either way, but the quoted $0.11$ is a conditional ceiling and the text now states the condition. The primary evidence for the infeasibility is in any case the measured quantity rather than the envelope: $\kappa_{\mathrm{gap}}$ stays in $0.009$--$0.024$ across the whole $\lambda=0.1/1/10$ scan, two orders of magnitude below the target, and the envelope serves as corroboration.
+
+\noindent\textbf{Take-away.} Neither gap was load-bearing: the $0/33$ decoder-gain null is band-independent and untouched by both. Closing them does change two secondary readings---the paired participation-ratio interval is not calibrated for a three-seed population, and the structural bound is conditional on the leading direction surviving---and both are now stated rather than implied.
+
+\clearpage
+
+\subsection*{Note N: the scVI control: an injection that never reached the model (full)}
+
+\subsection*{An injection that never reached the model, the scVI control}
+\label{sec:benchmark}
+
+We re-ran the scVI control on the pbmc3 k single-cell dataset~\cite{zheng2017} exactly as its archived script was written (Methods). A vanilla model, and a model in which eight cell-type clusters (k-means on the PCA manifold) were injected as a categorical \emph{structural prior}---the scVI-native analogue of injecting an external biological program. Applying the $\kappa$-$C$ protocol to each model yields the decoder readout $\Wmat$ (Ridge regressor $\Zmat\to\Xmat$, $\alpha=1$) and the latent covariance spectrum (Methods).
+
+The pair, as written, injected nothing. scVI's \texttt{labels\_key} does not condition the model, because a label field reaches the generative model only through \texttt{dispersion=gene-label}, whose default is \texttt{dispersion=gene}, and the archived script did not set it. The fitted parameter count is identical to the vanilla model ($1{,}334{,}526$), and the prior-arm latent is \emph{bitwise} identical to the vanilla latent ($\max|\Delta\Zmat|=0$) at every one of ten seeds. The reported contrast was therefore two draws of one configuration, and its separation lies inside the seed null, with $\kappa$-$C(W)=0.87$ against a ten-seed null of $1.14\pm0.34$ ($z=-0.8$), and an effective rank of $12.6\to15.7$ inside a ten-seed vanilla range of $11.5$--$16.6$ ($14.0\pm1.8$). This pair is therefore not a cross-architecture instance of the dissociation.
+
+Registering the same clusters the way the Methods describe---as a decoder-side categorical covariate, the route used for the perturbation benchmark below---does move the audit. Over six paired seeds the decoder readout compresses to $\kappa$-$C(W)=0.73\pm0.05$ (range $0.68$--$0.79$, $z=-11$ against the family-matched seed null $1.02\pm0.03$). The latent trace contracts modestly ($\kappa$-$C(Z)=0.84\pm0.04$, $z=-3.0$) and the latent effective rank does not move beyond seed scatter ($1.12\pm0.11$, $z=+0.7$). Because the covariate enters the decoder as an additional input, part of the readout response is architectural; what the audit establishes is that a conditioning which actually reaches the decoder is legible in the readout, whereas a registration that does not reach it is invisible. The paired difference $\kappa$-$C(Z)-\kappa$-$C(W)=+0.12\pm0.06$ ($t=4.5$, $n=6$) lies outside the same null ($-0.03\pm0.06$), so the two spectra still move by different amounts (Supplementary Table~S11).
+
+The two architectures above differ in injection modality as well as in decoder parameterization, so neither isolates the effect of how the prior is \emph{constructed}. We therefore also audited a third regime in which the prior is built by an entirely different method, namely a one-shot Ridge regression of expression on TF activity, following the CellOracle inference protocol~\cite{kamimoto2023}. Here the prior is not a curated database lookup but a per-dataset regression fit, so the comparison tests whether the decoder-side null is a property of our prior source rather than of prior injection as such. Eight single-TF priors (GATA1, KLF1, TAL1, GFI1 B, GATA2, LMO2, NFE2, RUNX1) were constructed on the full gene space and each was audited against its own prior-free baseline. Every one falls in the subcritical regime ($\kappa\le0.019$; Figure~6 d), i.e.\ none comes within a factor of $26$ of the critical threshold $\kappa=0.5$ in $\kappa$ itself (a distinct quantity from the $24.8\times$ reference-gap margin quoted below). Because the original audit's vanilla reference could not be reproduced exactly from the archived loadings (the closest decoder\_unified configuration differs by $3\%$), we report this as a bounded statement rather than a point estimate. The largest Hessian perturbation across the eight priors would require a vanilla gap of $18.1$ to reach criticality, whereas the smallest reference gap we measured is $449.6$, leaving a safety factor of $24.8\times$. The subcritical verdict is therefore reference-robust and does not depend on which vanilla baseline is chosen. A regression-fitted GRN prior, on a different architecture and a different gene universe, is subject to the same decoder-side insensitivity.
+
+\noindent\emph{Relocated verbatim from the main text (Section 2.7); it completes the record of this subsection at release r83.}
+
+Neither architecture isolates how the prior is \emph{constructed}, so we also audited a prior built by one-shot Ridge regression of expression on TF activity (CellOracle protocol~\cite{kamimoto2023}) rather than a curated lookup. Eight single-TF priors (GATA1, KLF1, TAL1, GFI1B, GATA2, LMO2, NFE2, RUNX1) were each audited against its own prior-free baseline; every one is subcritical ($\kappa\le0.019$; Figure~\ref{fig:prior_activity}d), none within a factor of $26$ of $\kappa=0.5$ in $\kappa$ itself (distinct from the $24.8\times$ reference-gap margin). Because the archived vanilla reference is not exactly reproducible (closest configuration differs by $3\%$), the verdict is stated as a bound: the largest Hessian perturbation would need a vanilla gap of $18.1$ to reach criticality, against a smallest measured gap of $449.6$, a safety factor of $24.8\times$, so it is reference-robust and a regression-fitted GRN prior on a different architecture and gene universe is subject to the same decoder-side insensitivity.
+
+
+\subsection*{Note O: what the decoder audit measures, and the kappa-C-Z companion diagnostic (full)}
+
+\subsection*{The decoder audit measures a predictability ratio, with synthetic sensitivity and specificity controls}
+\label{sec:predictability}
+
+We define the decoder readout metric as an aggregate predictability ratio --- the total per-gene $R^2$ of the prior-injected model divided by that of the vanilla model, $\kappa\text{-}C(W)=\allowbreak\sum_g R^2_g(\text{pert})\big/\sum_g R^2_g(\text{vanilla})$, where $R^2_g$ is the fraction of gene $g$'s variance explained by the latent code and both models are standardised per gene before the Ridge fit. Unlike the trace ratio $\tr(\Wmat^\top\Wmat)$, this quantity does not require the latent columns to be uncorrelated, which trained latent codes are not. This identity unifies the sensitivity scan of Supplementary Figure~S2---zeroing latent dimensions removes predictability, so the audit fires---with the headline null---prior injection preserves aggregate predictability, so the decoder audit stays at unity. To test the identity directly we ran a synthetic $2\times N$ dose--response in which the ground-truth decoder and latent covariance are known, using the audit protocol unchanged (Supplementary Figure~S14). Sweeping the perturbed model's relative predictability from $1.0$ down to $0.15$ drives $\kappa$-$C(W)$ from $1.000$ to $0.152$, matching the target ratio to within $1\%$ and crossing the deep-compression boundary at $R^2=0.5$ (sensitivity). Fixing the decoder but reorganising the latent covariance---contracting up to $95\%$ of the latent directions, which lowers $\kappa$-$C(Z)$ from $1.00$ to $0.11$ and the effective-rank ratio to $0.19$---leaves $\kappa$-$C(W)=1.00$ inside a calibrated synthetic null band of $[0.999,1.001]$ (specificity); attenuating the latent$\to$gene directions likewise leaves $\kappa$-$C(W)=1.000$ (invariance). The decoder audit is therefore a test of latent$\to$expression \emph{predictability}, not of decoder \emph{geometry}. The 0/33 decoder invariance is a precise statement that prior injection does not change how well the latent predicts expression, and should not be over-read as the stronger claim that the decoder is unaltered. We state this boundary explicitly so the null is not credited with more than it shows. How the statistic is constructed, how it compares with the trace ratio, and the live-path control are given in full in the Supplementary Information.
+
+\subsection*{A $\kappa$-$C$-$Z$ companion diagnostic recovers the latent reorganization that the decoder-only $\kappa$-$C$ misses}
+
+The tissue-dependent latent reorganization in Figure~2 is invisible to the decoder-only $\kappa$-$C$ audit, which never reaches deep compression ($0/33$; the two spectra are not in trace opposition---the trace product is not conserved). We therefore extended the diagnostic to the $\Zmat$ covariance spectrum ($\kappa$-$C$-$Z$; Methods). Across the 29 prior/ablation runs with computable $\Zmat$ spectra, 22/29 showed directional latent compression (family-matched $\sigma$-flags only where $\geq2$ UNAGI vanilla seeds existed: neural crest R0), whereas $\kappa$-$C$(W) remained 0/29 (0/33 across the full configuration audit; Supplementary Figure~S11, Supplementary Table~S9). In hematopoiesis, 16/19 prior runs compressed directionally (naive two-sided $p=0.0044$; the three-cluster seed-clustered permutation is floored at $p=0.25$ and is therefore uninformative rather than null, see above), but with only one vanilla seed on disk a $\sigma$-flag could not be calibrated. Neural crest supplied three vanilla seeds (R0) and produced two strong $\sigma$-flags (R2 curriculum-only, $\zeta_{\Zmat}=+2.40$; R7 mixed-TF prior, $\zeta_{\Zmat}=+2.11$), while 5/9 runs compressed directionally. Lung fibrosis remained underpowered ($n=1$). The dissociation is therefore quantitative: the null decoder audit reports decoder invariance, not an absent latent effect.
+
+\noindent\emph{Relocated verbatim from the main text (Section 2.5); it completes the record of this subsection at release r83.}
+
+A synthetic $2\times N$ dose--response with known ground truth tests the identity directly (Supplementary Figure~S14): sweeping the perturbed model's relative predictability from $1.0$ down to $0.15$ drives $\kappa$-$C(W)$ from $1.000$ to $0.152$, matching the target ratio to within $1\%$ and crossing the deep-compression boundary at $R^2=0.5$. Fixing the decoder but reorganising the latent covariance, contracting up to $95\%$ of the latent directions ($\kappa$-$C(Z)$ falls from $1.00$ to $0.11$; effective-rank ratio $0.19$), leaves $\kappa$-$C(W)=1.00$ inside a calibrated synthetic null band of $[0.999,1.001]$, and attenuating the latent$\to$gene directions likewise leaves $\kappa$-$C(W)=1.000$.
+
+
+\section*{Note on what this addendum carries, and what it does not}
+
+This addendum carries the paper's supplementary evidence that the main text does not restate: the clustered-permutation prescription (\textbf{A}), the four-check prior-activity protocol in full (\textbf{B}), constructive validation on a second architecture with a real GRN (\textbf{C}), in-vivo validation on real scRNA-seq (\textbf{D}), the two numerical gaps now closed (\textbf{Y}), the scVI control re-derivation (\textbf{N}) and the predictability-ratio definition with its synthetic sensitivity and specificity controls (\textbf{O}), together with the methods units \textbf{R}--\textbf{X}.
+
+Two categories of material that earlier releases printed here in full have been removed as redundant. First, units whose entire substance is stated in the main text under the \emph{same} subsection title --- the tissue-dependent latent reorganisation, the $0/33$ verdict, the perturbation-benchmark transfer, the compression-activity distinction, the $\kappa$-$C$ diagnostic, the decoder-insensitivity explanation and the cross-implementation check --- are now carried by the main text alone, which retains the condensed form together with the figures and tables. Second, the long-form method and discussion units (formerly Notes Y--AN) are released separately as \texttt{docs/si\_extended\_methods.pdf}. The supporting figures S1--S17 and tables S1--S14 are unchanged and remain in the Supplementary Information.
+
+\section*{R. Perturbation-readout methodology: GRQ, CTCP and DDP in full}
+
+This note carries, in full, the three perturbation-readout Methods subsections relocated at release r85. The main text states the GRQ objective, the numerical-stability constant, the specificity definition, the CTCP shrinkage rule and the DDP amplitude grid; what follows is the complete construction, including the target set, the permutation null with test-set exclusion, the off-manifold caveat and the specificity ranges.
+
+\noindent\emph{Relocated verbatim from Methods, subsections ``Generalized Rayleigh Quotient perturbation'', ``Cell-type-conditional perturbation (CTCP)'' and ``Decoder-direct perturbation (DDP)'' (release r85); the main text now carries the condensed subsection ``Perturbation readouts (GRQ, CTCP, DDP)''.}
+
+\subsection*{Generalized Rayleigh Quotient perturbation}
+
+GRQ, CTCP, and DDP are presented as illustrative downstream readouts of a perturbation-ready model, not as contributions of this work. They demonstrate what the diagnostic enables rather than constituting a new perturbation method. Given a perturbation-ready model, targeted perturbation is formulated as finding a latent direction $\mathbf{v}^* \in \mathbb{R}^D$ that maximizes target gene specificity while minimizing off-target expression change. Let $\mathbf{J} \in \mathbb{R}^{G \times D}$ be the decoder Jacobian at the cell's latent position, and let $\mathcal{T} \subset \{1,\ldots,G\}$ be the index set of target genes. The GRQ objective is:
+\begin{equation}
+\mathbf{v}^* = \argmax_{\mathbf{v}} \frac{\mathbf{v}^\top (\mathbf{J}_{\mathcal{T}}^\top \mathbf{J}_{\mathcal{T}}) \mathbf{v}}{\mathbf{v}^\top (\mathbf{J}^\top\mathbf{J} + \epsilon\mathbf{I}) \mathbf{v}},
+\end{equation}
+where $\epsilon=0.01$ ensures numerical stability. The solution is the dominant generalized eigenvector of $(\mathbf{J}_{\mathcal{T}}^\top\mathbf{J}_{\mathcal{T}}, \mathbf{J}^\top\mathbf{J} + \epsilon\mathbf{I})$, computed via `scipy.linalg.eigh` in $O(D^3)$ time.
+
+Perturbation is applied as $\mathbf{z}' = \mathbf{z} + \alpha\mathbf{v}^*$, where $\alpha$ controls the perturbation magnitude. Specificity is quantified as the ratio of mean absolute expression change in target genes to mean absolute change in non-target genes:
+\begin{equation}
+\text{Specificity} = \frac{\frac{1}{|\mathcal{T}|}\sum_{i\in\mathcal{T}}|\Delta x_i|}{\frac{1}{G-|\mathcal{T}|}\sum_{i\notin\mathcal{T}}|\Delta x_i|}.
+\end{equation}
+
+\subsection*{Cell-type-conditional perturbation (CTCP)}
+
+CTCP extends the GRQ framework by conditioning on cell-type labels. For each cell type $c$, the CTCP direction $\mathbf{v}^*_c$ is computed from cells of type $c$ only. The null distribution is constructed via label-shuffling permutation tests with test-set exclusion. Cell-type labels are randomly permuted, test cells are excluded from the training pool to prevent data leakage, and CTCP is executed on shuffled labels exactly as on real labels. Real and shuffled specificities are compared as paired cluster--seed observations across the four seeds ($n=48$; real $19.2\times$ vs.\ shuffled $19.4\times$; paired $p=0.52$; Supplementary Fig.~S6). Shrinkage is applied via $\lambda = n/(n+200)$, where $n$ is the number of cells of the target type (shrinkage intensity $\tau=200$ derived from the expected Frobenius risk; Supplementary Note~3).
+
+\subsection*{Decoder-direct perturbation (DDP)}
+
+DDP probes the decoder directly, without re-encoding or manifold projection. Starting from the mean latent $\bar{\mathbf{z}}$ of the reference pool, we decode $\bar{\mathbf{z}} + \alpha\mathbf{v}^*$ along the GRQ direction at amplitudes $\alpha \in \{5, 10, 20, 50, 100\}$; the displaced code is never passed back through the encoder. Because the encoder constraint is removed, DDP is an off-manifold extrapolation, with decoder specificity along $\mathbf{v}^*$ reaches 92--156$\times$ for $\|\alpha\mathbf{v}^*\|\in[5,20]$ and becomes non-physiological beyond (non-erythroid output turns negative for $\|\alpha\mathbf{v}^*\|\ge50$; Supplementary Fig.~S7). DDP is therefore a decoder stress test and an upper bound on achievable perturbation specificity, not an on-manifold prediction.
+
+\clearpage
+
+\section*{S. Dataset provenance and preprocessing specification}
+
+This note carries the per-dataset preprocessing specification relocated from Methods at release r85. The main text states the four GEO accessions, the cell and gene counts, the R9 prior-injection model, the Harmony step for the IPF model, the normalisation and the highly variable gene selection; what follows is the same specification in its original per-dataset layout, retained so that the pipeline can be reconstructed either way.
+
+\noindent\emph{Relocated verbatim from Methods, ``Data preprocessing'' (release r85); the main text retains the same specification in a single condensed paragraph.}
+
+\subsection*{Data preprocessing}
+
+\textbf{Hematopoietic differentiation (GSE150774).} Human bone marrow-derived CD34$^+$ hematopoietic stem and progenitor cells differentiated along erythroid, myeloid, and lymphoid lineages. Data were downloaded from GEO (GSE150774), comprising 29,985 cells $\times$ 20,466 genes after quality control. Counts were library-size normalized to 10,000 counts per cell and log-transformed ($\log(1+x)$). Highly variable genes ($n=4,000$) were selected using the Seurat v3 variance-stabilizing transformation.
+
+\textbf{Lung fibrosis (GSE136831, human IPF).} Idiopathic pulmonary fibrosis data (GSE136831) comprising 19,999 cells $\times$ 41,995 genes after quality control (R9 prior-injection model; static single-timepoint). Processing followed the same normalization protocol as hematopoietic data.
+
+\textbf{Human IPF (GSE136831, human subset).} Idiopathic pulmonary fibrosis data from 8,532 cells $\times$ 16,299 genes. Processing as above. For the IPF model, donor-level batch effects were regressed using Harmony~\cite{korsunsky2019} before model training.
+
+\textbf{Neural development (mouse cortex).} Mouse cortical development timecourse (GSE153162), comprising 21,078 cells $\times$ 11,932 genes. Processing as above.
+
+
+\clearpage
+
+\section*{T. PG-UNAGI prior configurations, encoder graph and injection-path trace in full}
+
+This note carries the material removed from the UNAGI architecture and prior-injection Methods subsection at release r85: the full prior-configuration inventory, the lung mouse/human orthology caveat, the finding that the encoder's graph is the cell graph rather than the prior's TF--target adjacency, the audit of what consumes the prior's content, and the step-by-step injection-path trace. Every number, run identifier and file name is retained; only the location changed.
+
+\noindent\emph{Relocated verbatim from Methods, ``UNAGI architecture and prior injection'' (release r85); a one-sentence summary is retained in the main text.}
+
+Prior configurations spanned three orders of magnitude in edge count: from a 2-TF prior (R11: KLF1+TAL1, 21 edges) through mid-size lineage priors (R84: 84 edges, R107: 107 edges, R111: 111 edges) and multi-lineage priors (R165: erythroid-biased, 165 edges) to pan-lineage priors (R13: 325 edges) and full blood priors (R15: 166 edges, drawn from the hematopoietic TF database). For neural crest, prior configurations included curriculum-only (R2), mixed-distribution-only (R3), TF-prior-only (R4), and combined variants (R5--R7), plus the full neuro-prior (R1) and string network prior (R8). For lung fibrosis, the IPF disease prior (R9) incorporated TGF-$\beta$/SMAD and NF-$\kappa$B pathway targets.
+
+\noindent\emph{Relocated verbatim from Methods, ``UNAGI architecture and prior injection'' (release r85).}
+
+The lung dataset (GSE136831) is human IPF; TF-target mappings were taken from human-curated databases, and while core TFs (SMAD, NF-$\kappa$B, YAP1) are highly conserved between mouse and human, target-gene orthology may introduce uncertainty in edge specificity.
+
+\noindent\emph{Relocated verbatim from Methods, ``UNAGI architecture and prior injection'' (release r85).}
+
+Auditing the released source, we found that this adjacency is the cell graph and not the prior's TF--target adjacency, which is never used to build the encoder's graph.
+
+\noindent\emph{Relocated verbatim from Methods, ``UNAGI architecture and prior injection'' (release r85); the main text states the same finding once, in the condensed injection-path sentence.}
+
+Auditing the released implementation, we found no term that consumes the prior's TF--target set directly---there is no mask-weighted decoder regulariser and no instantiation of the likelihood-weighting branch---and the per-gene weight layer is identically zero (see \emph{Injection-path verification} below). In the released source, therefore, the prior's content has no functional route into the objective. Whether the training environment differed in this respect cannot be established from the retained artefacts, so the mechanism is stated at the level of the implementation.
+
+\noindent\emph{Relocated verbatim from Methods, ``Injection-path verification'' (release r85); a two-sentence summary is retained in the main text.}
+
+\paragraph*{Injection-path verification.} We traced the GRN prior from the database through to the training objective in the released source (\texttt{code/prior\_injection\_chain\_audit.py}). The prior database is converted to a per-gene weight vector and assigned to the training object as an attribute, but the call graph terminates at the assignment. No code reads the attribute, and the objective branch that would consume a per-gene weight vector (\texttt{LogLikelihoodLoss} with a \texttt{geneWeight} argument) has zero instantiation sites. We also inspected the per-cell gene-weight layer stored in the training artefacts, and it is identically zero in all $796$ stage files of the $29$ retained run--iterations, across all five iterations. The structural steps are exhaustive over the archived source as read, whereas the artefact-level check documents the channel as empty in every run whose stagedata survive; the executed code cannot be bound to the archive, because the run logs record execution on a remote host against a different copy of the package, so the mechanism is reported at the level of the archived implementation plus the recovered artefacts. This check is released as the fourth element of the prior-activity protocol (Supplementary Addendum, section~B).
+
+
+\clearpage
+
+\section*{U. Noise calibration and band provenance for the $\kappa$-$C$ diagnostic}
+
+This note carries the noise-calibration bookkeeping relocated from Methods at release r85: the derivation of the vanilla-equivalent region, the family-matched UNAGI recalibration with its seed inventory, the reason the released trace form is not used for classification, the cross-architecture reference values, the per-configuration $\kappa$ values that fall below the cross-family band, and the bounded form of the one-shot Ridge stability ratio. The band actually used for classification is stated in the main text.
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$ spectral diagnostic: Noise calibration'' (release r85).}
+
+Because only this family currently provides multiple vanilla seeds, the interval is used as a cross-family reference and should be recomputed per architecture and dataset wherever multiple vanilla seeds exist.
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$ spectral diagnostic: Noise calibration'' (release r85); the main text retains the corrected family-matched null and its reference to Supplementary Table~S10.}
+
+Applying the audit's corrected predictability statistic ($\sum_g R^2_g$, recomputed from each run's iter$_4$ stagedata under the Ridge protocol) to UNAGI's own seed-replicate readouts (hematopoietic, the single empty prior \texttt{R14\_hemato\_vanilla} plus \texttt{R14\_seed42/123/456}, the latter the empty-vector \emph{vehicle} arm, not further empty priors; neural-crest \texttt{R0\_seed42/123/456}; the canonical bare R0 excluded as a $3\times$ tr$H$ outlier, 17{,}695 versus 5,402--9,649 for its seed variants) gives the family-matched \emph{corrected} null---hematopoietic $\kappa=1.000\pm0.015$ ($[0.971,1.029]$), neural-crest $\kappa=1.005\pm0.146$ ($[0.713,1.298]$), combined $\kappa=1.001\pm0.043$ ($[0.915,1.086]$; $\pm2\sigma$, Supplementary Table~S10). The earlier trace-form family-matched band (e.g.\ hematopoietic $[0.65,1.38]$ via the released \texttt{loading\_matrix.npy} route, or $[-0.40,2.87]$ via the stagedata route) is \emph{not} used for classification, because on the same readouts the trace form inflates the null standard deviation by $\sim$56$\times$ over the corrected form for the UNAGI pool (0.817 vs 0.015; it is also biased, mean 1.236 vs 1.000), and its vehicle-seed values disagree with the stagedata route by 19--171\% (provenance defect, Supplementary Table~S10 caption). The corrected family-matched band is the one the Results classify against; the G-VAE cross-family band is retained only as a conservative reference. On the G-VAE pool the same readout gives a $\sim$6$\times$ smaller null SD in the corrected form than in the trace form (0.035 vs 0.21), the quantitative reason the corrected statistic---not the released trace form---defines the vanilla-equivalent region. The deep-compression result ($\kappa<0.5$, band-independent) is 0/33 under any of these bands; the bands are family-specific calibrations and must not be pooled.
+
+\noindent\emph{Relocated verbatim from Methods, ``Noise floor estimation'' (release r85); the same null is stated in the $\kappa$-$C$ subsection and is not repeated.}
+
+Because $\kappa=\operatorname{tr}(\mathbf{H}_P)/\operatorname{tr}(\mathbf{H}_V)$, the vanilla model defines $\kappa=1.0$ by construction; comparing independently trained vanilla seeds of the G-VAE hematopoietic family yields $\kappa=1.001\pm0.032$ and $C=-0.05\%\pm3.2$ percentage points (210 ordered seed-pair comparisons across 15 seeds; Methods).
+
+\noindent\emph{Relocated verbatim from Methods, ``Noise floor estimation'' (release r85); the interval itself is stated in the $\kappa$-$C$ subsection.}
+
+This null distribution defines the vanilla-equivalent region $\kappa\in[0.937,1.064]$ ($\pm2\sigma$), within which observed restructuring is indistinguishable from random seed variation.
+
+\noindent\emph{Relocated verbatim from Methods, ``Noise floor estimation'' (release r85); the main text retains the baseline trace values.}
+
+The baseline trace $\operatorname{tr}(\mathbf{H}_V)$ varies across datasets (hematopoietic $5.6\times10^3$, neural crest $5.4\times10^3$, lung $1.3\times10^4$), but the ratio is intrinsically normalized; the interval $[0.937,1.064]$ was measured on the G-VAE hematopoietic family and is used here as a cross-family reference, to be recomputed per architecture and dataset wherever multiple vanilla seeds are available.
+
+\noindent\emph{Relocated verbatim from Methods, ``Noise floor estimation'' (release r85); the main text retains the band-independent threshold and the $0/33$ verdict.}
+
+Under this recomputed null a group of neural-crest configurations now falls \emph{below} the cross-family interval---R1\_s123 $0.59$, R4\_s42 $0.61$, R8\_s42 $0.61$, R1\_s456 $0.63$, R6\_s42 $0.68$ and R1\_s42 $0.76$---so lung R9 ($\kappa=0.518$) is not the only configuration beneath that floor. These values do, however, remain well above the band-independent deep-compression threshold $\kappa<0.5$ (the sole criterion behind the $0/33$ verdict; Supplementary Table~S10). The band-independent $0/33$ verdict is therefore unchanged; what the corrected values do change is the earlier statement that these configurations are indistinguishable from seed noise at the $2\sigma$ level under the cross-family band---they are not, and the cross-family $[0.937,1.064]$ interval should not be read as a family-specific equivalence statement (though this comparison rests on a single lung configuration, $n=1$, so the cross-tissue claim leans on the consistent direction across tissues rather than on this one point). The null result (0/22 family-matched; 0/10+0/1 borrowed band) is therefore conservative. No prior-injection configuration reaches the deep-compression threshold ($\kappa<0.5$, $C>50\%$), and even the strongest compression observed (R9, $C=48.2\%$) does not approach it.
+
+\clearpage
+
+\section*{V. Derivations and bookkeeping for the $\kappa$-$C$ diagnostic}
+
+This note carries the derivation-heavy and bookkeeping paragraphs of the $\kappa$-$C$ and $\kappa$-$C$-$Z$ Methods subsections that were relocated at release r85. The definitions, equations, parameter values and thresholds the pipeline needs in order to be reproduced remain in the main text; what follows is the supporting argument, the metric conventions and the run bookkeeping.
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$ spectral diagnostic: Relation to the released $\kappa$-$C$ toolkit'' (release r85).}
+
+\textbf{Relation to the released $\kappa$-$C$ toolkit.} The decoder-readout $\kappa$-$C$ metric generalizes the released decoder-only $\kappa$-$C$ toolkit (which reads only the decoder Hessian) in two ways. First, we add a \emph{latent-spectrum companion} ($\kappa$-$C$-$Z$) that audits the encoder-output covariance $\Zmat^\top\Zmat$ against a family-matched vanilla null, making the decoder/latent dissociation quantitative rather than inferred. Second, we add a \emph{four-check verification protocol} (gradient check, prior-strength scan, structural bound, injection-path check) that converts the spectral claim into a falsifiable, architecture-independent statement instead of a single trace ratio. These extensions---not the trace metric itself---constitute the methodological contribution of this work.
+
+\noindent\emph{Relocated verbatim from Methods, ``Model families'' (release r85); the 29-of-33 denominator is stated in the $\kappa$-$C$-$Z$ subsection of the main text.}
+
+These 33 prior-injected configurations are selected from the 37 PG-UNAGI training runs; the latent $\kappa$-$C$-$Z$ companion additionally requires the encoder-output covariance $\Zmat$, available for 29 of the 33, so its statistics are reported on 29 while the decoder audit uses all 33 (the two denominators should not be conflated).
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$ spectral diagnostic: Definitions'' (release r85); both defining equations remain in the main text.}
+
+Because $C$ is a signed rescaling of $\kappa$, the two metrics carry identical information in the trace-based prior-injection audit; directional collapse is measured separately by $C_{\text{head}}$ (opposition-budget analysis, below).
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$ spectral diagnostic: Readout-subspace (principal-angle) comparison'' (release r85).}
+
+\textbf{Readout-subspace (principal-angle) comparison.} The scalar $\kappa$-$C(W)$ is blind to rotations of the readout that preserve aggregate predictability, so we complemented it with a direct subspace test. For a readout $\Wmat\in\mathbb{R}^{k\times G}$ we orthonormalise the rows (reduced QR) to $Q\in\mathbb{R}^{k\times G}$ with $Q^\top Q=I_k$, and compare two readouts $Q_1,Q_2$ by the normalised principal-angle overlap $\|Q_1^\top Q_2\|_F^2/k\in[0,1]$, equal to $1$ for identical subspaces and $\to 0$ for mutually orthogonal ones. The statistic is invariant to per-row scaling and to the latent basis, so it isolates the geometric component that the trace ratio discards, and it is the empirical counterpart of the Davis--Kahan bound above. We computed it on the $30$ archived decoder readouts, forming a control--control reference distribution and a prior--control comparison; a prior that reorganized the readout should place prior--control overlaps below the control--control null. For hematopoietic the controls are the empty-vector \emph{vehicle} arm (\texttt{R14\_s*}/\texttt{R14\_seed*}), not empty priors---the true vanilla survives at a single seed and cannot define a cross-seed distribution. Duplicate label variants of the same run (\texttt{R14\_s42} / \texttt{R14\_seed42}) were deduplicated first, since including them inflates the control null. With only three hematopoietic controls, the comparison is an effect size, not a significance test (\texttt{code/decoder\_subspace\_test.py}).
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$ spectral diagnostic: Computation time'' (release r85).}
+
+\textbf{Computation time.} The complete $\kappa$-$C$ computation requires approximately 30 seconds for a typical configuration ($N=30,000$, $G=20,000$, $D=64$) on standard CPU hardware (single core).
+
+\noindent\emph{Relocated verbatim from Methods, ``Latent-space spectrum computation'' (release r85); the participation-ratio equation and the run/observation counts remain in the main text.}
+
+This is the quantity the rest of the manuscript refers to as `effective rank' (the `pr' column of \texttt{z\_spectrum\_all.csv}; the legacy `eff\_rank' column reports the alternative spectral-perplexity measure and is retained only for backward compatibility, not used in any reported statistic) and is what the $\kappa$-$C$-$Z$ diagnostic consumes. The leading-axis share is $\lambda_1 / \sum_i \lambda_i$, and spectral entropy is normalised by $\log D$. Total latent variance is $\mathrm{tr}(\mathbf{C})$.
+
+\noindent\emph{Relocated verbatim from Methods, ``Latent-space spectrum computation: Effective-rank metric convention'' (release r85); the participation-ratio definition itself is retained in the main text.}
+
+\paragraph*{Effective-rank metric convention.}
+``Effective rank'' is not a single defined quantity, but this paper reports \emph{one} consistent measure throughout: the \emph{participation ratio} $R_{\mathrm{eff}}^{(\mathrm{PR})}=(\sum_i\lambda_i)^2/\sum_i\lambda_i^2=1/\sum_i p_i^2$, the convention standard in the VAE / single-cell literature (scVI, the released $\kappa$-$C$ toolkit, and \texttt{perturbation\_benchmark.py} / \texttt{kappa\_c\_audit} all use it). The PG-UNAGI latent audit, the $\kappa$-$C$-$Z$ diagnostic, the scVI cross-architecture validation, and the family4 decoder-only VAE therefore share this single metric, so absolute effective-rank values \emph{are} directly comparable across these analyses. (The alternative spectral-perplexity measure $R_{\mathrm{eff}}^{(\mathrm{sp})}=\exp(H_{\mathrm{spec}})$ is retained as the legacy `eff\_rank' column in \texttt{z\_spectrum\_all.csv} for backward compatibility but is not used in any reported statistic.)
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$-$Z$ latent-space ($Z$) diagnostic'' (release r85); the definition and the $\zeta_{\Zmat}\geq1.5$ flagging threshold remain in the main text.}
+
+$\zeta_{\Zmat}$ is derived from the full covariance eigenvalue spectrum and is therefore invariant to latent rotation and to the permutation of latent axes; it measures compression relative to the control \emph{distribution} rather than to a single baseline.
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$-$Z$ latent-space ($Z$) diagnostic'' (release r85); the main text retains the $0/29$ and $0/33$ denominators.}
+
+The $\kappa$-$C$-$Z$ analysis is restricted to the PG-UNAGI latent $\Zmat$; the separate 15-seed G-VAE hematopoietic vanilla ensemble is a distinct (next-paper) resource and is intentionally not mixed into this null.
+
+
+\clearpage
+
+\section*{W. Cluster-robust inference and the limits of the three-seed design}
+
+This note carries the inference discussion removed from the $\kappa$-$C$-$Z$ and Statistical-analysis Methods subsections at release r85. The estimator, the seed clustering and the reasons the resampling tests are structurally floored are preserved here; the main text states the design limitation and points to this note.
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$-$Z$ latent-space ($Z$) diagnostic'' (release r85).}
+
+Because the 33 configurations share only three training seeds, the directional $\kappa$-$C$-$Z$ counts are not statistically independent. We therefore report the compressed proportion with a \emph{cluster-robust binomial} (Liang-Zeger sandwich variance plus a cluster-bootstrap $95\%$ confidence interval, grouping runs by seed; implementation in \texttt{code/cluster\_robust\_binomial.py} and \texttt{code/cluster\_robust\_paper1.py}) rather than a naive exact sign test. The seed-clustered permutation referenced in the Results is retained only as a secondary cross-check; with three seeds it has maximum one-sided power $1/8$ and is uninformative on its own.
+
+\noindent\emph{Relocated verbatim from Methods, ``Statistical analysis'' (release r85); the main text retains the reporting protocol and the statement of the design limit.}
+
+Directional latent-reorganization claims are reported as cross-seed concordance counts together with an inference range, because with three seeds the cluster-resampling tests are structurally uninformative. The seed-clustered exact permutation (all $2^{\#\text{seed\_clusters}}$ cluster sign-flips; \texttt{code/clustered\_permutation\_sign\_test.py}) cannot return a two-sided $p$ below $0.25$, and the cluster bootstrap cannot reach $p\le0.5$ when every seed cluster is majority-concordant. We therefore report a cluster-robust (Liang--Zeger) sandwich binomial (\texttt{code/cluster\_robust\_binomial.py}, \texttt{code/cluster\_robust\_paper1.py}) and a mixed-effects model with seed as a random intercept (\texttt{code/mixed\_effects\_paper1.py}), noting that a three-cluster sandwich is anti-conservative and that a variance component estimated at zero from three clusters is itself uncertain; the estimate and the limits of the design are stated rather than a single $p$-value. The deep-compression rate is reported with its exact binomial 95\% CI ($0/33$, $0$--$10.6\%$).
+
+\clearpage
+
+\section*{X. Protocol matching and reproducibility bounds for the cross-architecture nulls}
+
+This note carries the protocol-matching and reproducibility discussion removed from the scVI Methods subsection at release r85: why schedule-matched nulls matter, the numerical delicacy of the published configuration, the paired-seed design, and the note on the originally reported pbmc3k run. The scVI setup, the conditioning route and the re-derivation are retained in the main text.
+
+\noindent\emph{Relocated verbatim from Methods, ``Cross-architecture validation on scVI'' (release r85); the main text keeps the substance in condensed form, including the six paired seeds and the ten-fit family-matched null.}
+
+\textbf{Note on the originally reported run.} The archived script registered the clusters with scVI's \texttt{labels\_key}, which does not condition SCVI---labels reach its generative model only through \texttt{dispersion=gene-label} and the default is \texttt{dispersion=gene}---so its two arms were the same model (identical parameter count, $1{,}334{,}526$, and a bitwise-identical latent). Everything reported below and in Supplementary Table~S11 is re-derived with the clusters registered as a categorical covariate, over six paired seeds, against a family-matched seed null built from ten independently seeded vanilla fits of the same configuration; the script has been corrected accordingly.
+
+\noindent\emph{Relocated verbatim from Methods, ``Cross-architecture validation on scVI: Note on protocol matching in the cross-architecture nulls'' (release r85); the main text states the paired-seed design.}
+
+\textbf{Note on protocol matching in the cross-architecture nulls.} The family-matched seed nulls above and in Supplementary Table~S13 were computed from baseline fits trained under the \emph{identical} schedule to the published run---for the Norman benchmark a single $200$-epoch call. This matters more than the phrase suggests. The same seed trained in four $50$-epoch chunks instead differs from the single call by $10\%$ in readout predictability, $19\%$ in latent effective rank and $142\%$ in the latent trace, so a null built from mixed schedules is not a null. Relatedly, the published configuration ($\mathrm{scVI}$ $1.5.0$ with the \texttt{normal} gene likelihood) is numerically delicate on current stacks. Of five single-call baseline fits, two diverged late in training ($\approx$epoch $187$--$193$ of $200$, \texttt{scale} leaving its support) and were discarded. We report this as a bound on the reproducibility of this benchmark rather than as a property of the models. The Norman injected arm was then refit at four of the seeds that already had a protocol-matched baseline fit, so that the ratio $\mathrm{metric}_{\mathrm{injected}}(s)/\mathrm{metric}_{\mathrm{baseline}}(s)$ could be formed per seed; this paired design cancels the baseline scatter and yields the standard error of the effect rather than of a single fit. One of four injected fits diverged and was excluded (latent not finite), leaving $n=4$ paired seeds.
+
+
+\clearpage
+
+\begin{thebibliography}{99}
+\bibitem{lopez2018} Lopez, R., Regier, J., Cole, M.B., Jordan, M.I., and Yosef, N. (2018). Deep generative modeling for single-cell transcriptomics. \textit{Nat. Methods} \textbf{15}, 1053--1058. https://doi.org/10.1038/s41592-018-0229-2
+\bibitem{caranzano2026} Caranzano, I. , et al. (2025). Sparsity is all you need: rethinking biological pathway-informed approaches in deep learning. \textit{arXiv} 2505.04300. https://arxiv.org/abs/2505.04300 https://doi.org/10.1093/bib/bbag425
+\bibitem{kamimoto2023} Kamimoto, K., Stringer, C., Hoffmann, C.M., et al. (2023). Dissecting cell identity via network inference and in silico gene perturbation. \textit{Nature} \textbf{614}, 742--751. https://doi.org/10.1038/s41586-022-05688-9
+\bibitem{bergen2020} Bergen, V., Lange, M., Peidli, S., Wolf, F.A., and Theis, F.J. (2020). Generalizing RNA velocity to transient cell states through dynamical modeling. \textit{Nat. Biotechnol.} \textbf{38}, 1408--1414. https://doi.org/10.1038/s41587-020-0591-3
+\bibitem{vega} Seninge, L., Anastopoulos, I., Ding, H., and Stuart, J. (2021). VEGA is an interpretable generative model for inferring biological network activity in single-cell transcriptomics. \textit{Nat. Commun.} \textbf{12}, 5684. https://doi.org/10.1038/s41467-021-26017-0
+\bibitem{roohani2024} Roohani, Y., Huang, K., and Leskovec, J. (2024). Predicting transcriptional outcomes of novel multigene perturbations with GEARS. \textit{Nat. Biotechnol.} \textbf{42}, 927--935. https://doi.org/10.1038/s41587-023-01905-6
+\bibitem{dixit2016} Dixit, A. , et al. (2016). Perturb-Seq: dissecting molecular circuits with scalable single-cell RNA profiling of pooled genetic screens. \textit{Cell} \textbf{167}, 1853--1866. https://doi.org/10.1016/j.cell.2016.11.038
+\bibitem{replogle2022} Replogle, J.M. , et al. (2022). Mapping information-rich genotype-phenotype landscapes with genome-scale Perturb-seq. \textit{Cell} \textbf{185}, 2559--2575. https://doi.org/10.1016/j.cell.2022.05.013
+\bibitem{montufar2014} https://doi.org/10.48550/arXiv.1402.1869 Mont\'{u}far, G., Pascanu, R., Cho, K., and Bengio, Y. (2014). On the number of linear regions of deep neural networks. \textit{Proc. NeurIPS} 2924--2932.
+\bibitem{zheng2017} Zheng, G.X. , et al. (2017). Massively parallel digital transcriptional profiling of single cells. \textit{Nat. Commun.} \textbf{8}, 14049. https://doi.org/10.1038/ncomms14049
+\bibitem{unagi} Zheng, Y. , et al. (2025). A deep generative model for deciphering cellular dynamics and in silico drug discovery in complex diseases. \textit{Nat. Biomed. Eng.}. https://doi.org/10.1038/s41551-025-01423-7
+\bibitem{weyl1912} Weyl, H. (1912). Das asymptotische Verteilungsgesetz der Eigenwerte linearer partieller Differentialgleichungen (mit einer Anwendung auf die Theorie der Hohlraumstrahlung). \textit{Math. Ann.} \textbf{71}, 441--479. https://doi.org/10.1007/bf01456804
+\bibitem{han2018} Han, H. , et al. (2018). TRRUST v2: an expanded reference database of human and mouse transcriptional regulatory interactions. \textit{Nucleic Acids Res.} \textbf{46}, D380--D386. https://doi.org/10.1093/nar/gkx1013
+\bibitem{davis1970} Davis, C., and Kahan, W.M. (1970). The rotation of eigenvectors by a perturbation. III. \textit{SIAM J. Numer. Anal.} \textbf{7}, 1--46. https://doi.org/10.1137/0707001
+\bibitem{korsunsky2019} Korsunsky, I. , et al. (2019). Fast, sensitive and accurate integration of single-cell data with Harmony. \textit{Nat. Methods} \textbf{16}, 1289--1296. https://doi.org/10.1038/s41592-019-0619-0
+\end{thebibliography}
+
+\end{document}

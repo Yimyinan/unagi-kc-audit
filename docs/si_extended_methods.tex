@@ -1,0 +1,449 @@
+\documentclass[11 pt,a4 paper]{article}
+\usepackage[margin=2.2 cm,top=2.4 cm,bottom=2.4 cm]{geometry}
+\usepackage{setspace}\onehalfspacing
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,enumitem,caption}\captionsetup{singlelinecheck=false}
+\usepackage{times}\usepackage[T1]{fontenc}\usepackage{xspace}
+\emergencystretch=3 em
+\newcommand{\kappavar}{\kappa}
+\newcommand{\Hmat}{\mathbf{H}}\newcommand{\Wmat}{\mathbf{W}}\newcommand{\Jmat}{\mathbf{J}}
+\newcommand{\Emat}{\mathbf{E}}\newcommand{\Zmat}{\mathbf{Z}}\newcommand{\Xmat}{\mathbf{X}}
+\newcommand{\Rbb}{\mathbb{R}}\newcommand{\trloss}{\operatorname{tr}}\newcommand{\tr}{\operatorname{tr}}
+\DeclareMathOperator*{\argmax}{arg\,max}\DeclareMathOperator*{\argmin}{arg\,min}
+\title{\textbf{Extended Methods}\\[0.3 em]
+\large Long-form units for the main text: methods bookkeeping, discussion framing, biological interpretation, and scope}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\noindent This document carries the long-form counterpart of material the main text states in condensed form. It is a companion to \texttt{supplementary.pdf} and \texttt{supp\_addendum.pdf}; nothing here is required to reconstruct a claim.
+
+\section*{Y. Methods units condensed in place at release r85}
+
+This note collects the Methods units that the compressed main text states in one sentence or drops as bookkeeping. Each is reproduced here in full, together with a statement of what the main text now says in its place, so that nothing is silently lost.
+
+\noindent\emph{Full original text of the closing paragraph of Methods, ``Auditing an injected signal'' (release r85). The main text no longer restates the ordering of the three checks by cost and decisiveness.}
+
+The three checks are ordered by cost and by decisiveness. Delivery is a property
+of the code path and is therefore decidable without retraining; the remaining two
+require the trained model but not a new training run.
+
+\noindent\emph{Full original text of the framing sentence of Methods, ``Auditing an injected signal'' (release r85). The main text no longer restates that the three questions are stated in domain-independent terms.}
+
+We state them here in
+domain-independent terms and instantiate them on GRN prior injection in
+single-cell VAEs in the remainder of this section.
+
+\noindent\emph{Full original text of the three numbered explanations in Methods, ``Auditing an injected signal'' (release r85). The main text retains all three questions in condensed form; the elaborations are preserved here.}
+
+\textbf{(1) Delivery.} Does $L_{\text{sig}}$ carry a non-zero gradient to the
+parameters that the measurement targets, and does every stage of the pipeline
+that is supposed to consume $S$ actually read it? If no gradient-bearing route
+exists, the injection is a no-op by construction and every observed change is
+signal-agnostic.
+
+\textbf{(2) Agreement across readout levels.} Measure the effect at more than one
+readout level: an output-side readout and an internal-representation readout. If
+the two dissociate, a claim resting on either one alone is not attributable to
+$S$.
+
+\textbf{(3) Alternative explanations.} Compare against (a) a null model matched
+in the \emph{form} of $S$ but not its content, and (b) the structure already
+present in the data. An effect that lies inside either bound is not evidence for
+the content of $S$.
+
+\noindent\emph{Full original text of the decoder clause of Methods, ``G-VAE architecture and training'' (release r85). The main text keeps the full architecture and training specification.}
+
+The decoder is a symmetric 2-layer MLP with BatchNorm--ReLU blocks; its final linear layer provides the piecewise-linear map used by the $\kappa$-$C$ and perturbation-readout analyses.
+
+\noindent\emph{Full original text of the closing sentence of Methods, ``G-VAE architecture and training'' (release r85). The main text names the two uses of the family in one sentence; the seed enumeration and its two purposes are preserved here.}
+
+This family comprises the 15 hematopoietic vanilla seeds used for the null calibration (seeds 1--12 and 42/123/456) and the spectral-shaping models (seeds 9--12) used for the GRQ/CTCP/DDP readouts.
+
+\noindent\emph{Full original text of the weight-extraction procedure of Methods, ``Encoder-decoder co-adaptation analysis'' (release r85). The main text retains the seed count and the Ridge readout comparison.}
+
+For each independently trained seed, we extracted encoder weights from all layers and decoder weights from the final linear readout layer. Cross-seed correlations were computed as Pearson $r$ between corresponding weight matrices.
+
+\noindent\emph{Full original text of the closing sentence of Methods, ``Cross-architecture validation with one-shot Ridge GRN priors'' (release r85). The main text retains the method, the subcritical criterion and the bound's $24.8\times$ margin.}
+
+We use the same bounded form in the main text.
+
+\noindent\emph{Full original text of the boundary-configuration paragraph of Methods, ``Encoder-decoder co-adaptation analysis'' (release r85). The main text identifies the configuration and its $K=1{,}000$ Jacobian re-audit; the full decoder form and the linear-head analog are preserved here.}
+
+For the boundary configuration (lung R9), which uses a zero-inflated log-normal decoder with mean $\mathcal{D}(\mathbf{z}) = \mathrm{softplus}(\mathrm{clamp}(\mathbf{W}_4\,\mathrm{softplus}(\mathbf{W}_3\mathbf{z}+\mathbf{b}_3)+\mathbf{b}_4, -1))$ and no BatchNorm, we recomputed $\mathbf{J}=\partial\mathcal{D}/\partial\mathbf{z}$ (verified against autograd, relative error $2\times10^{-8}$) at $K=1{,}000$ latent points with per-gene row standardization $1/\mathrm{std}(X)$, evaluating both the full mean chain and a linear-head analog $\mathbf{W}_4\,\mathrm{softplus}(\mathbf{W}_3\mathbf{z}+\mathbf{b}_3)$ (Supplementary Note~1).
+
+\noindent\emph{Full original text of the bounded-stability paragraph of Methods, ``Cross-architecture validation with one-shot Ridge GRN priors'' (release r85). The main text retains the bound's $24.8\times$ margin and its reference eigenvalue gap; this is the reproducibility argument behind it.}
+
+The closest \texttt{decoder\_unified} configuration (R14\_s42 / R15\_s42, gap $464.0$) differs from the recorded value ($478.3$) by $3\%$. Rather than substitute one for the other, we report the result as a bound. Since $\kappa=\|\Hmat_P-\Hmat_V\|_2/\mathrm{gap}_V$ is linear in the reciprocal gap, the gap required to reach criticality is $\mathrm{gap}^\star=\|\Hmat_P-\Hmat_V\|_2/0.5$; the largest $\mathrm{gap}^\star$ across the eight priors is $18.1$, against a smallest measured reference gap of $449.6$, a margin of $24.8\times$. The subcritical verdict therefore holds for every candidate reference by a wide margin and does not depend on which vanilla baseline is selected.
+
+\noindent\emph{Full original text of the closing sentences of Methods, ``G-VAE training objective'' (release r85). The loss equation, the gene weights, the Hutchinson draw count, $\varepsilon$, the $\lambda_{\mathrm{JVP}}$ schedule and the released script names remain in the main text.}
+
+The JVP term is differentiable with respect to the decoder parameters and penalizes the decoder Jacobian norm, which is the actual spectral-shaping mechanism behind the reported locking. The $\kappa$-$C$ quantities are computed from the decoder Ridge readout as diagnostics for monitoring and model selection; they are not differentiable loss terms in this implementation.
+
+\noindent\emph{Full original text of the interpretation sentence of Methods, ``Opposition budget analysis'' (release r85). The main text keeps the definition of $B$.}
+
+$B$ measures the fraction of vanilla spectral power that the G-VAE training must oppose to achieve spectral locking.
+
+\noindent\emph{Full original text of the closing sentences of Methods, ``Opposition budget analysis'' (release r85). The main text keeps the protocol and the seed count; the withdrawal of the originally reported per-seed values is carried by the Discussion and Supplementary Note~5.}
+
+We note that the originally reported per-seed values ($C_{\text{head}}=77.6\%\pm0.7\%$, 64/64 opposed directions) could not be reproduced from the surviving checkpoints under this protocol. Recomputation yields 0/15 seeds with $C_{\text{head}}>50\%$ (Discussion, Supplementary Note~5).
+
+
+\clearpage
+
+\section*{Z. Further Methods units relocated at release r85}
+
+This note carries two further Methods units relocated at release r85: the full prior-activity paragraph of ``Prior activity, and what $C$ does and does not measure'', and the bookkeeping sentence that records where the $\kappa$-$C$-$Z$ decoder-side counts come from. The main text states each result in condensed form and points here for the detail.
+
+\noindent\emph{Relocated verbatim from Methods, ``Prior activity, and what $C$ does and does not measure'' (release r85); the main text retains the claim, the zero-gradient finding and the IPF disambiguation.}
+
+Prior activity is verified with three complementary checks (Supplementary Note~4). First, a gradient check confirms that any training term credited with the collapse has a non-zero gradient path to the model parameters. The $\kappa$-$C$ term as implemented in the released scripts is computed from a no-grad Ridge readout and is therefore a monitoring quantity with zero gradient, not a differentiable objective. Second, a prior-strength ($\lambda$) scan verifies that the spectral response scales with the prior weight. Human IPF provides the empirical disambiguation. Full-transcriptome fp32 retraining (BatchNorm and LayerNorm decoders; inert $\kappa$-$C$ term or differentiable Hutchinson JVP penalty) converges to deep global compression ($C=95.4$--$96.9\%$) with subcritical gap ratio ($\kappa_{\mathrm{gap}}=0.017$--$0.023$ vs.\ target 2), and the $\lambda$ scan (0.1, 1, 10) is flat ($C$ varies by $<0.5$ percentage points). High $C$ on IPF is thus a data-inherent property---the vanilla top axis already captures $\approx91\%$ of the decoder trace, bounding $\kappa_{\mathrm{gap}}\leq0.11$ at $C=90\%$---and does not reflect prior activity.
+
+\noindent\emph{Relocated verbatim from Methods, ``The $\kappa$-$C$-$Z$ latent-space ($Z$) diagnostic'' (release r85); the $0/29$ and $0/33$ denominators remain in the main text.}
+
+The $\kappa$-$C$(W) side is cited from the main audit ($0/29$ on the runs with $\Zmat$ data; $0/33$ across all 33 configurations) and is not recomputed within this diagnostic.
+
+
+
+\clearpage
+
+\section*{AA. Discussion units relocated at release r86: the opening frame and the diagnostic's two roles}
+
+This note collects the Discussion material that the compressed main text now states in one or
+two sentences. The Discussion's own interpretation of the decoder-null / latent-reorganization
+dissociation --- that the two spectra answer different questions and that the decoder null is a
+poor proxy for prior activity --- remains in the main text; what moves here is the surrounding
+exposition.
+
+\noindent\emph{Relocated verbatim from the opening paragraph of the Discussion (release r86). The main text keeps the frame and the two consequences the Discussion turns to.}
+
+The synthesis above (the Synthesis subsection) establishes the decoupling: the decoder readout is robustly null while the latent covariance reorganizes, a decoder-gain \emph{classification} rather than a claim about decoder geometry or weight-level identity (inferred from the contrast of the two spectra, not from a direct comparison of weight matrices). This Discussion does not re-derive it but turns to its consequences---the operational limits of each spectrum as a diagnostic, and the open matter of perturbation readiness it leaves behind.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``Operationally the diagnostic plays two roles'' (release r86). The main text keeps the two-role distinction, the band-independent $\kappa<0.5$ threshold, the analytical-Jacobian validation and the priority of the classifier result over the detector signal.}
+
+Operationally the diagnostic plays two roles that should not be conflated. As a \emph{decoder-gain classifier} it assigns each configuration to locked / vanilla-equivalent / expanded by the band-independent $\kappa<0.5$ threshold, validated against the analytical Jacobian in all 33 re-audited cases (Supplementary Table~S8), so it does not inherit the small-seed limitation. As a \emph{latent-reorganization detector} it reports the directional $\kappa$-$C$-$Z$ pattern, whose inference is bounded by the three-seed design: the cluster-resampling tests are structurally floored (the note on the limits of the three-seed design, Note~W), so we report a consistent cross-seed directional pattern together with the information-carrying sandwich and mixed-effects estimates rather than a single $p$-value. This is why we do not treat directional locking as demonstrated: the earlier G-VAE locking positive control does not survive recomputation from the surviving checkpoints, and its withdrawal is documented in Supplementary Note~5. The robust 0/33 classifier result should outrank the underpowered detector signal (the Synthesis note, Note~G).
+
+\clearpage
+
+\section*{AB. The dual-spectrum dissociation: full quantitative framing}
+
+This note carries the quantitative framing of the dual-spectrum dissociation. The main text
+retains the conclusion --- that the dissociation is a diagnostic framing device rather than a
+conserved trade-off or a discovered physical law, that its bootstraps rest on three seeds, and
+that the generalisable result is the injection-path check --- and points here for the figures of
+merit.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``The dual-spectrum dissociation is not a conserved trade-off'' (release r86). The main text keeps the conclusion, the three-seed caveat, the readiness criterion and the injection-path framing; the figures of merit are preserved here.}
+
+The dual-spectrum dissociation is not a conserved trade-off: measured like-for-like with the corrected predictability statistic on both sides, the product $\kappa$-$C(W)\cdot\kappa$-$C(Z)$ is not conserved (median $0.72$; $8/33$ within $25\%$ of unity) and the two sides show no coupling at all (slope $-0.03$, $r=-0.22$; in the released trace form the same product is positively coupled, slope $+0.76$, $r=+0.52$). It nevertheless survives a like-for-like test (latent effective-rank ratio $0.77$, bootstrap CI $[0.69,0.86]$, versus decoder $0.95$, CI $[0.90,1.00]$; paired log-difference $-0.24$, CI $[-0.35,-0.13]$), so we present it as a diagnostic framing device rather than a discovered physical law. Because these bootstraps rest on three seeds, their nominal $p$-values are optimistic and should be read alongside the inference bounds of the cluster-robust binomial in the statistical-confirmation note, Note~A. The contribution is the instrument and the mechanism it reveals, not a claim that prior injection produces a surprising physical effect. Readiness remains open: we treat a model as ready only when the latent manifold is low-rank and program-aligned \emph{and} the decoder supports separable perturbation responses---prior injection satisfies neither on its own (the GRQ readouts are demonstrated only on vanilla-equivalent models). We frame this as a diagnostic contribution rather than a new regulatory mechanism: no new mechanism is claimed, and the biological readouts are bounded---the cross-tissue gradient is structural, the within-tissue ladder is inconclusive, and the injection path is absent. The audited pipeline is the \emph{vehicle}, not the subject: it supplies a real case in which the verdict is actionable---a prior that never reached the loss---while the generalisable result is the injection-path check itself, since no spectral claim about an injected prior is interpretable until the prior is shown to reach the objective.
+
+\clearpage
+
+\section*{AC. How other frameworks validate prior injection, and what this audit adds}
+
+This note preserves the comparison with the two established validation families and the
+statement of what a label-free spectral audit adds to them. The main text no longer carries the
+comparison; the point it supports --- run the delivery check before trusting a downstream
+validation --- is stated there in operational form.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``Other frameworks validate prior injection differently'' (release r86). The main text states the ordering rule the comparison supports.}
+
+Other frameworks validate prior injection differently, and the contrast clarifies what this audit adds. Structured-prior perturbation methods (CellOracle, chemCPA) validate by downstream prediction accuracy on held-out perturbations---a criterion that conflates prior arrival, model capacity, and the benchmark's own difficulty. Interpretability probes (Jacobian saliency, linear probing, TCAV) validate local or concept-level fidelity, not a training-objective-level claim. Neither family asks whether the injected prior changed the decoder readout at all, or whether it ever reached the loss, and neither is falsifiable by a single label-free ratio. The spectral audit is the cheap upstream check that tells you whether a downstream validation is even meaningful.
+
+\clearpage
+
+\section*{AD. When to use this audit --- and when not (relocated Box 2)}
+
+This note preserves, in full, the practical guidance that the main text carried as Box 2. The
+\texttt{boxednote} environment is defined only in the main document, so the box is reproduced
+here with unchanged words as a bold-titled paragraph. The main text retains the applicability
+bounds and the injection-path-first rule that the box's final sentence states.
+
+\noindent\emph{Relocated from Box 2 of the Discussion (release r86), re-rendered as a bold-titled paragraph because the \texttt{boxednote} environment is defined only in the main document; the words are unchanged. The main text keeps the applicability bounds and the injection-path-first rule.}
+
+\noindent\textbf{Box 2. When to use this audit---and when not.}
+\textbf{Use it when} you have a trained single-cell VAE whose latent$\to$expression map admits a linear readout, and you want a label-free, model-agnostic verdict on whether a prior changed the decoder readout and/or the latent covariance---especially before trusting a reported positive from prior injection. \textbf{Do not use it when} the model is not a single-cell VAE with a linear readout (diffusion and flow-matching models are untested), when you need a perturbation-readiness certificate (the audit does not certify readiness; downstream GRQ and perturbation readouts do), or when the prior's arrival in the loss is already established and the only open issue is mechanism. Run the injection-path check first: no spectral readout can register a prior that never reached the objective.
+
+\clearpage
+
+\section*{AE. Interpretation and bounds: the latent-spectrum reorganization in full}
+
+This note carries the full detail behind the main text's statement that the latent-spectrum
+reorganization is directional and tissue-specific. The main text keeps the claim, the negative
+size-versus-alignment result, and the level at which congruence is claimed.
+
+\noindent\emph{Relocated verbatim from the Discussion subsection ``Interpretation and bounds'' (release r86). The main text keeps the directionality and tissue-specificity claim, the size-versus-alignment result and the level at which congruence is claimed.}
+
+The latent-spectrum reorganization recovered by $\kappa$-$C$-$Z$ is directional and
+tissue-specific rather than a uniform training artifact (16/19 hematopoietic runs
+compress directionally; neural crest shows no mean compression, $2^{3}$ factorial
+all $p>0.39$; lung $n=1$). Within hematopoiesis the ladder does not separate priors by semantic match: the
+wrong-tissue prior R16 compresses almost as much as the matched R13, and edge count does not predict
+the response ($\rho=-0.21$, $p=0.70$; prior-quality landscape, Supplementary Figure~S9; divergent-gene audit, Supplementary Table~S2). This rules out prior \emph{size} as the driver while licensing no
+\emph{alignment} mechanism either---a sparse structured prior compresses the blood latent
+spectrum whether or not it belongs to the tissue. Congruence is therefore claimed only at the level at which
+it is measured: the cross-tissue gradient, where the same neural program embedded in a dataset it does not
+drive shows no compression (Jaccard $0.75\to0.54\to0.33$; Supplementary Figure~S17b), whereas the
+within-tissue prior identity is left unresolved because the intervening ladder arms are seed-unstable.
+
+\clearpage
+
+\section*{AF. A biological reading of the latent reorganization (full)}
+
+This note preserves the biological reading of the reorganization in full. The main text keeps a
+condensed version of the same reading and both bounds on it: it interprets a training-dynamics
+property, and it demonstrates no prior mechanism.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``A biological reading of the latent reorganization'' (release r86). The main text keeps a condensed version of the same reading and both bounds on it.}
+
+\paragraph*{A biological reading of the latent reorganization.}
+Within hematopoiesis the latent compression is strong and reproducible, yet it is not prior-driven---the prior-free arms compress across the same training trajectory---so its tissue dependence is a property of the \emph{data}, not of the prior. The biological reading is that the encoder consolidates the tissue's dominant axis of variation onto fewer latent dimensions: the leading-axis concentration of $\Zmat$ rises while the effective rank falls, i.e.\ the model progressively spends latent capacity on the single most dominant program in the dataset rather than spreading it across many. On this reading the effect is graded by tissue because the datasets differ in how much of their variation is organized around one program, and it is absent exactly where the injected program is not the dataset's driver---which is consistent with the cross-tissue gradient and with the neural-crest null. Two caveats bound the reading: it interprets a training-dynamics property rather than demonstrating a prior mechanism (the injection path is absent), and the within-tissue ladder does not resolve the prior identity. What it does establish is that the $\kappa$-$C$-$Z$ readout tracks a genuine, tissue-structured property of the trained latent rather than a uniform artefact.
+
+\clearpage
+
+\section*{AG. The dual-spectrum view in biological data (full)}
+
+This note preserves the argument for why the two-spectrum pair, rather than a decoder-only
+readout, is the right instrument on biological data. The main text keeps the same argument in
+condensed form.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``The dual-spectrum view is useful in biological data'' (release r86). The main text keeps the same argument in condensed form.}
+
+\paragraph*{The dual-spectrum view is useful in biological data.}
+In single-cell data the latent covariance is strongly anisotropic---cell-state heterogeneity concentrates variance on a few axes---so a reorganization of the latent is precisely the kind of effect a decoder-only readout cannot register, and the two spectra can disagree. That is why the pair is needed where the latents are biological rather than synthetic, and why a decoder-only audit can report a null while the latent reorganizes. The readout is also \emph{label-free}: it needs no cell-type annotation and no perturbation ground truth, both scarce in single-cell work. The practical consequence is a falsification tool aimed at exactly the claims biology makes---that an injected biological prior made a latent space perturbation-ready.
+
+\clearpage
+
+\section*{AH. Content-versus-sparsity controls must be evaluated on the graph (full)}
+
+This note preserves the corollary about how content-versus-sparsity controls should be read
+under non-delivery. The main text keeps the corollary's operative sentence and the closing
+sentence that names the architectures where a training-layer version of the control becomes
+non-empty; that closing sentence was left in place rather than relocated, because it cites two
+works with no entry in this addendum's standalone bibliography, and hand-editing a bibliography
+is out of scope for this release.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``A content-versus-sparsity control must be evaluated on the graph'' (release r86). The main text keeps the corollary and the closing sentence naming the architectures where a training-layer control becomes non-empty.}
+
+\paragraph*{A content-versus-sparsity control must be evaluated on the graph.}
+One corollary of the non-delivery result concerns how such controls should be read. Because the prior's content obtains no functional route into the objective in the audited implementation, a \emph{training-layer} rewiring control would be an empty experiment by construction: rewiring the prior would change no loss term, hence no spectrum, so a null result from it would restate non-delivery rather than inform the content-versus-sparsity distinction. The network-layer control reported above is meaningful precisely because it is evaluated on the graph rather than on the trained model.
+
+\clearpage
+
+\section*{AI. The prior's direction information is largely discarded en route (full)}
+
+This note preserves the evidence behind the main text's statement that direction labels speak to
+target identity rather than to the sign a trained model represents. The main text keeps the
+claim, the pipeline scoping of the $0/33$ null, and the observation that arrival is not
+sufficient.
+
+\noindent\emph{Relocated verbatim from the Discussion subsection ``The prior's direction information is largely discarded en route'' (release r86). The main text keeps the claim, the pipeline scoping of the $0/33$ null and the observation that arrival is not sufficient.}
+
+\subsection*{The prior's direction information is largely discarded en route}
+The trace above is a result, not a caveat on the headline: because the prior's
+content never reaches the likelihood in the released implementation, the $0/33$
+null constrains what \emph{this pipeline} injects rather than what GRN priors can
+contribute. Arrival is also not sufficient. A prior can reach the objective and
+still fail to be implicit in the model, and we tested that directly: a
+latent-geometry statistic on the decoder readout (Supplementary Note~6) finds that
+TRRUST's activation/repression labels agree with the learned geometry
+$7.2\times$ more weakly than a purely expression-based relabelling of the same
+target sets, with the agreement sign-inverted for 17 of the 40 sign-locked
+factors; none of the six testable haematopoietic factors survives an
+expression-matched control. Direction labels are therefore evidence about
+\emph{which} genes a factor targets, not about the sign with which a trained model
+represents them.
+
+\clearpage
+
+\section*{AJ. The gene-weight channel is ordinal, so prior strength is not expressible (full)}
+
+This note preserves the full argument that the released conversion function makes prior strength
+unrepresentable rather than merely ineffective. The main text no longer carries the argument; it
+is a property of the conversion function, verified analytically rather than by training.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``The gene-weight channel is ordinal'' (release r86). The main text no longer carries the argument; it is a property of the released conversion function, verified analytically rather than by training.}
+
+\paragraph*{The gene-weight channel is ordinal, so prior strength is not expressible.}
+Arrival and retention both presuppose that a change to the prior can be expressed in
+the model at all, and one natural such change cannot be. The released implementation
+converts the per-gene weight vector to a ranking score before it enters the likelihood
+(\texttt{transfer\_to\_ranking\_score}: a gene's within-batch rank $r$ becomes
+$1+r^{-1/2}$), and rank is invariant to positive scaling. Because the prior builder
+combines its factors multiplicatively (\texttt{weights[target] *= boost\_factor}), one
+boost factor rescales every covered gene equally and leaves the ranking unchanged: the
+score vector the trainer receives is bit-identical for boost factors of $1.5$, $3.0$
+and $10$. The strength parameter of this pipeline is therefore not merely ineffective
+but unrepresentable, and the graded prior weight we identify below as future work
+cannot be reached by tuning it. This is a result about the conversion function,
+verified analytically rather than by training; it constrains which transformations the
+channel can carry, not the outcome of a particular run.
+
+\clearpage
+
+\section*{AK. Limitations: the Ridge readout as a proxy, checkpoint coverage, the scVI delivery lesson and the in-vivo confirmation (full)}
+
+This note preserves the limitation that the continuous spectral contrasts inherit the Ridge
+proxy's directional weakness, the bookkeeping of which configurations are Ridge-only, the scVI
+delivery illustration, the statement that predictiveness of unseen perturbations is out of scope,
+the tissue-imbalance bookkeeping, and the mouse-hematopoiesis in-vivo confirmation (section~D). The
+main text keeps each of these in one sentence, and keeps in full the generalisation to a
+perturbation-conditioned model, the in-silico bound, the applicability statement, the
+independent-codebase cross-implementation result, the untested diffusion and flow-matching case,
+and the statement that perturbation-readiness is adjudicated by the four-check protocol.
+
+\noindent\emph{Relocated verbatim from the opening of the Discussion paragraph ``Limitations'' (release r86). The main text keeps the same limitation in one sentence.}
+
+\paragraph*{Limitations.}
+The Ridge readout is a weak proxy for the analytical Jacobian
+($\cos\theta=0.45\pm0.26$); we therefore recomputed every accessible checkpoint
+with the Jacobian, and the two estimators agree on the locked/unlocked decision
+in 33/33 cases. That agreement supports the binary locked/unlocked verdict and the aggregate compression classification; the finer continuous contrasts reported here---the $\kappa$ ranges, the paired difference $D$, and the coupling slopes---inherit the proxy's directional weakness and should be read as indicative rather than Jacobian-exact. The remaining 18 configurations lack surviving checkpoints, so
+their $\kappa$ values are Ridge-only and should be read as indicative.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``Limitations'' (release r86). The main text keeps the lesson in one sentence: a reported cross-architecture confirmation must be checked against what actually entered the model.}
+
+The scVI control illustrates the failure this audit is designed to catch: registered with \texttt{labels\_key} the prior left the model untouched, and registered as a decoder-side covariate it moved both spectra---so a reported cross-architecture confirmation has to be checked against what actually entered the model, not against the API call.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``Limitations'' (release r86). The main text keeps the same bound in one sentence.}
+
+Whether that reorganization is \emph{predictive} of unseen perturbations is a separate matter, addressed in the companion manuscript and not claimed here.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``Limitations'' (release r86). The main text keeps the same bound in one sentence.}
+
+The audit rests on
+imbalanced tissue counts---the cross-tissue comparison includes a single lung
+configuration ($n=1$)---and all perturbations are in silico.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``Limitations'' (release r86). The main text keeps the section~C cross-implementation result in full; this is the companion in-vivo confirmation on real mouse-hematopoiesis scRNA-seq.}
+
+We additionally confirm the dual-spectrum signature on real mouse-hematopoiesis scRNA-seq using the same GRN-masked decoder (Supplementary Addendum, section~D).
+
+\clearpage
+
+\section*{AL. Outlook: genetically anchored priors and an external criterion (relocated)}
+
+This note preserves the forward-looking proposal in full. The main text no longer carries it; the
+outlook states no claim of the paper, and it is flagged as future work here as it was there.
+
+\noindent\emph{Relocated verbatim from the Discussion paragraph ``Outlook: genetically anchored priors and an external criterion'' (release r86). The main text states no claim of the paper here; the outlook is flagged as future work in both places.}
+
+\paragraph*{Outlook: genetically anchored priors and an external criterion.}
+The priors audited here are curated edge lists, which is why prior identity barely modulates the response and why edge count does not predict compression. A natural next step is to replace them with \emph{trait-anchored} weights derived from human genetics---gene-level association scores propagated onto TF targets---which would make prior strength continuous and testable as a dose--response, and would let genomic evidence supply the edge \emph{signs} that a curated mask lacks. A first pass is not encouraging: regressing the latent compression of the six resolvable hematopoietic compositions on a germline-association score (Open Targets credible sets, eight erythroid traits) gives $\rho=-0.09$ (exact permutation $p=0.92$), no better than edge count ($\rho=+0.26$, $p=0.66$). Compression is therefore not explained by any prior property measured so far---size, lineage match, or genetic content---and a proper dose--response would require retraining with a graded prior weight rather than re-analysing existing artefacts; as noted above, such a weight must reach the likelihood by a route other than the ranking conversion, which cannot express strength at all. GWAS-derived trait gene sets would supply an external criterion that needs no perturbation benchmark; as with the direction labels above, such a test must use expression-matched strata, because latent loadings correlate with mean expression and GWAS-implicated genes are typically lowly expressed. We flag this as future work, not a claim of this paper.
+
+\clearpage
+
+\section*{AM. Scope of the protocol: the domain-independent statement in full}
+
+This note preserves the full domain-independent statement of the three checks. The main text keeps
+the statement, the loss form that defines the shared structure, and the bound that no independent
+application to those settings is reported.
+
+\noindent\emph{Relocated verbatim from the Discussion subsection ``Scope of the protocol'' (release r86). The main text keeps the domain-independent statement, the loss form that defines the shared structure, and the bound that no independent application is reported.}
+
+The three checks are stated without reference to gene regulatory networks or to
+single-cell models, because the structure they test is shared by any objective of
+the form $L = L_{\text{data}} + \lambda L_{\text{sig}}$. The same question arises
+wherever a structured signal is added to a training objective and the claim
+concerns its content: a conditioning input carrying a guidance weight, a physics
+residual that is meant to restrict the solution, or a domain-specific adapter
+block. In each case delivery is the same computation, and each has a natural
+analogue of the two alternative-explanation controls used here. We state this as
+a property of how the protocol is formulated; we do not report an independent
+application to any of these settings, and the empirical findings of this work
+remain bounded by the audited implementation.
+
+\section*{AII. What the objective could express, had the prior arrived}
+
+This note answers a question the main text does not need in order to stand, and which is
+deliberately kept separate from its headline. Delivery failure is \emph{measured} for the
+audited pipeline: the per-gene weight layer written to training is identically zero across
+$1{,}350$ artefacts, and the branch that would consume it is never instantiated. That
+measurement does not require any argument about what a prior could in principle achieve.
+
+The constraints below address the \emph{counterfactual}: supposing delivery were repaired,
+what could this objective then express? They are collected here so that a reader who asks
+``would a working injection have helped?'' finds a bounded answer rather than an open one.
+They are not offered as an explanation of the $0/33$ null, which the delivery measurement
+already accounts for.
+
+\subsection*{(i) Bounded relative reweighting}
+
+The trainer applies a ranking transform before the likelihood, in
+\texttt{transfer\_to\_ranking\_score}. For a per-gene weight vector over $n$ genes it
+computes the descending rank $\mathrm{rank}(w_i)$ and sets
+\begin{equation}
+\mathrm{od}_i = n - \mathrm{rank}(w_i) + 1, \qquad s_i = 1 + \mathrm{od}_i^{-1/2},
+\end{equation}
+so $\mathrm{od}\in\{1,\dots,n\}$, with $\mathrm{od}=1$ at the largest weight and
+$\mathrm{od}=n$ at the smallest. Because $\mathrm{od}\mapsto 1+\mathrm{od}^{-1/2}$ is
+strictly decreasing, the extremes are $s_{\max}=2$ and $s_{\min}=1+n^{-1/2}$, and only
+their \emph{ratio} survives as any information the objective can use:
+\begin{equation}
+R(n) \;=\; \frac{s_{\max}}{s_{\min}} \;=\; \frac{2}{1+n^{-1/2}}
+\qquad\longrightarrow\qquad 2 \ \text{ as } \ n\to\infty .
+\end{equation}
+This is the exact closed form. Two properties follow directly. First, $R$ is bounded away
+from $2$ at finite $n$ and reaches exactly $1.99$ only at
+$n=(1/(2/1.99-1))^2=39{,}601$; it is therefore \emph{not} a universal constant but a
+function of the gene count, and the value quoted in the main text is the one this
+pipeline's $n$ gives. For the haematopoietic audit $n=20{,}466$, so $R=1.9861$; the
+lung IPF run has $n=41{,}995$ and $R=1.9903$, and the neural-crest run $n=11{,}932$ and
+$R=1.9819$. Second, the transform acts on the \emph{order} of the weights alone: for any
+$\alpha>0$, $\mathrm{rank}(\alpha w)=\mathrm{rank}(w)$, so $\alpha w$ maps to a
+bit-identical score vector. A global strengthening or weakening of the prior channel is
+therefore invisible to the objective, which is why prior strength cannot be expressed even
+in principle.
+
+The bound is an algebraic property of the transform rather than of any particular prior, so
+it holds for every configuration audited. Both claims above were checked against the
+implementation at the audited gene counts: the closed form reproduces the implementation to
+within $10^{-12}$ at every $n$ tested, and the score vector is bit-identical across
+rescalings spanning eight orders of magnitude ($\max|\Delta s| = 0$).
+
+\subsection*{(ii) No direction column}
+
+The reference library the runtime code matches against is hardcoded to ENCODE, which
+carries no direction column: it records that a factor targets a gene, not whether the
+factor raises or lowers it. A prior drawn from it can therefore express magnitude but not
+sign, and repression is not representable. This is not only a theoretical limitation but a
+measured gap: the library holds $126$ factors in total and omits $6$ of the $12$
+haematopoietic factors, including KLF1, for which it holds no edges at all.
+
+\subsection*{(iii) Topology discarded at the funnel's end}
+
+Building the tissue subset and keeping targets only collapses the network's edges into
+$203$ per-gene scalars, down from $9{,}396$ interactions over $795$ targets and $325$
+factors with at least $11$ targets. The scalar that reaches the objective is one number per
+gene: which edge points where is no longer recoverable from it. Whatever else reaches the
+loss, the graph's structure does not.
+
+\subsection*{What follows, and what does not}
+
+Taken together these bound the expressivity of a \emph{repaired} delivery along this
+route: bounded relative magnitude, no sign, no topology. They do not show that GRN priors
+are ineffective in general, and they are not advanced as such. The distinction matters:
+delivery failure is a property of this implementation and is proved by its artefacts,
+whereas these constraints are properties of the objective and its input transformation, and
+are proved by inspection of the transform and the reference library. Conflating the two
+would trade a measured fact for a conjecture.
+
+\begin{thebibliography}{99}
+\bibitem{lopez2018} Lopez, R., Regier, J., Cole, M.B., Jordan, M.I., and Yosef, N. (2018). Deep generative modeling for single-cell transcriptomics. \textit{Nat. Methods} \textbf{15}, 1053--1058. https://doi.org/10.1038/s41592-018-0229-2
+\bibitem{caranzano2026} Caranzano, I. , et al. (2025). Sparsity is all you need: rethinking biological pathway-informed approaches in deep learning. \textit{arXiv} 2505.04300. https://arxiv.org/abs/2505.04300 https://doi.org/10.1093/bib/bbag425
+\bibitem{kamimoto2023} Kamimoto, K., Stringer, C., Hoffmann, C.M., et al. (2023). Dissecting cell identity via network inference and in silico gene perturbation. \textit{Nature} \textbf{614}, 742--751. https://doi.org/10.1038/s41586-022-05688-9
+\bibitem{bergen2020} Bergen, V., Lange, M., Peidli, S., Wolf, F.A., and Theis, F.J. (2020). Generalizing RNA velocity to transient cell states through dynamical modeling. \textit{Nat. Biotechnol.} \textbf{38}, 1408--1414. https://doi.org/10.1038/s41587-020-0591-3
+\bibitem{vega} Seninge, L., Anastopoulos, I., Ding, H., and Stuart, J. (2021). VEGA is an interpretable generative model for inferring biological network activity in single-cell transcriptomics. \textit{Nat. Commun.} \textbf{12}, 5684. https://doi.org/10.1038/s41467-021-26017-0
+\bibitem{roohani2024} Roohani, Y., Huang, K., and Leskovec, J. (2024). Predicting transcriptional outcomes of novel multigene perturbations with GEARS. \textit{Nat. Biotechnol.} \textbf{42}, 927--935. https://doi.org/10.1038/s41587-023-01905-6
+\bibitem{dixit2016} Dixit, A. , et al. (2016). Perturb-Seq: dissecting molecular circuits with scalable single-cell RNA profiling of pooled genetic screens. \textit{Cell} \textbf{167}, 1853--1866. https://doi.org/10.1016/j.cell.2016.11.038
+\bibitem{replogle2022} Replogle, J.M. , et al. (2022). Mapping information-rich genotype-phenotype landscapes with genome-scale Perturb-seq. \textit{Cell} \textbf{185}, 2559--2575. https://doi.org/10.1016/j.cell.2022.05.013
+\bibitem{montufar2014} https://doi.org/10.48550/arXiv.1402.1869 Mont\'{u}far, G., Pascanu, R., Cho, K., and Bengio, Y. (2014). On the number of linear regions of deep neural networks. \textit{Proc. NeurIPS} 2924--2932.
+\bibitem{zheng2017} Zheng, G.X. , et al. (2017). Massively parallel digital transcriptional profiling of single cells. \textit{Nat. Commun.} \textbf{8}, 14049. https://doi.org/10.1038/ncomms14049
+\bibitem{unagi} Zheng, Y. , et al. (2025). A deep generative model for deciphering cellular dynamics and in silico drug discovery in complex diseases. \textit{Nat. Biomed. Eng.}. https://doi.org/10.1038/s41551-025-01423-7
+\bibitem{weyl1912} Weyl, H. (1912). Das asymptotische Verteilungsgesetz der Eigenwerte linearer partieller Differentialgleichungen (mit einer Anwendung auf die Theorie der Hohlraumstrahlung). \textit{Math. Ann.} \textbf{71}, 441--479. https://doi.org/10.1007/bf01456804
+\bibitem{han2018} Han, H. , et al. (2018). TRRUST v2: an expanded reference database of human and mouse transcriptional regulatory interactions. \textit{Nucleic Acids Res.} \textbf{46}, D380--D386. https://doi.org/10.1093/nar/gkx1013
+\bibitem{davis1970} Davis, C., and Kahan, W.M. (1970). The rotation of eigenvectors by a perturbation. III. \textit{SIAM J. Numer. Anal.} \textbf{7}, 1--46. https://doi.org/10.1137/0707001
+\bibitem{korsunsky2019} Korsunsky, I. , et al. (2019). Fast, sensitive and accurate integration of single-cell data with Harmony. \textit{Nat. Methods} \textbf{16}, 1289--1296. https://doi.org/10.1038/s41592-019-0619-0
+\end{thebibliography}
+
+\end{document}

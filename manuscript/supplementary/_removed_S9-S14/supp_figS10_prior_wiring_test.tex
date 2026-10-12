@@ -1,0 +1,26 @@
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figS10_prior_wiring_test.pdf}
+\caption{\textbf{Supplementary Figure S9. The injected GRN prior is wired into the decoder only when it is tissue-matched and expression-gated.}
+\textbf{(A)} Decisive 2$\times$3 control on the same marrow data and architecture: per-edge
+Mann--Whitney $z$ (relative to the matched-seed vanilla model on the \emph{same} edge set) for
+the three prior configurations crossed with two GRN edge sets. The true hematopoietic prior
+(R13, seed~42) specifically wires the hematopoietic edges into the decoder ($z=+2.85$,
+$p=0.0044$, $\text{**}$) and not the cortex edges ($z=-0.40$, n.s.). The cortex-TF prior
+injected into marrow (R16) wires neither the hematopoietic edges ($z=-1.72$, n.s.) nor its own
+cortex edges ($z=-0.55$, n.s.). \textbf{(B)} Per-edge coupling distribution for the
+hematopoietic edges in each marrow model: the true-prior distribution shifts right of vanilla
+and of the mismatched prior. Per-edge Mann--Whitney vs vanilla: true $z=+2.85$ ($p=0.0044$),
+wrong $z=-1.72$ (n.s.). \textbf{(C)} Cross-tissue replication on the neural dataset: the
+cortex-TF prior (R1) does \emph{not} wire its own (TRRUST-derived) cortex GRN edges above
+vanilla (per-seed $z=+0.19/+0.09/+0.19$, all n.s.; Stouffer $z=+0.27$, $p=0.79$).
+\textbf{Take-home:} prior internalisation is a real but fragile, program-matching-gated event:
+the prior wires its TF$\rightarrow$target edges above vanilla only when those TFs drive the
+trajectory's active program and are expressed / variable in the captured data. It is
+\emph{not} a prerequisite for latent-spectrum compression -- the mismatched R16 prior compresses
+the marrow spectrum almost as much as the true prior while wiring neither edge set (see
+Supplementary Fig.~S13). The specificity is causal: an in-silico KLF1 knockout on the R13
+baseline lowers coupling of the KLF1-specific edges by $0.357$ while leaving the remaining
+$\sim$290 prior edges unchanged ($-0.004$; Supplementary Fig.~S13).}
+\label{fig:prior_wiring}
+\end{figure}

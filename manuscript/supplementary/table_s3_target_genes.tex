@@ -1,0 +1,29 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,booktabs,hyperref,caption}
+\usepackage{times}
+\begin{document}
+
+\section*{Supplementary Table S3: Erythroid Target Gene Set ($\mathcal{T}$, $|\mathcal{T}|=31$)}
+\label{tab:s3_targets}
+
+All GRQ and CTCP perturbation experiments target these 31 erythroid genes. Genes selected to span the erythroid program: hemoglobin subunits, master transcription factors, cytoskeletal components, and heme biosynthesis enzymes.
+
+\vspace{0.5cm}
+\begin{tabular}{lll}
+\toprule
+\textbf{Category} & \textbf{Genes} & \textbf{Count} \\
+\midrule
+Hemoglobin subunits & \textit{HBB, HBA1, HBA2, HBD, HBG1, HBG2, HBE1, HBZ, HBQ1} & 9 \\
+Master TFs & \textit{GATA1, KLF1, TAL1, GFI1B, BCL11A, NFE2, LMO2, MYB} & 8 \\
+Cytoskeleton & \textit{EPB42, SPTA1, SPTB, ANK1, SLC4A1, GYPA, GYPB, RHAG, RHCE, RHD} & 10 \\
+Heme biosynthesis & \textit{ALAS2} & 1 \\
+Chaperone & \textit{AHSP} & 1 \\
+Receptors & \textit{KIT, EPOR} & 2 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5cm}
+\textit{Note:} \textit{EPO} (erythropoietin) is not part of the protocol target set: it is not expressed in the blood-stage dataset and was excluded from the GRQ/CTCP target list (\texttt{optionA\_grq\_traversal.py}, T31).
+
+\end{document}

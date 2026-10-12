@@ -1,0 +1,18 @@
+{
+  "kappa_C_W": 1.219192360952496,
+  "C_percent": -21.919236095249595,
+  "kappa_C_Z": 0.746143973178269,
+  "eff_rank_vanilla": 8.799189354941669,
+  "eff_rank_model": 6.1487980881184034,
+  "eff_rank_change_percent": -30.120857273457723,
+  "pattern": "discordant: decoder expanded while latent compressed -- the two spectra compensate, so neither alone is interpretable",
+  "latent_health": "OK",
+  "source": "Norman 2019 GEARS cached latents (scVI vanilla vs scVI perturbation-conditioned)",
+  "published_reference": {
+    "kappa_C_W": 1.219,
+    "kappa_C_Z": 0.746,
+    "eff_rank_vanilla": 8.8,
+    "eff_rank_model": 6.15
+  },
+  "reproduces_published": true
+}

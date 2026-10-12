@@ -1,0 +1,69 @@
+{
+ "n_configurations": 33,
+ "latent": {
+  "mean": 0.7742359688955551,
+  "median": 0.7408823299572455,
+  "n_below_unity": 29
+ },
+ "decoder_ridge_pr": {
+  "mean": 0.9504668582581814,
+  "median": 0.9427424431955793,
+  "min": 0.6919709808524092,
+  "max": 1.3777538853966442,
+  "n_below_unity": 21
+ },
+ "decoder_jacobian": {
+  "mean": 2.7087823265945055,
+  "median": 0.9687211801557494,
+  "min": 0.6837659007503736,
+  "max": 51.6080699569866,
+  "n_below_unity": 20,
+  "n_above_unity": 13
+ },
+ "concordance": {
+  "direction_disagreements": 17,
+  "spearman_overall": -0.10594919786096257,
+  "per_tissue": {
+   "hemo": {
+    "n": 22,
+    "spearman": -0.0378317334839074,
+    "ridge_range": [
+     0.7338408446397424,
+     1.1826753118195674
+    ],
+    "jacobian_range": [
+     0.7241291043208222,
+     1.0858902875565501
+    ],
+    "jacobian_n_above_unity": 5
+   },
+   "neural": {
+    "n": 10,
+    "spearman": -0.309090909090909,
+    "ridge_range": [
+     0.6919709808524092,
+     1.2543868898003585
+    ],
+    "jacobian_range": [
+     0.6837659007503736,
+     4.656982692452243
+    ],
+    "jacobian_n_above_unity": 7
+   }
+  }
+ },
+ "dissociation_ridge": {
+  "paired_log_difference_mean": -0.23754823759646437,
+  "paired_log_difference_sd": 0.3190853382037454,
+  "naive_t": -4.276632515080482,
+  "product_median": 0.6527221041148482,
+  "product_within_25pct_of_unity": 12
+ },
+ "dissociation_jacobian": {
+  "paired_log_difference_mean": -0.46073345757609235,
+  "paired_log_difference_sd": 0.8485854259723292,
+  "naive_t": -3.118969675173561,
+  "product_median": 0.6543035374961543,
+  "product_within_25pct_of_unity": 8
+ }
+}

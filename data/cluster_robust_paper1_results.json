@@ -1,0 +1,155 @@
+{
+  "source": "..\\positive_result\\z_spectrum_all.csv",
+  "method": "cluster-robust binomial (Liang-Zeger sandwich SE + cluster-bootstrap CI) replacing seed-clustered permutation; H0: p<=0.5 (no directional preference)",
+  "results": {
+    "17_18": {
+      "claim": "17/18 hema iter0->iter4",
+      "n_units": 18,
+      "n_compressed": 17,
+      "compressed_proportion": 0.9444,
+      "seed_clusters": {
+        "123.0": 5,
+        "42.0": 9,
+        "456.0": 4
+      },
+      "naive_sign_test_p": 0.00014495849609375,
+      "seed_clustered_perm_p": 0.25,
+      "cluster_robust": {
+        "p_hat": 0.9444,
+        "se_robust": 0.0341,
+        "analytic_ci": [
+          0.8776,
+          1.0
+        ],
+        "bootstrap_ci": [
+          0.8889,
+          1.0
+        ],
+        "p_one_sided_normal": 0.0458,
+        "p_one_sided_bootstrap": 0.0,
+        "n_clusters": 3,
+        "n_boot": 10000
+      }
+    },
+    "kappa_c_z": {
+      "hemo": {
+        "claim": "kappa-C-Z hematopoietic",
+        "n_units": 19,
+        "n_compressed": 16,
+        "compressed_proportion": 0.8421,
+        "seed_clusters": {
+          "123.0": 6,
+          "42.0": 9,
+          "456.0": 4
+        },
+        "naive_sign_test_p": 0.004425048828125,
+        "seed_clustered_perm_p": 0.25,
+        "cluster_robust": {
+          "p_hat": 0.8421,
+          "se_robust": 0.0683,
+          "analytic_ci": [
+            0.7082,
+            0.976
+          ],
+          "bootstrap_ci": [
+            0.6667,
+            1.0
+          ],
+          "p_one_sided_normal": 0.0588,
+          "p_one_sided_bootstrap": 0.0,
+          "n_clusters": 3,
+          "n_boot": 10000
+        }
+      },
+      "neural": {
+        "claim": "kappa-C-Z neural crest",
+        "n_units": 9,
+        "n_compressed": 5,
+        "compressed_proportion": 0.5556,
+        "seed_clusters": {
+          "": 7,
+          "123.0": 1,
+          "456.0": 1
+        },
+        "naive_sign_test_p": 1.0,
+        "seed_clustered_perm_p": 1.0,
+        "cluster_robust": {
+          "p_hat": 0.5556,
+          "se_robust": 0.08,
+          "analytic_ci": [
+            0.3987,
+            0.7124
+          ],
+          "bootstrap_ci": [
+            0.0,
+            1.0
+          ],
+          "p_one_sided_normal": 0.2819,
+          "p_one_sided_bootstrap": 0.2627,
+          "n_clusters": 3,
+          "n_boot": 10000
+        }
+      },
+      "lung": {
+        "claim": "kappa-C-Z lung fibrosis",
+        "n_units": 1,
+        "n_compressed": 1,
+        "compressed_proportion": 1.0,
+        "seed_clusters": {
+          "": 1
+        },
+        "naive_sign_test_p": 1.0,
+        "seed_clustered_perm_p": 1.0,
+        "cluster_robust": {
+          "p_hat": 1.0,
+          "se_robust": 0.0,
+          "analytic_ci": [
+            1.0,
+            1.0
+          ],
+          "bootstrap_ci": [
+            1.0,
+            1.0
+          ],
+          "p_one_sided_normal": 0.1587,
+          "p_one_sided_bootstrap": 0.0,
+          "n_clusters": 1,
+          "n_boot": 10000
+        }
+      },
+      "pooled_22_29": {
+        "claim": "kappa-C-Z pooled 22/29",
+        "n_units": 29,
+        "n_compressed": 22,
+        "compressed_proportion": 0.7586,
+        "seed_clusters": {
+          "hemo:123.0": 6,
+          "hemo:42.0": 9,
+          "hemo:456.0": 4,
+          "lung:": 1,
+          "neural:": 7,
+          "neural:123.0": 1,
+          "neural:456.0": 1
+        },
+        "naive_sign_test_p": 0.008130058646202087,
+        "seed_clustered_perm_p": 0.078125,
+        "cluster_robust": {
+          "p_hat": 0.7586,
+          "se_robust": 0.0773,
+          "analytic_ci": [
+            0.6072,
+            0.9101
+          ],
+          "bootstrap_ci": [
+            0.5862,
+            0.9062
+          ],
+          "p_one_sided_normal": 0.0396,
+          "p_one_sided_bootstrap": 0.0033,
+          "n_clusters": 7,
+          "n_boot": 10000
+        }
+      }
+    }
+  }
+}

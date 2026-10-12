@@ -1,0 +1,81 @@
+{
+  "source": "..\\positive_result\\z_spectrum_all.csv",
+  "method": "seed-clustered exact permutation sign test (2^{#clusters} cluster sign-flips)",
+  "results": {
+    "17_18": {
+      "claim": "17/18",
+      "description": "hematopoietic latent-Z participation ratio decreases iter0->iter4",
+      "n_configs": 18,
+      "n_compressed": 17,
+      "seed_clusters": {
+        "123.0": 5,
+        "42.0": 9,
+        "456.0": 4
+      },
+      "naive_sign_test_p": 0.00014495849609375,
+      "cluster_adjusted_p": 0.25,
+      "note": "Replaces the over-precise naive p=0.000145 with the seed-clustered permutation p."
+    },
+    "kappa_c_z": {
+      "hemo": {
+        "claim": "kappa-C-Z hemo",
+        "description": "hematopoietic directional latent compression vs vanilla-only null",
+        "n_vanilla": 5,
+        "vanilla_centre_pr": 3.1,
+        "n_prior_runs": 19,
+        "n_directionally_compressed": 16,
+        "seed_clusters": {
+          "123.0": 6,
+          "42.0": 9,
+          "456.0": 4
+        },
+        "naive_sign_test_p": 0.004425048828125,
+        "cluster_adjusted_p": 0.25
+      },
+      "neural": {
+        "claim": "kappa-C-Z neural",
+        "description": "neural crest directional latent compression vs vanilla-only null",
+        "n_vanilla": 10,
+        "vanilla_centre_pr": 3.575,
+        "n_prior_runs": 9,
+        "n_directionally_compressed": 5,
+        "seed_clusters": {
+          "": 7,
+          "123.0": 1,
+          "456.0": 1
+        },
+        "naive_sign_test_p": 1.0,
+        "cluster_adjusted_p": 1.0
+      },
+      "lung": {
+        "claim": "kappa-C-Z lung",
+        "description": "lung fibrosis directional latent compression vs vanilla-only null",
+        "n_vanilla": 5,
+        "vanilla_centre_pr": 9.008,
+        "n_prior_runs": 1,
+        "n_directionally_compressed": 1,
+        "seed_clusters": {
+          "": 1
+        },
+        "naive_sign_test_p": 1.0,
+        "cluster_adjusted_p": 1.0
+      },
+      "pooled_22_29": {
+        "claim": "kappa-C-Z pooled 22/29",
+        "n_prior_runs": 29,
+        "n_directionally_compressed": 22,
+        "naive_sign_test_p": 0.008130058646202087,
+        "cluster_adjusted_p": 0.078125,
+        "seed_clusters": {
+          "hemo:123.0": 6,
+          "hemo:42.0": 9,
+          "hemo:456.0": 4,
+          "lung:": 1,
+          "neural:": 7,
+          "neural:123.0": 1,
+          "neural:456.0": 1
+        }
+      }
+    }
+  }
+}

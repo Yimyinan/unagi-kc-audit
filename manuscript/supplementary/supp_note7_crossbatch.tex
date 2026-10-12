@@ -1,0 +1,158 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,caption}
+\usepackage{times}
+\newcommand{\Wmat}{\mathbf{W}}\newcommand{\Jmat}{\mathbf{J}}
+\newcommand{\Xmat}{\mathbf{X}}\newcommand{\Zmat}{\mathbf{Z}}
+\newcommand{\Rbb}{\mathbb{R}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\begin{document}
+
+\section*{Supplementary Note 7: Independent-batch reproducibility bounds what any perturbation readout can predict}
+\label{sup:crossbatch}
+
+\subsection*{Motivation}
+
+Supplementary Figure~S12 reports that the GRQ virtual-perturbation direction does not predict the
+real differential-expression response ($\rho\approx0$), while the mean latent-shift direction does
+($\rho\approx0.22$). Those comparisons ask how good the \emph{predictor} is. This note asks the
+complementary question, which bounds every predictor at once: how reproducible is the
+\emph{response itself} in independent experimental batches? A readout cannot be validated against
+a target that does not repeat.
+
+\subsection*{Data and design}
+
+We use the published Perturb-seq resource GSE281048 (Jiang, L. et al., \textit{Nat.\ Cell Biol.}
+\textbf{27}, 505--517, 2025; Mixscale pipeline), which performs more than
+1{,}500 perturbations split across six cell lines and five signalling contexts. Its
+\texttt{meta.data} carries an experimental-batch field, \texttt{Batch\_info}, taking the values
+\texttt{Rep1} and \texttt{Rep2} (129{,}917 and 106{,}689 cells in the TGFB context; 236{,}606 cells
+in total).
+
+\paragraph*{What the two batches are, and what they are not.}
+Two features of the design fix the interpretation, and both are reported because they cut in
+opposite directions.
+\begin{itemize}\itemsep2pt
+\item The batches are \emph{not} disjoint cell-line panels: all sixteen \texttt{sample\_ID} labels
+appear in both batches (roughly 80\% of each label's cells in \texttt{Rep1}, 65--70\% in
+\texttt{Rep2}), so both batches sequence the same material rather than independent biological
+preparations. The paper's own description is that the perturbations are ``split across'' the cell
+lines. We therefore treat \texttt{Rep1}/\texttt{Rep2} as \emph{technical} batches (experimental
+rounds) rather than biological replicates, and read the reproducibility below as a technical
+reproducibility.
+\item One cell line, BXPC3, is absent from \texttt{Rep1}. This would be a cell-line confound if the
+comparison used BXPC3; it does not, because BXPC3 contributes no \texttt{(Rep1, Rep2)} pair. Removing
+BXPC3 leaves the group count and the median unchanged ($n=260$, $r=+0.064$).
+\end{itemize}
+
+\subsection*{Measurement}
+
+For every (cell line $\times$ target) group with at least twenty cells in \emph{both} batches, the
+perturbed cells of each batch are compared with \emph{that batch's own} non-targeting (NT) controls.
+Counts are normalised per group to $\log(1+\mathrm{CP10k})$ and the shift is the difference of group
+means, so the batch effect is not confounded with the perturbation effect. Reproducibility is the
+Pearson correlation between the two batches' shift vectors across all genes.
+
+\subsection*{Controls}
+
+Two controls bracket the measurement, and a third supplies the null.
+\begin{itemize}\itemsep2pt
+\item \textbf{Positive control (NT vs NT).} The two batches' NT controls agree at $r=+0.9962$ on
+average across the five fully shared cell lines (range $+0.9943$ to $+0.9972$). The batch effect on
+gene-level pseudobulk is therefore negligible, and the low values below are not a measurement
+artefact.
+\item \textbf{Mismatched-target null.} Correlating a target's \texttt{Rep1} shift against a
+\emph{different} target's \texttt{Rep2} shift, matched on cell line ($2{,}000$ permutations), gives
+a median of $+0.0085$ (TGFB) and $+0.0039$ (IFNG).
+\item \textbf{Within-batch cross-target floor.} Correlating two different targets' shifts
+\emph{inside one batch} gives a median of $+0.2466$ (TGFB).
+\end{itemize}
+
+\subsection*{Results}
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+& \textbf{TGFB} & \textbf{IFNG} & \textbf{Reference level} \\
+\midrule
+Same target, across batches            & $+0.0643$ & $+0.0683$ & --- \\
+\quad (95\% of values)                 & $n=260$   & $n=345$   & --- \\
+NT vs NT, across batches (ceiling)     & $+0.9962$ & $+0.9962$ & measurement ceiling \\
+Different target, across batches (null)& $+0.0085$ & $+0.0039$ & $p=6\times10^{-68}$, $6\times10^{-75}$ \\
+Different target, within a batch       & $+0.2466$ & ---       & noise floor \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Cross-batch reproducibility of single-gene perturbation signatures.} The same
+target's shift agrees across independent experimental batches at only $r\approx+0.065$, against a
+non-targeting ceiling of $+0.996$ and a mismatched-target floor of $+0.009$. The agreement is
+significantly above the mismatched null (Mann--Whitney $p=6.2\times10^{-68}$ for TGFB and
+$5.7\times10^{-75}$ for IFNG, $n=2{,}000$ permutations), so the signal is real, but it is small:
+about $0.4\%$ of the variance at the ceiling is shared across batches. In both contexts fewer than
+$1\%$ of groups exceed $r=0.9$.}
+\end{table}
+
+Two features of these numbers matter more than their absolute size.
+
+\textbf{First, the same-target agreement is below the within-batch cross-target floor.} Two
+\emph{unrelated} perturbations measured in the same batch agree at $+0.247$, while the \emph{same}
+perturbation measured in two batches agrees at $+0.064$. Same-batch pairs evidently share a large
+common component --- the batch's own state, plus technical structure --- that does not survive
+across batches. The batch-stable part of a single-gene signature is therefore smaller than the
+part that two arbitrary perturbations happen to share.
+
+\textbf{Second, pathway membership does not raise reproducibility.} Because each context's target
+list is a single signalling family, the natural objection is that the reproducible unit is the
+\emph{pathway} rather than the gene. We tested this directly, grouping each context's targets into
+hand-built functional sets (listed per context in the analysis code; 39/52 TGFB targets and 54/59
+IFNG targets covered) and comparing cross-batch correlations within a group against across groups.
+Within-group and across-group agreement are indistinguishable: TGFB $+0.0085$ vs $+0.0092$
+(difference $-0.0007$, Mann--Whitney $p=0.93$); IFNG $+0.0063$ vs $+0.0058$ (difference $+0.0005$).
+The same test inside a single batch also shows no advantage (TGFB \texttt{Rep1}: $+0.2669$ vs
+$+0.2605$; \texttt{Rep2}: $+0.2560$ vs $+0.2459$). A small-sample coverage artefact is excluded
+because the IFNG grouping was rebuilt after the TGFB grouping was found to cover only 3 of its 59
+targets.
+
+\subsection*{Relation to the internal split-half estimate}
+
+An internal estimate obtained by splitting one cell population in half reports a much higher
+number: the same groups show a median split-half correlation of about $0.9$ in this resource. The
+discrepancy is not a contradiction of the measurement above; it identifies what split-half measures.
+Two halves of one population share the library, the batch, and the technical noise of that batch,
+so a strong effect drives both halves to the same noisy value and the correlation saturates. This
+is also why split-half reproducibility saturates at $1$ in datasets where the underlying
+cross-batch agreement is near zero. We therefore report split-half values elsewhere in this work as
+an upper bound and a same-batch consistency check, not as evidence that an effect reproduces.
+
+\subsection*{Consequence for perturbation readouts}
+
+The reproducible component of a single-gene perturbation signature is a small fraction of its
+variance, and it is not organised by pathway. Any readout --- GRQ, latent-shift, decoder-direct, or
+a trained response predictor --- is bounded by this: the ceiling on agreement with a real response
+is set by how much of that response is stable across batches, and no method can exceed it. This is
+the mechanistic counterpart of the $\rho\approx0$ result for the GRQ direction in Supplementary
+Figure~S12, and it is why that null should not be read as a property of the GRQ construction alone.
+It also means that target-gene specificity and response prediction can dissociate without either
+being defective: a direction can be highly specific to the intended targets and still fail to
+predict a response whose reproducible part is small.
+
+\subsection*{Limits}
+
+(i) The batch field is interpreted as technical from design evidence (all \texttt{sample\_ID}
+labels present in both batches; the source paper's ``split across'' wording) rather than from an
+explicit author definition of the field, which could not be retrieved. If the two batches are in
+fact biological replicates, the measured value is a biological reproducibility and is not lower.
+(ii) Two contexts were analysed (TGFB, IFNG); the remaining three GSE281048 contexts were not
+available locally.
+(iii) The pathway groupings are hand-built functional sets by gene name, not database annotations;
+they are listed in full in the analysis code so the grouping can be audited, and both contexts
+carry their own grouping.
+(iv) Correlations are gene-level Pearson on log-normalised pseudobulk without expression
+filtering, so low-expression genes contribute noise.
+(v) Reproducibility is estimated from two batches only, so no across-batch variance component can
+be separated from within-batch variance.
+
+\vspace{10pt}
+\noindent\rule{\textwidth}{0.4pt}
+\footnotesize\textbf{Source identity.} This note was compiled from \texttt{supplementary/supp\_note7\_crossbatch.tex} in the paper1 repository. SHA256 of that source file with this paragraph removed: \texttt{4c3761851c5d446223f54dc6f4426b70ea366bfa541af32219f03ca8c7768e9c}. Readers can recompute the digest to confirm which revision produced this PDF; the source is distributed with the code release.
+
+\end{document}

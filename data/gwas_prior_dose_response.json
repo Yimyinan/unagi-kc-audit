@@ -1,0 +1,363 @@
+{
+  "question": "Does the germline genetic content of a prior's TF set predict latent-spectrum compression?",
+  "outcome_definition": "pr_ratio_Z = PR(latent|prior) / PR(latent|vanilla); <1 = compression",
+  "axis_definition": "per-TF Open Targets GWAS credible-set score for erythroid traits (mean over 8 traits), averaged over the prior's TFs",
+  "n_compositions": 6,
+  "compositions": [
+    {
+      "comp": "R11",
+      "tfs": [
+        "KLF1",
+        "TAL1"
+      ],
+      "n_tfs": 2,
+      "edges": 21,
+      "n_runs": 3,
+      "runs": [
+        "R11_s456",
+        "R11_s42",
+        "R11_s123"
+      ],
+      "pr_ratio_Z_mean": 0.6118789514958283,
+      "pr_ratio_Z_min": 0.5051544771259558,
+      "pr_ratio_Z_max": 0.7713242710460878,
+      "pr_ratio_Z_sd": 0.1406989887535519,
+      "gwas_ery_mean": 0.45405,
+      "gwas_specificity_mean": 0.32504999999999995,
+      "kappa_C_W_mean": 1.5206744801030299,
+      "seeds": [
+        "s123",
+        "s42",
+        "s456"
+      ]
+    },
+    {
+      "comp": "R84",
+      "tfs": [
+        "GATA1",
+        "GFI1B",
+        "KLF1",
+        "TAL1"
+      ],
+      "n_tfs": 4,
+      "edges": 84,
+      "n_runs": 2,
+      "runs": [
+        "R84_s42",
+        "R84_s123"
+      ],
+      "pr_ratio_Z_mean": 0.9838698258261103,
+      "pr_ratio_Z_min": 0.7431821692503342,
+      "pr_ratio_Z_max": 1.2245574824018863,
+      "pr_ratio_Z_sd": 0.34038374822526035,
+      "gwas_ery_mean": 0.33745,
+      "gwas_specificity_mean": 0.08369999999999998,
+      "kappa_C_W_mean": 1.2044891445830626,
+      "seeds": [
+        "s123",
+        "s42"
+      ]
+    },
+    {
+      "comp": "R107",
+      "tfs": [
+        "GATA1",
+        "GFI1B",
+        "KLF1",
+        "PAX5",
+        "TAL1"
+      ],
+      "n_tfs": 5,
+      "edges": 107,
+      "n_runs": 1,
+      "runs": [
+        "R107_s42"
+      ],
+      "pr_ratio_Z_mean": 1.0585401980226763,
+      "pr_ratio_Z_min": 1.0585401980226763,
+      "pr_ratio_Z_max": 1.0585401980226763,
+      "pr_ratio_Z_sd": null,
+      "gwas_ery_mean": 0.29450000000000004,
+      "gwas_specificity_mean": 0.15560000000000002,
+      "kappa_C_W_mean": 0.9931230705181783,
+      "seeds": [
+        "s42"
+      ]
+    },
+    {
+      "comp": "R13",
+      "tfs": [
+        "CEBPA",
+        "GATA1",
+        "GATA2",
+        "GFI1",
+        "GFI1B",
+        "KLF1",
+        "LMO2",
+        "PAX5",
+        "RUNX1",
+        "SPI1",
+        "TAL1"
+      ],
+      "n_tfs": 11,
+      "edges": 324,
+      "n_runs": 3,
+      "runs": [
+        "R13_s123",
+        "R13_s42",
+        "R13_s456"
+      ],
+      "pr_ratio_Z_mean": 0.6147669066169238,
+      "pr_ratio_Z_min": 0.4774312682264982,
+      "pr_ratio_Z_max": 0.8034881297487596,
+      "pr_ratio_Z_sd": 0.16899298203135324,
+      "gwas_ery_mean": 0.2687727272727273,
+      "gwas_specificity_mean": 0.04673636363636364,
+      "kappa_C_W_mean": 1.7921448802375455,
+      "seeds": [
+        "s123",
+        "s42",
+        "s456"
+      ]
+    },
+    {
+      "comp": "R15/R165",
+      "tfs": [
+        "GATA2",
+        "GFI1",
+        "GFI1B",
+        "KLF1",
+        "LMO2",
+        "PAX5",
+        "SPI1",
+        "TAL1"
+      ],
+      "n_tfs": 8,
+      "edges": 166,
+      "n_runs": 4,
+      "runs": [
+        "R15_s456",
+        "R165_s42",
+        "R15_s123",
+        "R15_s42"
+      ],
+      "pr_ratio_Z_mean": 0.902667604995084,
+      "pr_ratio_Z_min": 0.5965900591324197,
+      "pr_ratio_Z_max": 1.6729278562105385,
+      "pr_ratio_Z_sd": 0.5177816261718188,
+      "gwas_ery_mean": 0.2683375,
+      "gwas_specificity_mean": 0.0724875,
+      "kappa_C_W_mean": 1.7274571051849676,
+      "seeds": [
+        "s123",
+        "s42",
+        "s456"
+      ]
+    },
+    {
+      "comp": "R12",
+      "tfs": [
+        "GATA2",
+        "GFI1B",
+        "PAX5"
+      ],
+      "n_tfs": 3,
+      "edges": 55,
+      "n_runs": 3,
+      "runs": [
+        "R12_s123",
+        "R12_s456",
+        "R12_s42"
+      ],
+      "pr_ratio_Z_mean": 0.6366567716207016,
+      "pr_ratio_Z_min": 0.49711807889800225,
+      "pr_ratio_Z_max": 0.8852350013759291,
+      "pr_ratio_Z_sd": 0.21581450798228405,
+      "gwas_ery_mean": 0.21403333333333333,
+      "gwas_specificity_mean": 0.07446666666666667,
+      "kappa_C_W_mean": 2.4121942584063243,
+      "seeds": [
+        "s123",
+        "s42",
+        "s456"
+      ]
+    }
+  ],
+  "unresolved_configs": [
+    {
+      "config": "R111_s123",
+      "reason": "TF set not resolved by reconstruct_prior_configs.py"
+    },
+    {
+      "config": "R111_s42",
+      "reason": "TF set not resolved by reconstruct_prior_configs.py"
+    },
+    {
+      "config": "R13_KO_KLF1",
+      "reason": "KLF1 perturbation arm, not a prior-composition arm"
+    },
+    {
+      "config": "R111_s456",
+      "reason": "TF set not resolved by reconstruct_prior_configs.py"
+    },
+    {
+      "config": "R16_s42",
+      "reason": "wrong-tissue (neural) prior; outside the hema TF universe"
+    },
+    {
+      "config": "R13_OE_KLF1",
+      "reason": "KLF1 perturbation arm, not a prior-composition arm"
+    }
+  ],
+  "tests": {
+    "content": {
+      "axis": "gwas_ery_mean",
+      "rho": -0.08571428571428572,
+      "p_exact": 0.9194444444444444,
+      "n_perm": 720,
+      "min_possible_two_sided_p": 0.002777777777777778
+    },
+    "size": {
+      "axis": "log(edge count)",
+      "rho": 0.2571428571428571,
+      "p_exact": 0.6583333333333333,
+      "note": "reproduces the paper's negative control on a comparable basis"
+    },
+    "specificity": {
+      "axis": "gwas_specificity_mean",
+      "rho": 0.08571428571428572,
+      "p_exact": 0.9194444444444444
+    },
+    "content_partialling_size": {
+      "rho": 0.08571428571428572,
+      "note": "partial Spearman of content given log(edges)"
+    },
+    "run_level_clustered": {
+      "n_runs": 16,
+      "rho_content": 0.07330927742573703,
+      "p_content_clustered": 0.77595,
+      "rho_size": 0.1062236468821904,
+      "p_size_clustered": 0.6756,
+      "n_perm": 20000,
+      "note": "runs treated as units but the null permutes scores WITHIN seed blocks, holding the seed effect fixed"
+    }
+  },
+  "within_seed": {
+    "compositions": [
+      "R11",
+      "R13",
+      "R15/R165",
+      "R12"
+    ],
+    "per_seed": {
+      "s42": {
+        "n": 4,
+        "rho": -0.4,
+        "scores": [
+          0.4541,
+          0.2688,
+          0.2683,
+          0.214
+        ],
+        "outcomes": [
+          0.7713,
+          0.5634,
+          0.7398,
+          0.8852
+        ]
+      },
+      "s123": {
+        "n": 4,
+        "rho": -0.6,
+        "scores": [
+          0.4541,
+          0.2688,
+          0.2683,
+          0.214
+        ],
+        "outcomes": [
+          0.5052,
+          0.4774,
+          0.6014,
+          0.5276
+        ]
+      },
+      "s456": {
+        "n": 4,
+        "rho": 0.4,
+        "scores": [
+          0.4541,
+          0.2688,
+          0.2683,
+          0.214
+        ],
+        "outcomes": [
+          0.5592,
+          0.8035,
+          0.5966,
+          0.4971
+        ]
+      }
+    }
+  },
+  "robustness_variants": {
+    "note": "the R15/R165 TF attribution is unverified: prior_configs.json assigns 8 TFs, while the run log reports 11/11 matched",
+    "variants": {
+      "B_drop_unverified_8TF_group": {
+        "rho": -0.2,
+        "p_exact": 0.7833333333333333,
+        "n": 5,
+        "labels": [
+          "R11",
+          "R12",
+          "R84",
+          "R107",
+          "R13"
+        ],
+        "scores": [
+          0.454,
+          0.214,
+          0.3375,
+          0.2945,
+          0.2688
+        ],
+        "outcomes": [
+          0.6119,
+          0.6367,
+          0.9839,
+          1.0585,
+          0.6148
+        ]
+      },
+      "C_R15_pooled_with_11TF": {
+        "rho": 0.08571428571428572,
+        "p_exact": 0.9194444444444444,
+        "n": 6,
+        "labels": [
+          "R11",
+          "R12",
+          "R84",
+          "R107",
+          "R13+R15",
+          "R165"
+        ],
+        "scores": [
+          0.454,
+          0.214,
+          0.3375,
+          0.2945,
+          0.2688,
+          0.2683
+        ],
+        "outcomes": [
+          0.6119,
+          0.6367,
+          0.9839,
+          1.0585,
+          0.7859,
+          0.7398
+        ]
+      }
+    }
+  }
+}

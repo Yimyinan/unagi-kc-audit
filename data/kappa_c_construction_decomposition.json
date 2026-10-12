@@ -1,0 +1,293 @@
+{
+  "task": "P0-A construction-vs-real decomposition of the published kappa-C(W)",
+  "headline_estimator": "kappa-C(W)=tr(W_P'W_P)/tr(W_V'W_V) from decoder_out/<cfg>/iter_4/loading_matrix.npy (validated against published tr_V: hemo 5634.8 / neural 17695.2 / lung 12568.7)",
+  "cfg_identification": "audit rows paired to decoder_out files by tr_P match (tolerance 0.5); config names are NOT trusted",
+  "tradeoff_identity": "kappa-C(W)*kappa-C(Z)=1 exactly for a pure scale change, so R=log(product) is exactly the part of the decoder audit the construction does not explain",
+  "isotropic_channel": "cancelled exactly by per-column standardisation of the readout (measured |dev|~1e-14) -> contributes 0",
+  "rows": [
+    {
+      "config": "R111_s123",
+      "tissue": "hemo",
+      "csv_run": "R111_erythroid_temporal_seed123-1",
+      "decoder_dir": "R111_seed123",
+      "tr_loading_P": 32564.6,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 863.5821379168572,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 5.779193582735855,
+      "kappa_C_Z": 3.601741631231985,
+      "product": 20.81516212188846,
+      "tradeoff_residual_R": 3.0356816693213133,
+      "published_kappa": 5.779,
+      "published_C": -477.9
+    },
+    {
+      "config": "R12_s123",
+      "tissue": "hemo",
+      "csv_run": "R12_GATA2_GFI1B_PAX5_seed123",
+      "decoder_dir": "R12_seed123",
+      "tr_loading_P": 19275.9,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 521.1268151198999,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 3.420866756584085,
+      "kappa_C_Z": 2.17346337164443,
+      "product": 7.43512859471159,
+      "tradeoff_residual_R": 2.0062158756215367,
+      "published_kappa": 3.421,
+      "published_C": -242.1
+    },
+    {
+      "config": "R13_s123",
+      "tissue": "hemo",
+      "csv_run": "R13_hemato_trueprior_seed123",
+      "decoder_dir": "R13_seed123",
+      "tr_loading_P": 13341.4,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 850.2896149666888,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 2.3676794207425282,
+      "kappa_C_Z": 3.5463025117879265,
+      "product": 8.39650747688781,
+      "tradeoff_residual_R": 2.1278158428292526,
+      "published_kappa": 2.368,
+      "published_C": -136.8
+    },
+    {
+      "config": "R12_s456",
+      "tissue": "hemo",
+      "csv_run": "R12_GATA2_GFI1B_PAX5_seed456",
+      "decoder_dir": "R12_seed456",
+      "tr_loading_P": 11495.7,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 590.0839833372081,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 2.0401256477603464,
+      "kappa_C_Z": 2.461063001876775,
+      "product": 5.020877750882878,
+      "tradeoff_residual_R": 1.6136047691925046,
+      "published_kappa": 2.04,
+      "published_C": -104.0
+    },
+    {
+      "config": "R165_s42",
+      "tissue": "hemo",
+      "csv_run": "R165_erythroid_myeloid_seed42",
+      "decoder_dir": "R165_seed42",
+      "tr_loading_P": 10391.8,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 362.412503219148,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 1.8442180734010079,
+      "kappa_C_Z": 1.5115136629297359,
+      "product": 2.787560815367578,
+      "tradeoff_residual_R": 1.0251669537204713,
+      "published_kappa": 1.844,
+      "published_C": -84.4
+    },
+    {
+      "config": "R111_s42",
+      "tissue": "hemo",
+      "csv_run": "R111_erythroid_temporal_seed42",
+      "decoder_dir": "R111_seed42",
+      "tr_loading_P": 9657.8,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 457.59249865128004,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 1.7139561297650314,
+      "kappa_C_Z": 1.9084808267426876,
+      "product": 3.271052411534664,
+      "tradeoff_residual_R": 1.1851117715201023,
+      "published_kappa": 1.714,
+      "published_C": -71.4
+    },
+    {
+      "config": "R84_s42",
+      "tissue": "hemo",
+      "csv_run": "R84_erythroid_seed42",
+      "decoder_dir": "R84_seed42",
+      "tr_loading_P": 7031.7,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 275.9275180430016,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 1.247905870660893,
+      "kappa_C_Z": 1.1508107744508205,
+      "product": 1.4361035214569877,
+      "tradeoff_residual_R": 0.36193355817876804,
+      "published_kappa": 1.248,
+      "published_C": -24.8
+    },
+    {
+      "config": "R13_s456",
+      "tissue": "hemo",
+      "csv_run": "R13_hemato_trueprior_seed456",
+      "decoder_dir": "R13_seed456",
+      "tr_loading_P": 6863.8,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 321.51907435367156,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 1.2181088947256336,
+      "kappa_C_Z": 1.3409594576935102,
+      "product": 1.6334346428829267,
+      "tradeoff_residual_R": 0.4906849407797757,
+      "published_kappa": 1.218,
+      "published_C": -21.8
+    },
+    {
+      "config": "R84_s123",
+      "tissue": "hemo",
+      "csv_run": "R84_erythroid_seed123",
+      "decoder_dir": "R84_seed123",
+      "tr_loading_P": 6542.4,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 208.60786304518263,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 1.1610704905231772,
+      "kappa_C_Z": 0.8700407198608735,
+      "product": 1.0101786053840027,
+      "tradeoff_residual_R": 0.010127152233210496,
+      "published_kappa": 1.161,
+      "published_C": -16.1
+    },
+    {
+      "config": "R111_s456",
+      "tissue": "hemo",
+      "csv_run": "R111_erythroid_temporal_seed456",
+      "decoder_dir": "R111_seed456",
+      "tr_loading_P": 6410.7,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 294.3566074848644,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 1.1376978774756867,
+      "kappa_C_Z": 1.2276729694338824,
+      "product": 1.3967209315592015,
+      "tradeoff_residual_R": 0.3341272976561858,
+      "published_kappa": 1.138,
+      "published_C": -13.8
+    },
+    {
+      "config": "R107_s42",
+      "tissue": "hemo",
+      "csv_run": "R107_erythroid_lymphoid_seed42",
+      "decoder_dir": "R107_seed42",
+      "tr_loading_P": 5596.1,
+      "tr_loading_V": 5634.8,
+      "tr_latent_P": 228.0021694028268,
+      "tr_latent_V": 239.76793072230078,
+      "kappa_C_W": 0.9931319656420814,
+      "kappa_C_Z": 0.950928544597146,
+      "product": 0.9443975346809274,
+      "tradeoff_residual_R": -0.057208084234873294,
+      "published_kappa": 0.993,
+      "published_C": 0.7
+    }
+  ],
+  "skipped": [
+    [
+      "R15_s456",
+      "no CSV latent mapping"
+    ],
+    [
+      "R13_s42",
+      "no decoder_out file with tr_P=10090.1"
+    ],
+    [
+      "R12_s42",
+      "no decoder_out file with tr_P=10005.2"
+    ],
+    [
+      "R15_s123",
+      "no CSV latent mapping"
+    ],
+    [
+      "R11_s456",
+      "no decoder_out file with tr_P=8823.0"
+    ],
+    [
+      "R11_s42",
+      "no decoder_out file with tr_P=8591.5"
+    ],
+    [
+      "R11_s123",
+      "no decoder_out file with tr_P=8291.7"
+    ],
+    [
+      "R13_KO_KLF1",
+      "no CSV latent mapping"
+    ],
+    [
+      "R16_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R13_OE_KLF1",
+      "no CSV latent mapping"
+    ],
+    [
+      "R15_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R9",
+      "no CSV latent mapping"
+    ],
+    [
+      "R1_s456",
+      "no decoder_out file with tr_P=4297.6"
+    ],
+    [
+      "R1_s123",
+      "no decoder_out file with tr_P=3984.9"
+    ],
+    [
+      "R1_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R2_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R3_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R4_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R5_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R6_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R7_s42",
+      "no CSV latent mapping"
+    ],
+    [
+      "R8_s42",
+      "no CSV latent mapping"
+    ]
+  ],
+  "aggregate": {
+    "n": 11,
+    "mean_R": 1.1030237951652955,
+    "sd_R": 0.9965214854828343,
+    "median_R": 1.0251669537204713,
+    "min_R": -0.057208084234873294,
+    "max_R": 3.0356816693213133,
+    "frac_within_25pct": 0.18181818181818182,
+    "frac_within_10pct": 0.18181818181818182
+  },
+  "coupling": {
+    "pearson_logW_logZ": 0.8639204215574374,
+    "spearman_logW_logZ": 0.9,
+    "slope_logW_on_logZ": 0.9456162434173501,
+    "sign_concordance": 0.9090909090909091,
+    "n_both_expanded": 9,
+    "n_both_compressed": 1
+  }
+}

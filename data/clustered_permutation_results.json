@@ -1,0 +1,16 @@
+{
+  "dataset": "kappa_v2_partitioned.json (partitioned kappa-C compression-direction statistic)",
+  "note": "This is the kappa-C-PARTITIONED companion metric, NOT the stagedata effective-rank Delta-log(eff_rank) underlying the main 17/18/16/19 claims.",
+  "n_non_vanilla_units": 16,
+  "n_compressed": 10,
+  "n_expanded": 6,
+  "seed_clusters": {
+    "42": 7,
+    "123": 5,
+    "456": 4
+  },
+  "naive_two_sided_sign_test_p": 0.454498291015625,
+  "cluster_adjusted_p": 0.75,
+  "n_null_samples": 8,
+  "method": "exact enumeration of 2^{#clusters} cluster sign-flips"
+}

@@ -1,0 +1,185 @@
+{
+  "11932": {
+    "n_control": 2,
+    "n_prior": 2,
+    "control_names": [
+      "R0_s123",
+      "R0_s456"
+    ],
+    "prior_names": [
+      "R1_s123",
+      "R1_s456"
+    ],
+    "dropped_duplicates": [],
+    "control_vs_control": {
+      "mean": 0.4525281630295289,
+      "sd": null,
+      "values": [
+        0.4525
+      ]
+    },
+    "prior_vs_control": {
+      "mean": 0.4530013617607659,
+      "sd": 0.0102163866007575,
+      "values": [
+        0.4517,
+        0.4502,
+        0.4429,
+        0.4672
+      ]
+    },
+    "n_vanilla": 2,
+    "vanilla_names": [
+      "R0_s123",
+      "R0_s456"
+    ],
+    "vanilla_vs_vanilla": {
+      "mean": 0.4525281630295289,
+      "sd": null
+    },
+    "prior_vs_vanilla": {
+      "mean": 0.4530013617607659,
+      "sd": 0.0102163866007575
+    },
+    "mannwhitney_U": 7.0,
+    "z": 3.5355339059327373,
+    "note": "overlap in [0,1]; lower = prior subspace further from the control than seed-replicates of the control are from each other. CONTROL CAVEAT: for the hematopoietic tissue the control readouts are the VEHICLE arm (R14_s* = 37-TF prior), not an empty prior; the true vanilla has a single seed and cannot form a control pair."
+  },
+  "20466": {
+    "n_control": 3,
+    "n_prior": 20,
+    "control_names": [
+      "R14_s123",
+      "R14_s42",
+      "R14_s456"
+    ],
+    "prior_names": [
+      "R107_s42",
+      "R111_s123",
+      "R111_s42",
+      "R11_s123",
+      "R11_s42",
+      "R11_s456",
+      "R12_s123",
+      "R12_s42",
+      "R12_s456",
+      "R13_KO_KLF1",
+      "R13_OE_KLF1",
+      "R13_s123",
+      "R13_s42",
+      "R13_s456",
+      "R15_s123",
+      "R15_s42",
+      "R15_s456",
+      "R165_s42",
+      "R84_s123",
+      "R84_s42"
+    ],
+    "dropped_duplicates": [
+      [
+        "R14_seed123",
+        "R14_s123"
+      ],
+      [
+        "R14_seed42",
+        "R14_s42"
+      ],
+      [
+        "R14_seed456",
+        "R14_s456"
+      ]
+    ],
+    "control_vs_control": {
+      "mean": 0.4442272354702433,
+      "sd": 0.00748634288751198,
+      "values": [
+        0.4415,
+        0.4527,
+        0.4385
+      ]
+    },
+    "prior_vs_control": {
+      "mean": 0.4720543131320929,
+      "sd": 0.12239231807800463,
+      "values": [
+        0.4513,
+        0.4451,
+        0.4499,
+        0.4496,
+        0.4546,
+        0.4508,
+        0.4436,
+        0.4456,
+        0.4423,
+        0.4569,
+        0.4468,
+        0.4416,
+        0.4502,
+        0.4469,
+        1.0,
+        0.4415,
+        0.4527,
+        0.456,
+        0.4538,
+        0.4592,
+        0.4343,
+        0.436,
+        0.4323,
+        0.4375,
+        0.4406,
+        0.4474,
+        0.4324,
+        0.4283,
+        0.4321,
+        0.4386,
+        0.4281,
+        0.4317,
+        0.4373,
+        0.4335,
+        0.4415,
+        1.0,
+        0.4385,
+        0.4325,
+        0.4313,
+        0.4378,
+        0.4497,
+        0.4434,
+        0.4511,
+        0.4456,
+        0.4555,
+        0.4528,
+        0.4513,
+        0.4401,
+        0.4501,
+        0.45,
+        0.4457,
+        0.4413,
+        0.4482,
+        0.4447,
+        0.4527,
+        0.4385,
+        1.0,
+        0.4487,
+        0.4509,
+        0.4529
+      ]
+    },
+    "n_vanilla": 3,
+    "vanilla_names": [
+      "R14_s123",
+      "R14_s42",
+      "R14_s456"
+    ],
+    "vanilla_vs_vanilla": {
+      "mean": 0.4442272354702433,
+      "sd": 0.00748634288751198
+    },
+    "prior_vs_vanilla": {
+      "mean": 0.4720543131320929,
+      "sd": 0.12239231807800463
+    },
+    "mannwhitney_U": 1863.0,
+    "z": 57.223328940214586,
+    "note": "overlap in [0,1]; lower = prior subspace further from the control than seed-replicates of the control are from each other. CONTROL CAVEAT: for the hematopoietic tissue the control readouts are the VEHICLE arm (R14_s* = 37-TF prior), not an empty prior; the true vanilla has a single seed and cannot form a control pair."
+  }
+}

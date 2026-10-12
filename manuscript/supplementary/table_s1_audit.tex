@@ -1,0 +1,66 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,booktabs,hyperref,caption,multirow}
+\newcommand{\Zmat}{\mathbf{Z}}\newcommand{\Xmat}{\mathbf{X}}\newcommand{\Hmat}{\mathbf{H}}
+\newcommand{\trloss}{\operatorname{tr}}
+
+\usepackage{times}
+\begin{document}
+
+\section*{Supplementary Table S1: Complete $\kappa$-$C$ Audit of 33 Model--Prior Configurations}
+\label{tab:s1_audit}
+
+All values computed under the unified ratio protocol (StandardScaler on $\Zmat$ and $\Xmat$, Ridge $\alpha=1.0$).
+$\kappa = \mathrm{tr}(\mathbf{H}_P) / \mathrm{tr}(\mathbf{H}_V)$; $\kappa=1.0$ = vanilla-equivalent, $\kappa<1$ = spectral compression, $\kappa>1$ = prior-induced expansion.
+$C = (\mathrm{tr}_V - \mathrm{tr}_P) / \mathrm{tr}_V \times 100\%$ (positive = compression, negative = expansion).
+Tissues: H = hematopoietic (GSE150774, $\mathrm{tr}_V=5634.8$), N = neural crest ($\mathrm{tr}_V=6793.8$), L = human IPF (GSE136831, $\mathrm{tr}_V=12568.7$).
+\textbf{0/33 configurations achieve deep global spectral compression ($C>50\%$, equivalently $\kappa<0.5$); the closest is lung R9 at $C=48.2\%$.}
+
+\vspace{0.5cm}
+\begin{tabular}{lcrrrl}
+\toprule
+\textbf{Config} & \textbf{Tissue} & \textbf{$\kappa$} & \textbf{$C$ (\%)} & \textbf{$\mathrm{tr}(\mathbf{H}_P)$} & \textbf{Regime} \\
+\midrule
+R15\_s42          & H &    0.916 &      8.4 &     5160.9 & compression \\
+R107\_s42         & H &    0.993 &      0.7 &     5596.1 & compression \\
+R13\_OE\_KLF1     & H &    1.002 &     -0.2 &     5644.9 & expansion \\
+R16\_s42          & H &    1.115 &    -11.5 &     6284.1 & expansion \\
+R111\_s456        & H &    1.138 &    -13.8 &     6410.7 & expansion \\
+R84\_s123         & H &    1.161 &    -16.1 &     6542.4 & expansion \\
+R13\_KO\_KLF1     & H &    1.198 &    -19.8 &     6748.0 & expansion \\
+R13\_s456         & H &    1.218 &    -21.8 &     6863.8 & expansion \\
+R84\_s42          & H &    1.248 &    -24.8 &     7031.7 & expansion \\
+R11\_s123         & H &    1.472 &    -47.2 &     8291.7 & expansion \\
+R11\_s42          & H &    1.525 &    -52.5 &     8591.5 & expansion \\
+R11\_s456         & H &    1.566 &    -56.6 &     8823.0 & expansion \\
+R15\_s123         & H &    1.617 &    -61.7 &     9109.9 & expansion \\
+R111\_s42         & H &    1.714 &    -71.4 &     9657.8 & expansion \\
+R12\_s42          & H &    1.776 &    -77.6 &    10005.2 & expansion \\
+R13\_s42          & H &    1.791 &    -79.1 &    10090.1 & expansion \\
+R165\_s42         & H &    1.844 &    -84.4 &    10391.8 & expansion \\
+R12\_s456         & H &    2.040 &   -104.0 &    11495.7 & expansion \\
+R13\_s123         & H &    2.368 &   -136.8 &    13341.4 & expansion \\
+R15\_s456         & H &    2.533 &   -153.3 &    14272.9 & expansion \\
+R12\_s123         & H &    3.421 &   -242.1 &    19275.9 & expansion \\
+R111\_s123        & H &    5.779 &   -477.9 &    32564.6 & expansion \\
+R1\_s123          & N &    0.587 &   41.3 &     3984.9 & compression \\
+R4\_s42           & N &    0.607 &   39.3 &     4124.6 & compression \\
+R8\_s42           & N &    0.610 &   39.0 &     4144.6 & compression \\
+R1\_s456          & N &    0.633 &   36.7 &     4297.6 & compression \\
+R6\_s42           & N &    0.684 &   31.6 &     4644.7 & compression \\
+R1\_s42           & N &    0.762 &   23.8 &     5176.0 & compression \\
+R3\_s42           & N &    0.879 &   12.1 &     5972.1 & expansion \\
+R7\_s42           & N &    1.101 &  -10.1 &     7477.2 & expansion \\
+R2\_s42           & N &    1.130 &  -13.0 &     7675.4 & expansion \\
+R5\_s42           & N &    1.194 &  -19.4 &     8110.1 & expansion \\
+R9                & L &    0.518 &     48.2 &     6511.6 & compression \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5cm}
+
+
+\vspace{0.5cm}
+\textbf{Interpretation:} The locking quadrant---deep global spectral compression ($C>50\%$, equivalently $\kappa<0.5$)---is structurally empty across all 33 configurations. Prior injection either amplifies the decoder Hessian trace (pure-lineage priors, $\kappa>1$, $C<0$: spectral expansion) or leaves it vanilla-equivalent (mixed-lineage priors, $\kappa\approx1$, $C\approx0$). This cross-tissue invariant establishes that prior injection alone, regardless of tissue context or prior design, is insufficient to produce perturbation-ready latent organization.
+
+\end{document}

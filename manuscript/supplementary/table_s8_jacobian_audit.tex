@@ -1,0 +1,24 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,booktabs,hyperref,caption,multirow}
+\usepackage{times}
+\newcommand{\Hmat}{\mathbf{H}}\newcommand{\trloss}{\operatorname{tr}}
+\begin{document}
+
+\section*{Supplementary Table S8: Analytical-Jacobian Re-audit of All 33 Configurations}
+\label{tab:s8_jacobian_audit}
+
+\begin{sloppypar}
+Every prior-injection configuration in the 33-configuration audit has both a trained checkpoint and iter$_4$ stagedata on disk, so the analytical-Jacobian re-audit was extended from 15 configurations to all 33. The recomputation uses the folded UNAGI ziln decoder ($\mathrm{softplus}(\mathrm{clamp}(\mathrm{fc}_4(\mathrm{softplus}(\mathrm{fc}_3(\mathbf{z}))),-1))$), the $(\mathrm{mean}_k\,\mathbf{J}(\mathbf{z}_k))^\top(\mathrm{mean}_k\,\mathbf{J}(\mathbf{z}_k))$ form, per-gene standardization on the vanilla stagedata ($N=2{,}000$), and $N_K=1{,}000$ latent points (Supplementary Note~1). Variant A differentiates the full mean chain; variant B uses the linear-head analog. Ridge $\kappa$ is the audit value (unified ratio protocol). The recomputation reproduces the 15 previously published values to a maximum absolute deviation of $4.8\times10^{-5}$, which is the rounding of the published file, so the extension is protocol-identical. \textbf{All 33 configurations remain below the deep-compression threshold under the Jacobian estimator} ($\kappa_{\mathrm{jac}}>0.5$; minimum $0.684$), including the single near-boundary configuration (lung R9: Ridge $\kappa=0.893$ vs.\ Jacobian $\kappa=51.6$, spectral expansion); Ridge and Jacobian classifications agree on 33/33 configurations.
+\end{sloppypar}
+
+\begin{center}
+\input{table_s8_body_33}
+\end{center}
+
+\vspace{2pt}
+\noindent{\footnotesize All 33 configurations were re-audited with the analytical decoder Jacobian: \textbf{0 locked under either estimator} ($\kappa_{\mathrm{jac}}>0.5$ and $\kappa_{\mathrm{Ridge}}>0.5$ everywhere; minimum $\kappa_{\mathrm{jac}}=0.684$). Ridge--Jacobian classification agreement is $33/33$. Spearman $\rho=-0.50$ between the two continuous values (normalised $\kappa$), so the Ridge proxy is unreliable in magnitude but never flips the locked/unlocked decision. On the raw per-configuration values the same pair gives $\rho=-0.11$ with opposite signs in $17$ of $33$ configurations (the value quoted in the Limitations), so the two statistics are reported separately and neither is interchangeable with the other. Variants A and B differ in sign on R1\_s42, R1\_s123 and R1\_s456, which is why the classifiers rather than the continuous values are reported.}
+
+R9 reproduces the earlier independent recomputation ($\kappa_{\mathrm{jac}}\approx21$--$52$ across protocol variants; Supplementary Note~1). $\kappa_{\mathrm{jac}}=0.5$ is the deep-compression boundary ($C_{\mathrm{jac}}=50\%$). Variants A and B differ in sign on R1\_s42, R1\_s123 and R1\_s456, so the continuous Jacobian value is itself protocol-sensitive while the locked/unlocked decision is not.
+
+\end{document}

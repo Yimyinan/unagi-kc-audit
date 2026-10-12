@@ -1,0 +1,95 @@
+{
+  "n": 8,
+  "spearman_edges_vs_delta_eff_rank": {
+    "rho": -0.20597146021777488,
+    "p": 0.6954119012537148
+  },
+  "cross_tissue_survival": {
+    "R13_hema": {
+      "native": 292,
+      "foreign": 29
+    },
+    "R1_cortex": {
+      "native": 50,
+      "foreign": 0
+    },
+    "R16_blood": {
+      "native": 29,
+      "foreign": 292
+    }
+  },
+  "records": [
+    {
+      "tissue": "neural",
+      "prior": "R1_seed42",
+      "vanilla": "R0_seed42",
+      "label": "R1 full PG-UNAGI (C+M+T)",
+      "edges": 50,
+      "delta_eff_rank": 2.0602490880878177,
+      "C": 4.184698933854274
+    },
+    {
+      "tissue": "lung",
+      "prior": "R9",
+      "vanilla": "R10",
+      "label": "R9 IPF disease prior",
+      "edges": 0,
+      "delta_eff_rank": 2.1354570128430703,
+      "C": 48.19143571717529
+    },
+    {
+      "tissue": "hemo",
+      "prior": "R13_seed123",
+      "vanilla": "R14",
+      "label": "R13 full blood prior",
+      "edges": 325,
+      "delta_eff_rank": -1.4613518750276446,
+      "C": -136.76701930376348
+    },
+    {
+      "tissue": "hemo",
+      "prior": "R13_seed456",
+      "vanilla": "R14",
+      "label": "R13 full blood prior",
+      "edges": 325,
+      "delta_eff_rank": 1.096539219041504,
+      "C": -21.80984783931983
+    },
+    {
+      "tissue": "hemo",
+      "prior": "R12_seed123",
+      "vanilla": "R14",
+      "label": "R12 GATA2+GFI1B+PAX5",
+      "edges": 55,
+      "delta_eff_rank": 0.3084208669831021,
+      "C": -242.08572206975023
+    },
+    {
+      "tissue": "hemo",
+      "prior": "R12_seed456",
+      "vanilla": "R14",
+      "label": "R12 GATA2+GFI1B+PAX5",
+      "edges": 55,
+      "delta_eff_rank": 0.13386212459806668,
+      "C": -104.01256761152386
+    },
+    {
+      "tissue": "hemo",
+      "prior": "R84_seed123",
+      "vanilla": "R14",
+      "label": "R84 erythroid",
+      "edges": 84,
+      "delta_eff_rank": -1.0298002615931772,
+      "C": -16.10672706647733
+    },
+    {
+      "tissue": "hemo",
+      "prior": "R111_seed42",
+      "vanilla": "R14",
+      "label": "R111 erythroid+temporal",
+      "edges": 111,
+      "delta_eff_rank": -0.511043940685183,
+      "C": -71.39534756785794
+    }
+  ]
+}

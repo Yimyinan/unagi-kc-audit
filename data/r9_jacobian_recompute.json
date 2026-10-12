@@ -1,0 +1,52 @@
+{
+ "protocol": "UNAGI ziln decoder Jacobian; (mean J)^T (mean J); NK=1000; variant A: full mean chain softplus(clamp(fc4(softplus(fc3(z))),-1)); variant B: linear head analog fc4(softplus(fc3(z))); variant C: full ziln mean incl. zero-inflation gate (1-pi)*softplus(clamp(mu,-1))",
+ "ridge": {
+  "tr_P": 6511.6,
+  "tr_V": 12568.7,
+  "kappa_ratio": 0.5181,
+  "C_ridge_pct": 48.19
+ },
+ "variants": {
+  "first2000": {
+   "A": {
+    "tr_Jp": 97865977.201,
+    "tr_Jv": 1896330.823,
+    "C_jac_pct": -5060.81
+   },
+   "B": {
+    "tr_Jp": 1252236856.073,
+    "tr_Jv": 40215655.254,
+    "C_jac_pct": -3013.8
+   },
+   "C": {
+    "tr_Jp": 897072.6,
+    "tr_Jv": 42870.4,
+    "C_jac_pct": -1992.5
+   }
+  },
+  "all": {
+   "A": {
+    "tr_Jp": 4982442646.24,
+    "tr_Jv": 18221776.59,
+    "C_jac_pct": -27243.34
+   },
+   "B": {
+    "tr_Jp": 8134117598.507,
+    "tr_Jv": 287576449.907,
+    "C_jac_pct": -2728.51
+   }
+  },
+  "raw": {
+   "A": {
+    "tr_Jp": 11186664.909,
+    "tr_Jv": 314223.766,
+    "C_jac_pct": -3460.1
+   },
+   "B": {
+    "tr_Jp": 15195432.066,
+    "tr_Jv": 410177.05,
+    "C_jac_pct": -3604.6
+   }
+  }
+ }
+}

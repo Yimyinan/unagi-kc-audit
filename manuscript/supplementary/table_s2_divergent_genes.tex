@@ -1,0 +1,33 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,hyperref,caption}
+\usepackage{times}
+\begin{document}
+
+\section*{Supplementary Table S2: Top Genes Driving Encoder Divergence}
+\label{tab:s2_divergent}
+
+Ranked by the mean over the 512 hidden dimensions of the per-entry cross-seed variance of the encoder first-layer weights ($\mathbf{W}_{\text{enc}}^{(1)} \in \mathbb{R}^{512 \times 20466}$; variance across seeds s9--s12, averaged across the 512 dimensions). Recomputed from the four checkpoints in \texttt{results/gvae\_hema\_scan/} (saved in \texttt{results/encoder\_divergence\_variance\_real.json}). Lineage annotation from the Haemopedia haematopoietic expression atlas (de Graaf et al., \textit{Stem Cell Reports} \textbf{7}, 571--582, 2016).
+
+\vspace{0.5cm}
+\begin{tabular}{llcccl}
+\toprule
+\textbf{Rank} & \textbf{Gene} & \textbf{Variance} & \textbf{Lineage} & \textbf{Function} \\
+\midrule
+1  & \textit{GATA1}  & 0.460 & Erythroid  & Master erythroid TF \\
+2  & \textit{EPOR}   & 0.459 & Erythroid  & Erythropoietin receptor \\
+3  & \textit{LGALS3} & 0.445 & Ubiquitous & Galectin-3 (macrophage/mesenchyme) \\
+4  & \textit{SLC22A4} & 0.438 & Ubiquitous & Organic cation transporter OCTN1 \\
+5  & \textit{PPOX}   & 0.437 & Erythroid  & Heme biosynthesis (protoporphyrinogen oxidase) \\
+6  & \textit{NFE2}   & 0.422 & Erythroid  & Erythroid NF-E2 TF \\
+7  & \textit{TAL1}   & 0.414 & Erythroid  & Hematopoietic TF \\
+8  & \textit{GFI1B}  & 0.410 & Erythroid  & Erythroid/megakaryocytic TF \\
+9  & \textit{LYL1}   & 0.410 & Erythroid  & bHLH TF (erythroid program) \\
+10 & \textit{GNAS}   & 0.409 & Ubiquitous & G-protein $\alpha$ subunit \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5cm}
+\textbf{Interpretation:} The most divergent genes are erythroid-centric but not exclusively erythroid: 7 of the top 10 (GATA1, EPOR, PPOX, NFE2, TAL1, GFI1B, LYL1) are erythroid-lineage, and the remaining three (LGALS3, SLC22A4, GNAS) are broadly expressed. This reflects the encoder's challenge in allocating the massive expression variance of the erythroid program (hemoglobin genes alone account for $\sim$30\% of mRNA in late erythroid cells) across the 64 latent dimensions: different seeds resolve this allocation differently, producing the $r<0.02$ first-layer weight correlation (Fig.~1a). The decoder, constrained by the reconstruction objective, converges to consistent per-gene sensitivity ($r=0.96$) regardless of encoder organization.
+
+\end{document}

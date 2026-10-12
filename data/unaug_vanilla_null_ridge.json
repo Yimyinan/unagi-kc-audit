@@ -1,0 +1,85 @@
+{
+  "protocol": "Ridge(alpha=1) Z->X on iter_4 stagedata; kappa=trH_i/trH_j",
+  "validation": {
+    "root": "F:/UNAGI_Project/UNAGI/result\\R14\\R14_hemato_vanilla\\",
+    "trH": 11305.49,
+    "n_cells": 29985,
+    "audit_hema_trV": 5634.8,
+    "match": false
+  },
+  "vanilla_trH": {
+    "hemo": {
+      "R14_hemato_seed42": {
+        "trH": 11956.55,
+        "n_cells": 29985
+      },
+      "R14_hemato_seed123": {
+        "trH": 9944.95,
+        "n_cells": 29985
+      },
+      "R14_hemato_seed456": {
+        "trH": 12497.36,
+        "n_cells": 29985
+      },
+      "R14_hemato_vanilla": {
+        "trH": 11305.49,
+        "n_cells": 29985
+      }
+    },
+    "neural": {
+      "R0_vanilla_seed123": {
+        "trH": 10891.63,
+        "n_cells": 21078
+      },
+      "R0_vanilla_seed456": {
+        "trH": 10120.22,
+        "n_cells": 21078
+      }
+    }
+  },
+  "null": {
+    "hemo": {
+      "n_seeds": 4,
+      "n_pairs": 12,
+      "mean": 1.0098,
+      "std": 0.1412,
+      "lo2s": 0.7274,
+      "hi2s": 1.2922,
+      "p05": 0.8156,
+      "p95": 1.2268,
+      "min": 0.7958,
+      "max": 1.2567
+    },
+    "neural": {
+      "n_seeds": 2,
+      "n_pairs": 2,
+      "mean": 1.0027,
+      "std": 0.0735,
+      "lo2s": 0.8557,
+      "hi2s": 1.1497,
+      "p05": 0.9365,
+      "p95": 1.0689,
+      "min": 0.9292,
+      "max": 1.0762
+    },
+    "UNAGI_combined": {
+      "n_pairs": 14,
+      "mean": 1.0088,
+      "std": 0.1337,
+      "lo2s": 0.7415,
+      "hi2s": 1.2762,
+      "p05": 0.8192,
+      "p95": 1.2213
+    }
+  },
+  "comparison_to_GVAE": {
+    "GVAE_band": [
+      0.78,
+      1.23
+    ],
+    "UNAGI_combined_band": [
+      0.7415,
+      1.2762
+    ]
+  }
+}

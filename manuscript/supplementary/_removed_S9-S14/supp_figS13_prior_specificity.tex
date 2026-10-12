@@ -1,0 +1,23 @@
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/figS13_prior_specificity.pdf}
+\caption{\textbf{Supplementary Figure S12. Prior-specificity controls and an in-silico causal perturbation.}
+\textbf{(A)} Mismatch control. The wrong-prior marrow model (R16, cortex TFs injected into marrow)
+shows no wiring of either its own cortex edges ($\Delta$ cosine $-0.029$, $z=-0.55$, null-corr
+$z=-0.75$) or the hematopoietic edges ($\Delta$ cosine $-0.034$, $z=-1.43$, null-corr $z=+0.92$);
+by contrast the true hematopoietic prior (R13) wires the hema edges ($\Delta$ cosine $+0.065$,
+$z=+3.06$, null-corr $z=+1.93$) but not the cortex edges ($\Delta$ cosine $-0.037$, $z=-0.40$).
+The prior thus raises involvement of \emph{its own} edges specifically, not of the other
+tissue's program. \textbf{(B)} Neural arm. The cortex prior (R1) does not wire its TRRUST-derived
+cortex edges above vanilla at any of the three seeds ($z=+0.19/+0.09/+0.19$, all n.s.; Stouffer
+$z=+0.27$, $p=0.79$), confirming that a tissue-plausible prior is insufficient when its TFs are
+not the dominant, variable drivers of the captured trajectory. \textbf{(C)} Seed explains $89\%$
+of the variance in wiring effect size (20,000-permutation $p=0.0034$), far exceeding any dose
+effect. \textbf{(D)} Causal perturbation. On the R13 baseline, an in-silico \emph{KLF1} knockout
+lowers coupling of the KLF1-specific edges by $-0.357$ while leaving the remaining $\sim$290
+prior edges essentially unchanged ($-0.004$, difference $-0.354$); an in-silico KLF1
+\emph{over-expression} also disrupts the KLF1 edges ($-0.161$ vs $-0.063$ for the rest). The
+effect is therefore specific to the perturbed TF, providing causal evidence -- beyond correlation
+-- that the injected GRN is genuinely written into the decoder's gene-loading geometry.}
+\label{fig:prior_specificity}
+\end{figure}

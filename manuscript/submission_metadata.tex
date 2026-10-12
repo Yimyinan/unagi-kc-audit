@@ -1,0 +1,28 @@
+% ============================================================================
+%  submission_metadata.tex  --  SINGLE SOURCE OF TRUTH for the values that must
+%  be identical in main.tex and supplementary.tex before submission.
+%
+%  FILL THESE IN ONCE.  Both documents \input this file, so the repository URL
+%  and the Zenodo DOI can never drift apart again.
+%
+%  Workflow (see ZENODO_README.md for the full checklist):
+%    1. push the repo to GitHub, note the public URL;
+%    2. connect Zenodo to the repo, cut a release, copy the
+%       *concept* DOI ("cite all versions") -- that is the one to put below;
+%    3. replace the two placeholder values here, recompile both documents.
+%
+%  The placeholder sentinels are written as \texttt{...} so they typeset
+%  visibly (never silently as an empty box).  tools/check_submission_metadata.py
+%  fails the build if either sentinel is still present, so this cannot ship
+%  unnoticed.
+% ============================================================================
+
+% --- the public repository (GitHub/GitLab) for code + data -----------------
+\newcommand{\RepositoryURL}{\url{https://github.com/Yimyinan/unagi-kc-audit}}
+
+% --- the Zenodo *concept* DOI (the "cite all versions" one) ----------------
+\newcommand{\ZenodoDOI}{\texttt{[ZENODO\_DOI]}}
+
+% --- convenience: "repo (DOI)" combined reference --------------------------
+\newcommand{\RepoAndDOI}{\RepositoryURL; Zenodo DOI \ZenodoDOI}
+\newcommand{\RepoAndDOIParenthetical}{(\RepositoryURL; Zenodo DOI \ZenodoDOI)}

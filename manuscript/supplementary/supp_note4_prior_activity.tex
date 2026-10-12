@@ -1,0 +1,57 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,caption}
+\usepackage{times}
+\begin{document}
+
+\section*{Supplementary Note 4. Prior Activity---What $C$ Does and Does Not Measure}
+\label{sup:prior_activity}
+
+\subsection*{Motivation}
+
+The global compression coefficient
+\begin{equation}
+C = \frac{\mathrm{tr}(\mathbf{H}_V) - \mathrm{tr}(\mathbf{H}_P)}{\mathrm{tr}(\mathbf{H}_V)} \times 100\%
+\end{equation}
+quantifies how much the decoder Hessian trace shrinks between the vanilla model ($\mathbf{H}_V$) and the prior-injected model ($\mathbf{H}_P$). $C$ is frequently misread as evidence that the injected prior was \emph{used} by the model. This note shows that it is not: $C$ measures trace collapse only, and high $C$ can arise entirely from the data and the training objective, with the prior contributing nothing. Prior \emph{activity}---whether the prior actually shapes the decoder---must be established separately by (i) a gradient check and (ii) a prior-strength ($\lambda$) scan.
+
+\subsection*{Human IPF: high $C$, inert prior}
+
+We retrained the prior-injected G-VAE on the human IPF dataset (8,532 cells $\times$ 16,299 genes) with three objectives and both BatchNorm (BN) and LayerNorm (LN) decoders (300 epochs, fp32):
+
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+Objective & Decoder & seeds & $\kappa_{\mathrm{gap}}$ & $C$ (\%) & trH \\
+\midrule
+Inert $\kappa$-$C$ term ($\lambda=0.1$) & BN & 3 & 0.010--0.016 & 96.2--96.7 & 347--401 \\
+Inert $\kappa$-$C$ term ($\lambda=0.1$) & LN & 3 & 0.021--0.025 & 95.3--95.6 & 461--501 \\
+Differentiable JVP penalty ($\lambda_{\mathrm{JVP}}=10$) & BN & 2 & 0.017 & 96.1 & 411--412 \\
+Differentiable JVP penalty ($\lambda_{\mathrm{JVP}}=10$) & LN & 2 & 0.021--0.023 & 95.5--95.6 & 465--481 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In every case the model converges to deep global compression ($C>95\%$) with a \emph{subcritical} gap ratio ($\kappa_{\mathrm{gap}}=0.010$--$0.025$; the training target is $\kappa_{\mathrm{gap}}=2$). High $C$ is therefore fully compatible with a prior that does nothing: the collapse is set by the data (cell-type composition and the fibrosis axis dominate the latent representation), not by the injected GRN.
+
+\subsection*{Prior-activity check 1: gradient inertness}
+
+The $\kappa$-$C$ term as implemented in the released training scripts is computed from a Ridge readout under ``no-grad'' semantics (e.g.\ \texttt{torch.no\_grad()} blocks or numpy-only evaluation), so the added loss term is a leaf constant with \emph{zero gradient} with respect to the model parameters. The term therefore cannot train the model; it is a monitoring quantity only. This is not specific to the IPF script: the same pattern appears in the hematopoietic scan, lung, and neural training loops.
+
+\subsection*{Prior-activity check 2: $\lambda$-scan}
+
+A prior that is actually used must move the decoder Hessian in a way that scales with prior strength $\beta_p$ (or the equivalent $\lambda$). We scanned $\lambda=0.1$, $1$, $10$ on IPF seed 42 (BN and LN). The results are insensitive to $\lambda$: global $C$ varies by $<0.5$ percentage points (BN 96.73/96.87/96.72; LN 95.65/95.80/95.38) and $\kappa_{\mathrm{gap}}$ stays $<0.025$ at every setting. An active prior would produce a monotone response in the spectral diagnostics; the flat scan is direct evidence that the prior--and the $\kappa$-$C$ regularizer with it--is inert on this dataset.
+
+\subsection*{Structural bound}
+
+Even a perfectly differentiable regularizer faces a data-imposed ceiling on IPF. The vanilla top axis already captures $\approx 91.2\%$ of the decoder trace (spectral gap $9{,}663$ of trH $10{,}590$). Since all Hessian eigenvalues are non-negative, $\kappa_{\mathrm{gap}} = (\lambda_1-\lambda_2)/\mathrm{gap}_V \leq \mathrm{tr}(\mathbf{H}_P)/\mathrm{gap}_V$, which bounds $\kappa_{\mathrm{gap}} \leq 0.11$ at $C=90\%$ and $\leq 0.044$ at $C=96\%$---an order of magnitude below the $\kappa_{\mathrm{gap}}=2$ target. The target is structurally infeasible on raw-count IPF, independently of the objective.
+
+\subsection*{Conclusion}
+
+$C$ is a trace-collapse diagnostic, not a prior-activity diagnostic. Interpreting $C$ requires the paired checks introduced here: (1) verify that the training objective that is credited with the collapse actually has a non-zero gradient path to the parameters (gradient check), and (2) verify that the spectral response scales with prior strength ($\lambda$-scan). Applied to the 33-configuration prior-injection audit, these checks separate the two empirical claims of this work: the 0/33 null (no prior-injection configuration achieves deep compression) is a statement about trace collapse; it does not assert that the priors were inactive. Prior activity in the hema configurations is independently attested by the $\lambda$- and curriculum-dependence of the spectral response in the IDREM iterations and by the R107/R111 single-configuration contrast (main text), while the IPF case demonstrates the converse: high $C$ with inert prior.
+
+\vspace{10pt}
+\noindent\rule{\textwidth}{0.4pt}
+\footnotesize\textbf{Source identity.} This note was compiled from \texttt{supplementary/supp\_note4\_prior\_activity.tex} in the paper1 repository. SHA256 of that source file with this paragraph removed: \texttt{f05b59918414be47e39c2b75f5fcd35943e0cf4919c1e734e13806c144c471f4}. Readers can recompute the digest to confirm which revision produced this PDF; the source is distributed with the code release.
+
+\end{document}

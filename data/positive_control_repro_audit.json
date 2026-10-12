@@ -1,0 +1,42 @@
+{
+ "protocol": "shared R14 iter_4 stagedata; get_latent(X)->z; Ridge(StandardScaler, alpha=1.0) trH; folded-BN decoder Jacobian (mean J)^T(mean J) with per-gene 1/std(first2000); kappa = trH_prior / mean(15-seed G-VAE vanilla trH) = 4080.8",
+ "vanilla_mean_trH": 4080.8,
+ "models": {
+  "repro_s42": {
+   "trH_ridge": 4175.7,
+   "kappa_ridge": 1.0233,
+   "trJ_folded": 290.174,
+   "locked_ridge": false
+  },
+  "hema_s42": {
+   "trH_ridge": 3910.9,
+   "kappa_ridge": 0.9584,
+   "trJ_folded": 296.618,
+   "locked_ridge": false
+  },
+  "repro_s123": {
+   "trH_ridge": 2379.8,
+   "kappa_ridge": 0.5832,
+   "trJ_folded": 298.081,
+   "locked_ridge": false
+  },
+  "hema_s123": {
+   "trH_ridge": 4136.3,
+   "kappa_ridge": 1.0136,
+   "trJ_folded": 350.024,
+   "locked_ridge": false
+  },
+  "repro_s456": {
+   "trH_ridge": 19519.8,
+   "kappa_ridge": 4.7833,
+   "trJ_folded": 164.827,
+   "locked_ridge": false
+  },
+  "hema_s456": {
+   "trH_ridge": 4149.8,
+   "kappa_ridge": 1.0169,
+   "trJ_folded": 330.187,
+   "locked_ridge": false
+  }
+ }
+}
