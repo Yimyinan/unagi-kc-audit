@@ -13,8 +13,8 @@ That premise no longer holds.  The injection-path audit of the released PG-UNAGI
 pipeline finds that the prior's content has **no functional route into the training
 objective**: the per-gene weight vector is assigned to the training object and never
 read, the likelihood-weighting branch that would consume it has no instantiation
-site, and the per-cell weight layer is identically zero across all 796 retained stage
-files / 29 run-iterations.  An information-rich arm therefore cannot be constructed
+site, and the per-cell weight layer is identically zero across all 1116 retained stage
+files / 196 run-iterations.  An information-rich arm therefore cannot be constructed
 inside PG-UNAGI: enriching the prior changes no loss term, so the comparison this
 file sizes has no treatment contrast to measure.
 

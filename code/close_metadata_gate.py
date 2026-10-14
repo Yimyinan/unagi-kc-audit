@@ -7,12 +7,12 @@
     事后改 pyproject **无效**。本脚本把「填 URL → 重建 wheel → 重编 → 同步包 → 跑门禁」
     绑成一次动作。
 
-★ 值不可编造：必须由人工在 GitHub 建库、Zenodo 取 **concept DOI**（"cite all versions"）后提供。
+★ 值不可编造：必须由人工在 GitHub 建库、figshare 取 **concept DOI**（"cite all versions"）后提供。
    本脚本默认 **dry-run**，只打印计划；`--apply` 才落盘。
 
 用法：
   python code/close_metadata_gate.py --repo-url https://github.com/<user>/kappa-c-audit \
-                                     --doi 10.5281/zenodo.XXXXXXX
+                                     --doi 10.6084/m9.figshare.XXXXXXX
   （加 --apply 才真正执行）
 """
 import argparse
@@ -55,10 +55,10 @@ if not URL_RE.match(A.repo_url):
 if "/kappa-c-audit" not in A.repo_url:
     print("   [warn] 仓库名不含 'kappa-c-audit'；REPO_SETUP.md 建议用该名，确认无误再继续")
 if not DOI_RE.match(A.doi):
-    print("!! DOI 格式不对（应形如 10.5281/zenodo.1234567）")
+    print("!! DOI 格式不对（应形如 10.6084/m9.figshare.1234567）")
     ok = False
-if "zenodo" not in A.doi.lower():
-    print("   [warn] DOI 里没有 'zenodo'——确认这是 Zenodo 的 **concept** DOI")
+if "figshare" not in A.doi.lower():
+    print("   [warn] DOI 里没有 'figshare'——确认这是 figshare 的归档 DOI")
 if not ok:
     sys.exit(2)
 
@@ -89,7 +89,7 @@ for w in WHLS:
 
 if not A.apply:
     print("\n[4] 计划（--apply 时执行）:")
-    print("     4.1 改写 %d 份 submission_metadata.tex 的 \\RepositoryURL / \\ZenodoDOI" % len(TEX))
+    print("     4.1 改写 %d 份 submission_metadata.tex 的 \\RepositoryURL / \\FigshareDOI" % len(TEX))
     print("     4.2 给 %d 份 pyproject.toml 加/更新 [project.urls] Homepage" % len(PYPROJ))
     print("     4.2b 把 4 份 LICENSE 的 `Copyright (c) 2026 [AUTHOR NAME]` 换成你给的值"
           "（**需要 --copyright**；不给则跳过、门禁仍 exit 1）")
@@ -125,7 +125,7 @@ n = 0
 for t in TEX:
     s = rd(t)
     s2 = re.sub(r"(\\newcommand\{\\RepositoryURL\}\{)[^}]*(?=\})", r"\g<1>" + A.repo_url, s)
-    s2 = re.sub(r"(\\newcommand\{\\ZenodoDOI\}\{)[^}]*(?=\})", r"\g<1>" + A.doi, s2)
+    s2 = re.sub(r"(\\newcommand\{\\FigshareDOI\}\{)[^}]*(?=\})", r"\g<1>" + A.doi, s2)
     if s2 != s:
         wr(t, s2)
         n += 1

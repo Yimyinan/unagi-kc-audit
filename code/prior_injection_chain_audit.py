@@ -221,7 +221,7 @@ def main():
                             inputs=[],
                             extra={"scanned_globs": STAGEDATA_GLOBS,
                                    "searched_roots": [str(REPO / q) for q in STAGEDATA_GLOBS],
-                                   "note": "D1 glob covers UNAGI/benchmark only; the manuscript quotes a 796-file full-tree count"})
+                                   "note": "D1 glob covers UNAGI/benchmark only; the manuscript quotes a 1116-file full-tree count"})
     json.dump(rep, open(OUT / "injection_chain_audit.json", "w"), indent=1)
 
     L = ["# Prior-injection chain audit", "",

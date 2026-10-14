@@ -10,15 +10,17 @@ data-backed ones, then the build gate.
 
 GATING means "must be clean before submission".  Items marked advisory are reported but do not
 fail the run (for example the metadata gate is expected to fail until the repository URL and
-Zenodo DOI are filled in).
+figshare DOI are filled in).
 
 WHAT EACH CHECK CAUGHT, HISTORICALLY
   check_text_integrity      placeholder/marker leakage into manuscript sources
   check_citations           dead or broken \\cite/\\bibitem pairs
+  check_conclusion_consistency  a control concluded about in opposite directions
+                               across files (the FIX-3 defect)
   check_form_consistency    four mixed-form / stale-count defects (125 vs 796, 40 vs 796,
                             15/15 vs 33/33, and the Figure S10 mixed-form product 1.47 vs 0.72)
   si_reference_map          supplementary floats defined but never referenced
-  check_submission_metadata unfilled [REPOSITORY_URL] / [ZENODO_DOI] sentinels
+  check_submission_metadata unfilled [REPOSITORY_URL] / [FIGSHARE_DOI] sentinels
   latex_silent_linter       \\multicolumn without a wrapping column (the Fig. S8 19 cm overflow)
   test_figure_name_guard    the figure-name collision guard
   build logs                undefined references; overfull boxes
@@ -87,6 +89,26 @@ def main():
     add("form consistency", True, "PASS:" in out,
         next((l.strip() for l in out.splitlines() if l.startswith("PASS") or
               l.startswith("FAIL")), "no verdict"))
+    rc, out = run([py, "tools/check_conclusion_consistency.py"])
+    add("conclusion consistency", True, "PASS:" in out,
+        next((l.strip() for l in out.splitlines() if l.strip().startswith("PASS") or
+              l.strip().startswith("FAIL")), "no verdict"))
+
+    rc, out = run([py, "tools/check_si_numbering.py"])
+    add("SI float numbering", True, "PASS:" in out,
+        next((l.strip() for l in out.splitlines() if l.strip().startswith("PASS") or
+              l.strip().startswith("FAIL")), "no verdict"))
+
+    rc, out = run([py, "tools/check_numeric_coverage.py"])
+    import re as _re
+    _m = _re.search(r"recomputed independently\s*:\s*(\d+/\d+)", out)
+    add("numeric claim coverage", True, rc == 0,
+        ("%s claims recomputed independently" % _m.group(1)) if _m else "no verdict")
+
+    rc, out = run([py, "tools/check_load_bearing.py"])
+    add("load-bearing claims", True, rc == 0,
+        next((l.strip() for l in out.splitlines()
+              if "quantities evaluated" in l), "no verdict"))
 
     rc, out = run([py, "tools/si_reference_map.py"])
     # si_reference_map now distinguishes a float's OWN CAPTION from a real in-prose citation.
@@ -160,7 +182,7 @@ def main():
             else "%d changed/missing: %s" % (len(bad), "; ".join(bad[:3])))
     else:
         add("raw-output manifest", False, True,
-            "not found (build with _infra/tmp/build_run_manifest.py)")
+            "not found (_infra/provenance/RUN_LEVEL_MANIFEST.json)")
 
     # ---- raw-output content hashes (tier 2, default depth "all") -------------------
     # RUN_LEVEL_CONTENT_HASHES.json carries a byte-level sha256 for every stagedata file
@@ -215,7 +237,7 @@ def main():
             add("raw-output content hash", True, False, "manifest root not found")
     else:
         add("raw-output content hash", False, True,
-            "not found (build with _infra/tmp/hash_all.py)")
+            "not found (_infra/provenance/RUN_LEVEL_CONTENT_HASHES.json)")
 
     # ---- numeric claims vs artefacts ----------------------------------------------
     # Every other check here verifies FORMAT and CONSISTENCY.  This one verifies the
@@ -291,14 +313,14 @@ def main():
             hit = [f for f in forbidden if re.search(re.escape(f), gatxt, re.I)]
             add("graphical abstract: forbidden content", True, not hit,
                 "clean" if not hit else "PRESENT " + ", ".join(hit))
-            need = ["prior-agnostic", "796 / 796", "Audit delivery before attributing"]
+            need = ["prior-agnostic", "1116 / 1116", "Audit delivery before attributing"]
             miss = [n for n in need if n not in gatxt]
             add("graphical abstract: required content", True, not miss,
                 "all present" if not miss else "MISSING " + ", ".join(miss))
             nums = set(re.findall(r"(?<![\w.])\d[\d,]*(?:\.\d+)?(?![\w])", gatxt))
             allowed = {"0", "1", "2", "3", "4", "5", "6", "10", "11", "12", "13",
                        "21", "29", "33", "0.5", "0.72", "0.77", "0.95", "3.5", "203",
-                       "325", "795", "796", "9396", "9,396", "0.873", "1.003", "0.684"}
+                       "325", "795", "1116", "196", "9396", "9,396", "0.873", "1.003", "0.684"}
             extra = sorted(n for n in nums if n not in allowed and n != "2026")
             add("graphical abstract: unlisted numbers", True, not extra,
                 "clean" if not extra else ", ".join(extra))

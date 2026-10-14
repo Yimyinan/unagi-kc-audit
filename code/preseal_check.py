@@ -135,14 +135,14 @@ for entry in DOCS:
 
 # ---------------------------------------------------------------- 5. placeholders
 hdr(5, "unfilled placeholders")
-PH = re.compile(r"\[(?:TODO|REPOSITORY_URL|REPOSITORY\\_URL|ZENODO_DOI|ZENODO\\_DOI|"
+PH = re.compile(r"\[(?:TODO|REPOSITORY_URL|REPOSITORY\\_URL|FIGSHARE_DOI|FIGSHARE\\_DOI|"
                 r"AUTHOR NAME|AFFILIATION|TBD|XXX)[^\]]*\]", re.I)
 # ★★ 本轮修掉的一处**真缺陷**：本节原先**只打印、不进 FAILL** ⇒
 #    "意外残留的占位符"（如正文里漏了个 [TBD]）会被打印出来，但门禁仍报 CLEAN，
 #    而 VERDICT 却声称检查过 placeholder。门禁**不算失败**的部分等于没在守。
-#    现改为：**封版时预期会填的**（仓库 URL / Zenodo DOI / 通讯邮箱）→ 容忍并计数；
+#    现改为：**封版时预期会填的**（仓库 URL / figshare DOI / 通讯邮箱）→ 容忍并计数；
 #    其余一律 fail()。
-TOL = re.compile(r"REPOSITORY|ZENODO|corresponding\s+e-?mail|CRediT", re.I)
+TOL = re.compile(r"REPOSITORY|FIGSHARE|corresponding\s+e-?mail|CRediT", re.I)
 n_tol, n_bad = 0, 0
 allf, _ = closure("main.tex")
 allf = sorted(set(allf) | set(closure("supplementary.tex")[0]))

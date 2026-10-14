@@ -9,7 +9,7 @@
   CHANGELOG.md     承接原 README 里的修订史（公开仓库的规范做法）
   CITATION.cff     新增
   .gitignore       新增
-  LICENSE / .zenodo.json  已有（后者本次修正元数据）
+  LICENSE / .figshare.json  已有（后者本次修正元数据）
 
 原则：只搬不改；幂等；每个复制都做 sha256 校验。
 """

@@ -172,7 +172,7 @@ def main():
     box(ax, R0, ey, RW, eh, fc="white", ec="#CCCCCC", lw=0.7)
     ax.text(R0 + 0.013, ey + eh - 0.013, "non-zero entries in the per-gene weight layer",
             fontsize=5.4, color=MUTED, va="top", ha="left")
-    ax.text(R0 + 0.013, ey + eh - 0.037, "796 / 796   nnz = 0", fontsize=8.0,
+    ax.text(R0 + 0.013, ey + eh - 0.037, "1116 / 1116   nnz = 0", fontsize=8.0,
             fontweight="bold", color=FAIL, va="top", ha="left")
     strip_y = ey + 0.052
     marks = 96
@@ -184,7 +184,7 @@ def main():
     ax.text(R0 + 0.013 + marks * 0.0046 + 0.038, strip_y, "positive\ncontrol",
             fontsize=5.2, color=fp.C_LUNG, va="center", ha="left", linespacing=1.12)
     ax.text(R0 + 0.013, ey + 0.014,
-            "All 796 stage files (29 run–iterations: vanilla controls, curated-, mismatched-\n"
+            "All 1116 stage files (196 run–iterations: vanilla controls, curated-, mismatched-\n"
             "prior and ablation arms). The positive control is non-zero.",
             fontsize=5.3, color=MUTED, va="bottom", ha="left", linespacing=1.34)
 

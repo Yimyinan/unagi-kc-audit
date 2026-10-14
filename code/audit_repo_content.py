@@ -25,7 +25,7 @@ SECRETS = [
     ("GitHub token", re.compile(r"\bgh[pousr]_[A-Za-z0-9]{20,}")),
     ("AWS key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
     ("通用 api_key/secret 赋值", re.compile(r"(?i)\b(?:api[_-]?key|secret|password|passwd|token)\s*[=:]\s*[\"'][^\"']{8,}")),
-    ("Zenodo token", re.compile(r"(?i)zenodo.*(?:token|access)")),
+    ("figshare token", re.compile(r"(?i)figshare.*(?:token|access)")),
 ]
 PERSONAL = [
     ("邮箱", re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")),

@@ -7,8 +7,8 @@ Four separate defects in this manuscript had one shared root cause: **the same q
 was quoted in two different functional forms, or at two different scopes, and the two were
 used as if interchangeable.**
 
-  1. Introduction said "125 released run-iteration-stage files"; every other place said 796.
-  2. Figure 4C said "40 / 40" (neural-crest subset only); the text said 796 (all arms).
+  1. Introduction said "125 released run-iteration-stage files"; every other place said 1116.
+  2. Figure 4C said "40 / 40" (neural-crest subset only); the text said 1116 (all arms).
   3. Figure 2 and three prose sites said "15/15 Jacobian re-audit"; the audit covers 33/33.
   4. Figure S10's product blended a corrected decoder with a TRACE-form latent
      (`kappa_r2 * kC_Z`), giving median 1.47 / 9 of 33, while the caption called it
@@ -48,7 +48,7 @@ PROJECT = os.path.dirname(os.path.dirname(PAPER1))   # .../UNAGI_Project
 PR = os.path.join(PAPER1, "data", "kappa_c_pr_comparison.json")
 S1G = os.path.join(PROJECT, "outputs", "positive_result", "s1g_corrected_summaries.json")
 S1F = os.path.join(PROJECT, "outputs", "positive_result", "s1f_0of33_recheck.json")
-INV = os.path.join(PROJECT, "outputs", "geneWeight_recovered_inventory.json")
+INV = os.path.join(PROJECT, "outputs", "geneWeight_inventory_RESCAN.json")
 
 # Sources scanned for claims.  Keep in sync with the \input graph of main.tex.
 CLAIM_FILES = ["main.tex", "star_methods.tex", "supplementary.tex", "supp_addendum.tex",
@@ -57,7 +57,7 @@ CLAIM_FILES = ["main.tex", "star_methods.tex", "supplementary.tex", "supp_addend
 # Authoritative counts.  Anything outside this set is a candidate stale reference.
 # Derived by `calibrate_counts` over the live sources: every value here was inspected in
 # context and adjudicated legitimate.  Two historical defects are deliberately absent:
-#   125 -> a stale stage-file count (the inventory says 796)
+#   125 -> a stale stage-file count (the rescan says 1116)
 #   15  -> is present, because it is legitimate as "15 retained G-VAE seeds";
 #          the STALE_COUNT_PHRASES table below catches it only in its stale phrasing.
 AUTHORITATIVE = {
@@ -71,7 +71,7 @@ AUTHORITATIVE = {
     19: "claim denominator (16/19)",
     22: "haematopoietic configurations",
     23: "configurations inside the cross-family band (22 haematopoietic + 1 neural-crest)",
-    29: "retained run-iterations (stagedata on disk)",
+    196: "retained run-iterations (stagedata on disk)",
     30: "archived UNAGI decoder readouts",
     33: "configuration audit size",
     24: "haematopoietic runs in the spectrum scan (data/z_spectrum_all.csv)",
@@ -83,30 +83,66 @@ AUTHORITATIVE = {
     59: "retained run logs",
     70: "prior-quality-landscape configurations",
     90: "per-configuration readouts",
-    105: "neural-crest stage files",
+    70: "neural-crest stage files for the R1_neural runs (rescan)",
     210: "ordered seed-pair comparisons",
     456: "model seed label",
-    796: "released run-iteration-stage files (all arms)",
+    1116: "released run-iteration-stage files (whole retained tree)",
+    196: "run-iterations with a geneWeight layer (rescan, whole retained tree)",
+    29: "runs with a computable Z spectrum (the kappa-C-Z denominator; NOT the "
+         "stage-file count, which is 1116)",
 }
 
 # Phrasings that were factually wrong in an earlier revision.  Each entry is a regex; a match
 # means the stale claim has come back.  Keep this list short and each entry undeniable.
 STALE_COUNT_PHRASES = [
     (r"\b125\b[^\n]{0,40}(?:stage files|run--iterations?|run-iterations?)",
-     "125 stage files -- the inventory records 796 (Introduction defect)"),
+     "125 stage files -- the rescan records 1116 (Introduction defect)"),
     (r"\b40\b\s+surviving\s+(?:stage\s+)?files",
-     "40 surviving stage files -- superseded by 796 across all arms (Fig. 4C defect)"),
+     "40 surviving stage files -- superseded by 1116 across the retained tree (Fig. 4C defect)"),
     (r"all\s+\$?40\$?\s*(?:surviving\s+)?stage files",
-     "40 stage files -- superseded by 796"),
+     "40 stage files -- superseded by 1116"),
     (r"\b15\s*/\s*15\b",
      "15/15 Jacobian re-audit -- the audit covers all 33 configurations"),
     (r"All\s+15\s+configurations",
      "All 15 configurations -- the audit covers all 33"),
     (r"\b40\s*/\s*40\b",
-     "40/40 files -- superseded by 796/796"),
+     "40/40 files -- superseded by 1116/1116"),
     (r"\b18\s+(?:Ridge-only|Ridge)\b",
      "18 Ridge-only configurations -- no configuration is Ridge-only now"),
 ]
+
+
+# --------------------------------------------------------------------------
+# The stage-file count is asserted in three places in the manuscript. Each must equal the
+# number the rescan artefact records; a stale copy in any one of them is the FIX-9 defect.
+# This is a text-to-artefact coupling, not a stale-phrase pattern, so it needs no pre-fix
+# corpus: the archives carry 796 because that was the value at the time, not a defect.
+def check_stage_file_count():
+    inv = load(os.path.join(PROJECT, "outputs", "geneWeight_inventory_RESCAN.json"))
+    if not inv:
+        print("  (skip: rescan inventory absent)")
+        return True
+    want = str(inv.get("total_files"))
+    srcs = {
+        "main.tex": os.path.join(PAPER1, "main.tex"),
+        "supp_addendum.tex": os.path.join(PAPER1, "supp_addendum.tex"),
+    }
+    ok = True
+    for label, path in srcs.items():
+        if not os.path.isfile(path):
+            continue
+        txt = open(path, encoding="utf-8").read()
+        got = re.findall(r"\$(\d+)\$\s+released run--iteration--stage files", txt) + \
+              re.findall(r"\$(\d+)\$\s+stage files", txt) + \
+              re.findall(r"all\s+\$(\d+)\$\s+stage files", txt)
+        for g in got:
+            if g != want:
+                print("  FAIL %s quotes %s stage files; the artefact records %s"
+                      % (label, g, want))
+                ok = False
+    if ok:
+        print("  stage-file counts in the manuscript agree with the artefact (%s)" % want)
+    return ok
 
 
 def load(path):
@@ -347,6 +383,9 @@ def main():
     else:
         print("PASS: no mixed-form or stale-count claims found")
     print("=" * 78)
+    if not check_stage_file_count():
+        ok = False
+
     return 1 if (fails and args.strict) else 0
 
 

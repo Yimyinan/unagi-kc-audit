@@ -3,7 +3,7 @@
 WHY
 ---
 main.tex and supplementary.tex previously carried literal ``[REPOSITORY_URL]``
-and ``[ZENODO_DOI]`` placeholders.  They are now centralised in
+and ``[FIGSHARE_DOI]`` placeholders.  They are now centralised in
 ``submission_metadata.tex`` so the two documents can never disagree, but a
 centralised placeholder is still a placeholder: it is easy to compile a PDF,
 skim the availability section, and submit with the sentinel still in it.
@@ -54,7 +54,7 @@ DEFINITION_FILE = "submission_metadata.tex"
 
 # sentinels that mean "not filled in yet"
 SENTINELS = ["[REPOSITORY\\_URL]", "[REPOSITORY_URL]",
-             "[ZENODO\\_DOI]", "[ZENODO_DOI]",
+             "[FIGSHARE\\_DOI]", "[FIGSHARE_DOI]",
              "[AUTHOR NAME]", "[AFFILIATION]"]
 
 # Directory segments that are never submission sources.  ``snapshots``, ``archive``
@@ -100,11 +100,11 @@ def tex_sources(root):
 
 # --------------------------------------------------------------------------- #
 # Repository metadata: the .tex gate above cannot see these files, yet they are
-# what Zenodo PUBLISHES (the DOI description is immutable once released).  Added
+# what figshare PUBLISHES (the DOI description is immutable once released).  Added
 # after an audit found `version: v1.0` against a 0.1.2 wheel, and an author name
 # (`Yim`) that the manuscript had already renamed (`Yan`).
 # --------------------------------------------------------------------------- #
-REPO_METADATA_NAMES = {"pyproject.toml", ".zenodo.json", "CITATION.cff"}
+REPO_METADATA_NAMES = {"pyproject.toml", ".figshare.json", "CITATION.cff"}
 
 
 def repo_metadata_files(root):
@@ -126,7 +126,7 @@ def license_files(root):
     这里只做**占位符扫描**，复用同一份 SENTINELS。
 
     背景（真实缺陷）：全项目 **4 个 LICENSE** 都写着
-    `Copyright (c) 2026 [AUTHOR NAME]`，而门禁此前**根本不看 LICENSE** ⇒ 会随 Zenodo 发布。
+    `Copyright (c) 2026 [AUTHOR NAME]`，而门禁此前**根本不看 LICENSE** ⇒ 会随 figshare 发布。
     """
     out = []
     for dirpath, _dirnames, filenames in os.walk(root):
@@ -145,7 +145,7 @@ def _norm_person(s):
 
 # The leading separator is load-bearing: without it `cff-version: 1.2.0` in
 # CITATION.cff is read as the *software* version and matches nothing.
-# Two-component versions must be accepted as well -- the stale `.zenodo.json`
+# Two-component versions must be accepted as well -- the stale `.figshare.json`
 # this check was written to catch carried `"version": "v1.0"`, and a
 # three-component-only pattern silently skips exactly that case.
 _VER_RE = re.compile(r'(?:^|[\s",{])version"?\s*[:=]\s*"?v?([0-9]+\.[0-9]+(?:\.[0-9]+)?)')
@@ -156,7 +156,7 @@ def _declared(rel, text):
     base = os.path.basename(rel)
     m = _VER_RE.search(text)
     person = None
-    if base == ".zenodo.json":
+    if base == ".figshare.json":
         a = re.search(r'"creators"\s*:\s*\[\s*\{\s*"name"\s*:\s*"([^"]+)"', text, re.S)
         if a:
             person = a.group(1)
@@ -230,7 +230,7 @@ def repo_metadata_checks(root):
 
     Three checks, all scoped to artefacts that actually ship:
 
-    1. **per release root** (a directory holding a ``.zenodo.json``): the version
+    1. **per release root** (a directory holding a ``.figshare.json``): the version
        and author declared there must agree with each other, with any
        ``CITATION.cff``, and with the wheel built under that root.  A sibling
        package with no wheel is ignored, so ``kappac/`` cannot create a mismatch;
@@ -241,7 +241,7 @@ def repo_metadata_checks(root):
        silent-staleness trap -- the working tree and the assembled release drift
        apart and the published copy is whichever was uploaded first.
 
-    Divergent ``.zenodo.json`` copies are not cross-checked (they carry no package
+    Divergent ``.figshare.json`` copies are not cross-checked (they carry no package
     name to key on); the remedy there is to keep exactly one copy.
     """
     sent_hits, problems = [], []
@@ -252,7 +252,7 @@ def repo_metadata_checks(root):
             texts[rel] = io.open(os.path.join(root, rel),
                                  encoding="utf-8", errors="replace").read()
         except OSError as exc:
-            # ★ 第 45 轮：原先是 `pass` ⇒ 读不到的仓库元数据（.zenodo.json / CITATION.cff /
+            # ★ 第 45 轮：原先是 `pass` ⇒ 读不到的仓库元数据（.figshare.json / CITATION.cff /
             #   pyproject.toml）**既不报占位符也不报错**，一致性检查悄悄少一份输入仍可能通过。
             #   现在记成 problems（它本来就通向失败路径），让"读不到"降级结论。
             problems.append("%s: 读不到（%s）⇒ 该文件的占位符与一致性**未被检查**" % (rel, exc))
@@ -267,7 +267,7 @@ def repo_metadata_checks(root):
     # ---- 1 & 2: per release root ----------------------------------------- #
     roots = {}
     for rel in sorted(texts):
-        if os.path.basename(rel) == ".zenodo.json":
+        if os.path.basename(rel) == ".figshare.json":
             r = os.path.dirname(os.path.join(root, rel)).replace("\\", "/")
             roots[r] = []
     for rel in sorted(texts):
@@ -406,7 +406,7 @@ def main():
     if repo_sent:
         print()
         print("submission metadata: %d unfilled placeholder(s) in REPO metadata "
-              "(these are what Zenodo publishes; the DOI description is immutable):"
+              "(these are what figshare publishes; the DOI description is immutable):"
               % len(repo_sent))
         for rel, i, sent, snippet in repo_sent:
             print("  %s:%d  %s" % (rel, i, sent))

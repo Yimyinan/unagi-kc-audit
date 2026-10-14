@@ -22,7 +22,7 @@ RESIDUE = {
     r"(?<![\\$])\$[^$\n]{2,}\$(?!\$)": "数学定界符 $...$",
 }
 HTMLESC = {"&lt;": "<", "&gt;": ">", "&amp;": "&", "&quot;": '"', "&#39;": "'"}
-PLACEHOLDER = re.compile(r"\[(?:TODO|TBD|XXX|REPOSITORY[\\_]?URL|ZENODO[\\_]?DOI|"
+PLACEHOLDER = re.compile(r"\[(?:TODO|TBD|XXX|REPOSITORY[\\_]?URL|FIGSHARE[\\_]?DOI|"
                          r"AUTHOR NAME|AFFILIATION|待填|占位)[^\]]*\]", re.I)
 # Word 自带的域代码/修订痕迹
 FIELDS = {"MERGEFORMAT": "Word 域残留", "ADDIN": "Word 域残留",

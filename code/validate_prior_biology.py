@@ -14,6 +14,7 @@ Outputs -> outputs/positive_result/
   fig_prior_biology_validation.png / .pdf
 """
 from __future__ import annotations
+import os
 import json, gzip, re, statistics as st
 from pathlib import Path
 import numpy as np
@@ -351,3 +352,24 @@ level" claim — and why we instead explain *why* each tissue responds different
 """
 (OUT / "VALIDATION.md").write_text(md, encoding="utf-8")
 print("wrote", OUT / "VALIDATION.md")
+
+# ---------------------------------------------------------------------------
+# Json twin of the match table, so the Jaccard claims can be gated rather than
+# living only in Markdown.
+_art = {
+    "schema": "paper1-artefact-provenance/1",
+    "mr_match": {k: float(v) for k, v in match.items()},
+    "observed_dlog": {k: float(v) for k, v in obs.items()},
+    "hema_mr_intersection": len(set(hema_tfs) & set(HEMATO_MR)),
+    "hema_mr_union": len(set(hema_tfs) | set(HEMATO_MR)),
+    "n_tf": {"hema": len(hema_tfs), "lung": len(lung_tfs), "neural": len(neuro_tfs)},
+    "_provenance": {
+        "script": os.path.abspath(__file__),
+        "sha256": __import__("hashlib").sha256(open(__file__, "rb").read()).hexdigest(),
+        "note": "written by the same run that produced the numbers",
+    },
+}
+_jp = os.path.join(OUT, "validation_prior_biology.json")
+with open(_jp, "w", encoding="utf-8") as _f:
+    _f.write(json.dumps(_art, indent=1))
+print("  wrote " + _jp)

@@ -7,7 +7,7 @@ r"""make_fig5_injection_path.py —— 新建 Fig 5：注入路径的实证图�
 设计（4 面板，2x2）：
   (A) 损耗漏斗：9,396 → 9,369 → 325 → 203 → **0**（逐阶段保留率）
   (B) 调用图终止：先验库 → 逐基因向量 → `_tf_prior_weights` 赋值 → **无读取者**
-  (C) 零权重层实测：全部 796 个 stage 文件（29 run-iteration，覆盖 vanilla/curated-prior/
+  (C) 零权重层实测：全部 1116 个 stage 文件（196 run-iteration，覆盖 vanilla/curated-prior/
       mismatched-prior/erythroid-ablation 各臂）nnz = 0（对照非零）
   (D) 覆盖缺口：ENCODE 参考库缺 6/12 造血因子，KLF1 无任何边
 
@@ -37,9 +37,9 @@ STAGES = [
     ("TRRUST v2 human\n(source)", 9396, "9{,}396 edges / 795 TFs\n+direction +topology"),
     ("$\\mathtt{build\\_tf\\_database}$\nhaematopoietic subset", 325, "325 edges / 11 TFs\ntargets only (3.5\\%)"),
     ("$\\mathtt{build\\_prior\\_matrix}$\nper-gene scalars", 203, "203 values\nno direction, no topology"),
-    ("$\\mathtt{geneWeight}$\ntraining artefact", 0, "all-zero ($\\mathrm{nnz}=0$, 796/796 files)"),
+    ("$\\mathtt{geneWeight}$\ntraining artefact", 0, "all-zero ($\\mathrm{nnz}=0$, 1116/1116 files)"),
 ]
-N_FILES = 796
+N_FILES = 1116
 ENCODE_TFS, HEMA_TFS = 126, 12
 MISSING_TFS = 6
 
@@ -101,7 +101,7 @@ def panel_b(ax):
 
 
 def panel_c(ax):
-    """零权重层实测：全部 796 个 stage 文件 nnz = 0（对照非零）。"""
+    """零权重层实测：全部 1116 个 stage 文件 nnz = 0（对照非零）。"""
     xs = list(range(1, N_FILES + 1))
     ax.scatter(xs, [0] * N_FILES, s=2.2, color=fp.FAIL, zorder=3,
                edgecolors="none")
@@ -112,7 +112,7 @@ def panel_c(ax):
     ax.set_yticks([0]); ax.set_yticklabels(["0"])
     ax.set_xlabel("retained stage files (all runs, all arms)", fontsize=7)
     ax.set_ylabel("non-zero entries", fontsize=7)
-    ax.annotate("796 / 796\n$\\mathrm{nnz}=0$", xy=(N_FILES / 2, 0),
+    ax.annotate("1116 / 1116\n$\\mathrm{nnz}=0$", xy=(N_FILES / 2, 0),
                 xytext=(N_FILES / 2, 0.62),
                 fontsize=7, color=fp.FAIL, ha="center",
                 arrowprops=dict(arrowstyle="->", color=fp.FAIL, lw=0.75))

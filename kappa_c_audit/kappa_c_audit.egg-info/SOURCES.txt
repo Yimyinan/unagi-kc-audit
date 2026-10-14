@@ -10,3 +10,4 @@ kappa_c_audit.egg-info/dependency_links.txt
 kappa_c_audit.egg-info/requires.txt
 kappa_c_audit.egg-info/top_level.txt
 tests/test_core.py
+tests/test_injection_path.py

@@ -2,7 +2,7 @@
 """audit_author_name.py —— 全文本扩展名扫描**旧署名**是否仍出现在活文档里。
 
 为什么单列（本轮真实发现的盲区）：
-  统一的署名口径是 **Yan Yinan**（见 CHANGELOG / 各 .zenodo.json / CITATION.cff）。
+  统一的署名口径是 **Yan Yinan**（见 CHANGELOG / 各 .figshare.json / CITATION.cff）。
   2026-09-27 那次审计**只扫了 `.tex` 与 `.md`**，于是漏掉了一个 `.txt`：
   `paper1_kc_diagnostic.txt`（2026-09-05 的 PDF 文本抽取物）第 3 行仍是旧署名
   `Yim Yinan`，且它还带着已撤回的等价带。
